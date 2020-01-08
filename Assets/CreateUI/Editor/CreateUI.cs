@@ -7,12 +7,16 @@ using UnityEngine.UI;
 
 public static class CreateUI
 {
-    [MenuItem("EditorMenu/1.MenuItem")]
-    private static void MenuItem()
+    [MenuItem("EditorMenu/1.MenuItem", true)]
+    private static bool ValidateCreateUIRoot()
     {
-        Debug.Log("CreateUIRoot");
+        return GameObject.Find("UIRoot") == null;
+    }
 
-
+    //isValidateFunction 如果写了true/false 代表是检测方法  只是 决定是否启用而已
+    [MenuItem("EditorMenu/1.MenuItem")]
+    private static void DoCreateUIRoot()
+    {
         var uiRootObj = new GameObject("UIRoot");
 
         var canvas = new GameObject("Canvas");
@@ -31,5 +35,7 @@ public static class CreateUI
         eventSystem.AddComponent<StandaloneInputModule>();
 
         Undo.RegisterCreatedObjectUndo(uiRootObj, "UIRoot");
+
+        Debug.Log("CreateUIRoot");
     }
 }
