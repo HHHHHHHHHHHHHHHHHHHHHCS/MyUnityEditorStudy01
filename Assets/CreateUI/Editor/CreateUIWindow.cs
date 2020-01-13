@@ -1,21 +1,38 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public static class CreateUI
+public class CreateUIWindow : EditorWindow
 {
-    [MenuItem("EditorMenu/1.MenuItem", true)]
-    private static bool ValidateCreateUIRoot()
+    [MenuItem("EditorMenu/2.MenuItemWindow")]
+    private static void DoCreateUIWindow()
     {
-        return GameObject.Find("UIRoot") == null;
+        var window = GetWindow<CreateUIWindow>();
+
+        window.Show();
     }
 
-    //isValidateFunction 如果写了true/false 代表是检测方法  只是 决定是否启用而已
-    [MenuItem("EditorMenu/1.MenuItem")]
-    private static void DoCreateUIRoot()
+    private void OnGUI()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Width", GUILayout.Width(45));
+        var width = GUILayout.TextField("720");
+        GUILayout.Label("x", GUILayout.Width(10));
+        GUILayout.Label("Height", GUILayout.Width(50));
+        var height = GUILayout.TextField("1280");
+        GUILayout.EndHorizontal();
+
+        if (GUILayout.Button("Setup"))
+        {
+            Setup(720, 1280);
+        }
+    }
+
+    private static void Setup(float width, float height)
     {
         var uiRootObj = new GameObject("UIRoot");
 
@@ -26,7 +43,10 @@ public static class CreateUI
         canvas.transform.SetParent(uiRootObj.transform);
 
         canvas.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.AddComponent<CanvasScaler>();
+        var canvasScaler = canvas.AddComponent<CanvasScaler>();
+        canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvasScaler.referenceResolution = new Vector2(width, height);
+
         canvas.AddComponent<GraphicRaycaster>();
 
         var eventSystem = new GameObject("EventSystem");
