@@ -34,15 +34,21 @@ public class CreateUIWindow : EditorWindow
 
     private static void Setup(float width, float height)
     {
+        if (GameObject.Find("UIRoot"))
+        {
+            Debug.Log("Have UI Root in Scene , Can't Create");
+            return;
+        }
+
+        //UIRoot
         var uiRootObj = new GameObject("UIRoot");
 
-        uiRootObj.layer = LayerMask.NameToLayer("UI");
-
+        //Canvas
         var canvas = new GameObject("Canvas");
-
         canvas.transform.SetParent(uiRootObj.transform);
-
         canvas.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+
+        //CanvasScaler
         var canvasScaler = canvas.AddComponent<CanvasScaler>();
         canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         canvasScaler.referenceResolution = new Vector2(width, height);
@@ -53,14 +59,42 @@ public class CreateUIWindow : EditorWindow
 
         eventSystem.transform.SetParent(uiRootObj.transform);
 
+        //EventSystem
         eventSystem.AddComponent<EventSystem>();
         eventSystem.AddComponent<StandaloneInputModule>();
 
+        //UIRoot
+        var uiRoot = uiRootObj.AddComponent<UIRoot>();
+
+        var bg = new GameObject("BG");
+        bg.AddComponent<RectTransform>();
+        bg.transform.SetParent(canvas.transform);
+        ((RectTransform) bg.transform).localPosition = Vector3.zero;
+
+
+        var common = new GameObject("Common");
+        common.AddComponent<RectTransform>();
+        common.transform.SetParent(canvas.transform);
+        ((RectTransform) common.transform).localPosition = Vector3.zero;
+
+
+        var popUI = new GameObject("PopUI");
+        popUI.AddComponent<RectTransform>();
+        popUI.transform.SetParent(canvas.transform);
+        ((RectTransform) popUI.transform).localPosition = Vector3.zero;
+
+
+        var forwardObj = new GameObject("ForwardObj");
+        forwardObj.AddComponent<RectTransform>();
+        forwardObj.transform.SetParent(canvas.transform);
+        ((RectTransform) forwardObj.transform).localPosition = Vector3.zero;
+
+        //layer
+        uiRootObj.layer = LayerMask.NameToLayer("UI");
         foreach (Transform trans in uiRootObj.GetComponentsInChildren<Transform>(true))
         {
             trans.gameObject.layer = LayerMask.NameToLayer("UI");
         }
-
 
         Undo.RegisterCreatedObjectUndo(uiRootObj, "UIRoot");
 
