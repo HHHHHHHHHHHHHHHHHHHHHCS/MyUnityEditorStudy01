@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,15 +21,23 @@ public class CreateUIWindow : EditorWindow
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Width", GUILayout.Width(45));
-        var width = GUILayout.TextField("720");
+        var widthStr = GUILayout.TextField("720");
         GUILayout.Label("x", GUILayout.Width(10));
         GUILayout.Label("Height", GUILayout.Width(50));
-        var height = GUILayout.TextField("1280");
+        var heightStr = GUILayout.TextField("1280");
         GUILayout.EndHorizontal();
 
         if (GUILayout.Button("Setup"))
         {
-            Setup(720, 1280);
+            if (float.TryParse(widthStr, out var width)
+                && float.TryParse(heightStr, out var height))
+            {
+                Setup(width, height);
+            }
+            else
+            {
+                Debug.LogError("Please Input number");
+            }
         }
     }
 
@@ -67,27 +76,31 @@ public class CreateUIWindow : EditorWindow
         var uiRoot = uiRootObj.AddComponent<UIRoot>();
 
         var bg = new GameObject("BG");
-        bg.AddComponent<RectTransform>();
+        uiRoot.bg = bg.AddComponent<RectTransform>();
         bg.transform.SetParent(canvas.transform);
         ((RectTransform) bg.transform).localPosition = Vector3.zero;
 
 
         var common = new GameObject("Common");
-        common.AddComponent<RectTransform>();
+        uiRoot.common = common.AddComponent<RectTransform>();
         common.transform.SetParent(canvas.transform);
         ((RectTransform) common.transform).localPosition = Vector3.zero;
 
 
         var popUI = new GameObject("PopUI");
-        popUI.AddComponent<RectTransform>();
+        uiRoot.popUI = popUI.AddComponent<RectTransform>();
         popUI.transform.SetParent(canvas.transform);
         ((RectTransform) popUI.transform).localPosition = Vector3.zero;
 
 
-        var forwardObj = new GameObject("ForwardObj");
-        forwardObj.AddComponent<RectTransform>();
+        var forwardObj = new GameObject("Forward");
+        uiRoot.forward = forwardObj.AddComponent<RectTransform>();
         forwardObj.transform.SetParent(canvas.transform);
         ((RectTransform) forwardObj.transform).localPosition = Vector3.zero;
+
+        var uiRootSerObj = new SerializedObject(uiRoot);
+        uiRootSerObj.FindProperty("mRootCanvas").objectReferenceValue = canvas.GetComponent<Canvas>();
+        uiRootSerObj.ApplyModifiedPropertiesWithoutUndo();
 
         //layer
         uiRootObj.layer = LayerMask.NameToLayer("UI");
@@ -95,6 +108,17 @@ public class CreateUIWindow : EditorWindow
         {
             trans.gameObject.layer = LayerMask.NameToLayer("UI");
         }
+
+        var savedFolder = Application.dataPath + "/Resources";
+        if (!Directory.Exists(savedFolder))
+        {
+            Directory.CreateDirectory(savedFolder);
+        }
+
+        var saveFilePath = savedFolder + "/UIRoot.prefab";
+
+        PrefabUtility.SaveAsPrefabAssetAndConnect(uiRootObj, saveFilePath, InteractionMode.AutomatedAction);
+
 
         Undo.RegisterCreatedObjectUndo(uiRootObj, "UIRoot");
 
