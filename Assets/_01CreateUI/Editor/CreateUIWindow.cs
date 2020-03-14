@@ -17,14 +17,18 @@ public class CreateUIWindow : EditorWindow
         window.Show();
     }
 
+    public string widthStr = "720";
+    public string heightStr = "1280";
+
+
     private void OnGUI()
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Width", GUILayout.Width(45));
-        var widthStr = GUILayout.TextField("720");
+        widthStr = GUILayout.TextField(widthStr);
         GUILayout.Label("x", GUILayout.Width(10));
         GUILayout.Label("Height", GUILayout.Width(50));
-        var heightStr = GUILayout.TextField("1280");
+        heightStr = GUILayout.TextField(heightStr);
         GUILayout.EndHorizontal();
 
         if (GUILayout.Button("Setup"))
@@ -121,6 +125,7 @@ public class CreateUIWindow : EditorWindow
 
 
         Undo.RegisterCreatedObjectUndo(uiRootObj, "UIRoot");
+
 
         Debug.Log("CreateUIRoot");
     }
