@@ -2,17 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("ScriptEditor/UIBind")]
 public class UIBind : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

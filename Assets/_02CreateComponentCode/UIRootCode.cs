@@ -1,6 +1,5 @@
 using UnityEngine;
 
-public class UIRootCode : MonoBehaviour
+public partial class UIRootCode : MonoBehaviour
 {
-
 }

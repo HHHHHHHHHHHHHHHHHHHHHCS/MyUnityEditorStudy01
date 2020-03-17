@@ -24,6 +24,7 @@ public static class CreateComponentCode
         return scriptName;
     }
 
+    [MenuItem("EditorMenu/3.EditorExtension-Create Code", false)]
     [MenuItem("GameObject/@EditorExtension-Create Code", false, 0)]
     private static void Create()
     {
@@ -44,13 +45,11 @@ public static class CreateComponentCode
         }
 
         string className = ScriptName(gameobject.name);
-        var scriptFile = scriptsFolder + className + ".cs";
-        using (var sw = File.CreateText(scriptFile))
-        {
-            CodeTemplate.Write(sw, className);
+        List<string> cachePath = new List<string>();
+        SearchUIBind(gameobject.transform, cachePath);
+        CodeTemplate.LogicWrite(scriptsFolder, ScriptName(gameobject.name));
+        CodeTemplate.DesignerWrite(scriptsFolder, ScriptName(gameobject.name), cachePath);
 
-            sw.Close();
-        }
 
         //确保难以出现两个
         //GameObjectUtility.RemoveMonoBehavioursWithMissingScript(gameobject);
@@ -93,10 +92,25 @@ public static class CreateComponentCode
                     instance = obj.AddComponent(cls);
                 List<string> cachePath = new List<string>();
                 SearchUIBind(obj.transform, cachePath);
+//                foreach (var item in cachePath)
+//                {
+//                    Debug.Log(item);
+//                }
+                var serObj = new SerializedObject(instance);
+
                 foreach (var item in cachePath)
                 {
-                    Debug.Log(item);
+                    bool isSelf = string.IsNullOrWhiteSpace(item);
+                    var name = isSelf
+                        ? ObjectName(generateClassName)
+                        : item.Replace('/', '_');
+
+                    serObj.FindProperty(name).objectReferenceValue = isSelf
+                        ? obj.transform
+                        : obj.transform.Find(item);
                 }
+
+                serObj.ApplyModifiedPropertiesWithoutUndo();
             }
         }
     }
