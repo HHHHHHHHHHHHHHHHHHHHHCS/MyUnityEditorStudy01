@@ -9,6 +9,27 @@ using UnityEngine;
 
 public static class CreateComponentCode
 {
+    public static readonly string namespaceKey = Application.productName + "@CreateCodeNamespace";
+    public static readonly string defaultNamespace = "DefaultNamespace";
+
+
+    public static string CodeNamespace
+    {
+        get
+        {
+            var str = EditorPrefs.GetString(namespaceKey);
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return defaultNamespace;
+            }
+
+            return str;
+        }
+    }
+
+    public static bool IsDefaultNamespace => CodeNamespace == defaultNamespace;
+
+
     public static string ScriptName(string file)
     {
         return file + "Code";
@@ -24,9 +45,25 @@ public static class CreateComponentCode
         return scriptName;
     }
 
+    [MenuItem("EditorMenu/3.EditorExtension-Create Code", true)]
+    [MenuItem("GameObject/@EditorExtension-Create Code", true, 0)]
+    private static bool ValidateCreateCode()
+    {
+        var gameobject = Selection.gameObjects.First();
+
+        if (!gameobject && !EditorUtility.IsPersistent(gameobject))
+        {
+            return false;
+        }
+
+        var viewBind = gameobject.GetComponent<ViewBind>();
+
+        return viewBind != null;
+    }
+
     [MenuItem("EditorMenu/3.EditorExtension-Create Code", false)]
     [MenuItem("GameObject/@EditorExtension-Create Code", false, 0)]
-    private static void Create()
+    private static void CreateCode()
     {
         var gameobject = Selection.gameObjects.First();
 
@@ -59,7 +96,6 @@ public static class CreateComponentCode
         EditorPrefs.SetString("GENERATE_CLASS_NAME", className);
         AssetDatabase.Refresh();
 
-        Debug.Log("Create Code");
     }
 
     //DidReloadScripts 编译完成之后callback 事件
@@ -82,7 +118,8 @@ public static class CreateComponentCode
         var assembly = assemblies.First(temp => temp.GetName().Name == "Assembly-CSharp");
         if (assembly != null)
         {
-            var cls = assembly.GetType(generateClassName);
+            var clsName = CodeNamespace + "." + generateClassName;
+            var cls = assembly.GetType(clsName);
             if (cls != null)
             {
                 //因为会清空缓存 所以没有办法缓存GameObject
@@ -111,6 +148,8 @@ public static class CreateComponentCode
                 }
 
                 serObj.ApplyModifiedPropertiesWithoutUndo();
+
+                Debug.Log("Create Code");
             }
         }
     }

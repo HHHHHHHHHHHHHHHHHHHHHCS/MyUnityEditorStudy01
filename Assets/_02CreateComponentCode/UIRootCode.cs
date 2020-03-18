@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public partial class UIRootCode : MonoBehaviour
+namespace DefaultNamespace
 {
+	public partial class UIRootCode : MonoBehaviour
+	{
+	}
 }
