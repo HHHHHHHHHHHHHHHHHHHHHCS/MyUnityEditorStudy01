@@ -58,8 +58,13 @@ public static class CodeTemplate
         {
             WriteLine(sw, "using UnityEngine;");
             WriteLine(sw);
-            WriteLine(sw, "//请在菜单 EditorMenu/Namespace setting 里面设置命名空间");
-            WriteLine(sw, "//修改命名空间后需要手动修改逻辑代码(非Designer.cs)的Namespace");
+
+            if (CreateComponentCode.IsDefaultNamespace)
+            {
+                WriteLine(sw, "//请在菜单 EditorMenu/Namespace setting 里面设置命名空间");
+                WriteLine(sw, "//修改命名空间后需要手动修改逻辑代码(非Designer.cs)的Namespace");
+            }
+
             WriteLine(sw, $"namespace {CreateComponentCode.CodeNamespace}");
             WriteLine(sw, "{");
 
@@ -97,6 +102,13 @@ public static class CodeTemplate
             {
                 WriteLine(sw, "using UnityEngine;");
                 WriteLine(sw);
+
+                if (CreateComponentCode.IsDefaultNamespace)
+                {
+                    WriteLine(sw, "//请在菜单 EditorMenu/Namespace setting 里面设置命名空间");
+                    WriteLine(sw, "//修改命名空间后需要手动修改逻辑代码(非Designer.cs)的Namespace");
+                }
+
                 WriteLine(sw, $"namespace {CreateComponentCode.CodeNamespace}");
                 WriteLine(sw, "{");
 

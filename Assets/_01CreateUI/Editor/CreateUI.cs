@@ -19,7 +19,7 @@ public static class CreateUI
     {
         var uiRootObj = new GameObject("UIRoot");
 
-        uiRootObj.AddComponent<ViewBind>();
+        uiRootObj.AddComponent<CodeGenerateInfo>();
 
         uiRootObj.layer = LayerMask.NameToLayer("UI");
 

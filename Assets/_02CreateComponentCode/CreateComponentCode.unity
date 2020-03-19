@@ -906,3 +906,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba571127274ef24d86d4645a65fdf9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  savePath: _02CreateComponentCode

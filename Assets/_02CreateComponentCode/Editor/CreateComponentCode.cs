@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-public static class CreateComponentCode
+public class CreateComponentCode : EditorWindow
 {
     public static readonly string namespaceKey = Application.productName + "@CreateCodeNamespace";
     public static readonly string defaultNamespace = "DefaultNamespace";
@@ -24,6 +24,17 @@ public static class CreateComponentCode
             }
 
             return str;
+        }
+
+        set
+        {
+            var str = value;
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                str = defaultNamespace;
+            }
+
+            EditorPrefs.SetString(namespaceKey, str);
         }
     }
 
@@ -56,7 +67,7 @@ public static class CreateComponentCode
             return false;
         }
 
-        var viewBind = gameobject.GetComponent<ViewBind>();
+        var viewBind = gameobject.GetComponent<CodeGenerateInfo>();
 
         return viewBind != null;
     }
@@ -74,7 +85,7 @@ public static class CreateComponentCode
         }
 
 
-        var scriptsFolder = Application.dataPath + "/_02CreateComponentCode/";
+        var scriptsFolder = Application.dataPath +"/"+ "_02CreateComponentCode"+"/";
 
         if (!Directory.Exists(scriptsFolder))
         {
@@ -95,7 +106,6 @@ public static class CreateComponentCode
         //但是刷新会重新编译 清空缓存   
         EditorPrefs.SetString("GENERATE_CLASS_NAME", className);
         AssetDatabase.Refresh();
-
     }
 
     //DidReloadScripts 编译完成之后callback 事件
@@ -120,37 +130,40 @@ public static class CreateComponentCode
         {
             var clsName = CodeNamespace + "." + generateClassName;
             var cls = assembly.GetType(clsName);
-            if (cls != null)
+            if (cls == null)
             {
-                //因为会清空缓存 所以没有办法缓存GameObject
-                var obj = GameObject.Find(ObjectName(generateClassName));
-                var instance = obj.GetComponent(cls);
-                if (instance == null)
-                    instance = obj.AddComponent(cls);
-                List<string> cachePath = new List<string>();
-                SearchUIBind(obj.transform, cachePath);
+                Debug.LogError("编译失败没有获取到class:" + cls);
+                return;
+            }
+
+            //因为会清空缓存 所以没有办法缓存GameObject
+            var obj = GameObject.Find(ObjectName(generateClassName));
+            var instance = obj.GetComponent(cls);
+            if (instance == null)
+                instance = obj.AddComponent(cls);
+            List<string> cachePath = new List<string>();
+            SearchUIBind(obj.transform, cachePath);
 //                foreach (var item in cachePath)
 //                {
 //                    Debug.Log(item);
 //                }
-                var serObj = new SerializedObject(instance);
+            var serObj = new SerializedObject(instance);
 
-                foreach (var item in cachePath)
-                {
-                    bool isSelf = string.IsNullOrWhiteSpace(item);
-                    var name = isSelf
-                        ? ObjectName(generateClassName)
-                        : item.Replace('/', '_');
+            foreach (var item in cachePath)
+            {
+                bool isSelf = string.IsNullOrWhiteSpace(item);
+                var name = isSelf
+                    ? ObjectName(generateClassName)
+                    : item.Replace('/', '_');
 
-                    serObj.FindProperty(name).objectReferenceValue = isSelf
-                        ? obj.transform
-                        : obj.transform.Find(item);
-                }
-
-                serObj.ApplyModifiedPropertiesWithoutUndo();
-
-                Debug.Log("Create Code");
+                serObj.FindProperty(name).objectReferenceValue = isSelf
+                    ? obj.transform
+                    : obj.transform.Find(item);
             }
+
+            serObj.ApplyModifiedPropertiesWithoutUndo();
+
+            Debug.Log("Create Code");
         }
     }
 
@@ -178,4 +191,38 @@ public static class CreateComponentCode
             SearchUIBind(item, cachePath, (basePath == null ? "" : basePath + "/") + item.name);
         }
     }
+
+    [MenuItem("EditorMenu/4.Create Code Window", false)]
+    public static void OpenWindow()
+    {
+        GetWindow<CreateComponentCode>().Show();
+    }
+
+
+    private void OnGUI()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Namespace:");
+        CodeNamespace = GUILayout.TextField(CodeNamespace);
+        GUILayout.EndHorizontal();
+    }
+
+    [MenuItem("EditorMenu/5.Add Add CodeGenerateInfo", false)]
+    public static void AddCodeGenerateInfo()
+    {
+        var gameobject = Selection.gameObjects.First();
+
+        if (!gameobject && !EditorUtility.IsPersistent(gameobject))
+        {
+            return;
+        }
+
+        var viewBind = gameobject.GetComponent<CodeGenerateInfo>();
+        if (!viewBind)
+        {
+            gameobject.AddComponent<CodeGenerateInfo>();
+        }
+        
+    }
+
 }
