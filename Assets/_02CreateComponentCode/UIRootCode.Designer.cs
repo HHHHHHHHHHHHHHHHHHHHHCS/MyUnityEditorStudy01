@@ -1,3 +1,4 @@
+//强制编译用: GUID:96640fc2990d45144bd1b6a99e82a0f1
 using UnityEngine;
 
 //请在菜单 EditorMenu/Namespace setting 里面设置命名空间

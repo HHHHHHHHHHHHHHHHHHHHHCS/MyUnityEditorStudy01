@@ -53,9 +53,14 @@ public static class CodeTemplate
 
     public static void DesignerWrite(string folder, string className, List<string> bindPath)
     {
-        var scriptFile = folder + className + ".Designer.cs";
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
+        var scriptFile = folder + "/" + className + ".Designer.cs";
         using (var sw = File.CreateText(scriptFile))
         {
+            WriteLine(sw, $"//强制编译用 GUID:{GUID.Generate().ToString()}");
             WriteLine(sw, "using UnityEngine;");
             WriteLine(sw);
 
@@ -95,11 +100,16 @@ public static class CodeTemplate
 
     public static void LogicWrite(string folder, string className)
     {
-        var scriptFile = folder + className + ".cs";
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
+        var scriptFile = folder + "/" + className + ".cs";
         if (!File.Exists(scriptFile))
         {
             using (var sw = File.CreateText(scriptFile))
             {
+                WriteLine(sw, $"//强制编译用 GUID:{GUID.Generate().ToString()}");
                 WriteLine(sw, "using UnityEngine;");
                 WriteLine(sw);
 

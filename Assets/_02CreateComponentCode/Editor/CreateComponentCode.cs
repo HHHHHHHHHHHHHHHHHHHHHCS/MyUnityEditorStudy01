@@ -84,8 +84,9 @@ public class CreateComponentCode : EditorWindow
             return;
         }
 
+        var scriptSavePath = gameobject.GetComponent<CodeGenerateInfo>().scriptSavePath;
 
-        var scriptsFolder = Application.dataPath +"/"+ "_02CreateComponentCode"+"/";
+        var scriptsFolder = Application.dataPath + "/" + scriptSavePath;
 
         if (!Directory.Exists(scriptsFolder))
         {
@@ -95,6 +96,7 @@ public class CreateComponentCode : EditorWindow
         string className = ScriptName(gameobject.name);
         List<string> cachePath = new List<string>();
         SearchUIBind(gameobject.transform, cachePath);
+        //利用注释的GUID 强制编译
         CodeTemplate.LogicWrite(scriptsFolder, ScriptName(gameobject.name));
         CodeTemplate.DesignerWrite(scriptsFolder, ScriptName(gameobject.name), cachePath);
 
@@ -163,6 +165,21 @@ public class CreateComponentCode : EditorWindow
 
             serObj.ApplyModifiedPropertiesWithoutUndo();
 
+            var info = obj.GetComponent<CodeGenerateInfo>();
+
+            if (info.createPrefab)
+            {
+                if (!Directory.Exists(info.prefabPath))
+                {
+                    Directory.CreateDirectory(info.prefabPath);
+                }
+
+                PrefabUtility.SaveAsPrefabAssetAndConnect(obj,
+                    Application.dataPath + "/" + info.prefabPath + "/" + obj.name + ".prefab",
+                    InteractionMode.AutomatedAction);
+            }
+
+
             Debug.Log("Create Code");
         }
     }
@@ -222,7 +239,5 @@ public class CreateComponentCode : EditorWindow
         {
             gameobject.AddComponent<CodeGenerateInfo>();
         }
-        
     }
-
 }

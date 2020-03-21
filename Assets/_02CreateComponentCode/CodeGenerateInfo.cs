@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class CodeGenerateInfo : MonoBehaviour
 {
-    public string savePath =  "_02CreateComponentCode";
+    public string scriptSavePath =  "_02CreateComponentCode";
+    public string prefabPath = "_02CreateComponentCode";
+    public bool createPrefab = true;
 }
