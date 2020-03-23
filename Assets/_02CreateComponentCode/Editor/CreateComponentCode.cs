@@ -94,7 +94,7 @@ public class CreateComponentCode : EditorWindow
         }
 
         string className = ScriptName(gameobject.name);
-        List<string> cachePath = new List<string>();
+        List<KeyValuePair<string, string>> cachePath = new List<KeyValuePair<string, string>>();
         SearchUIBind(gameobject.transform, cachePath);
         //利用注释的GUID 强制编译
         CodeTemplate.LogicWrite(scriptsFolder, ScriptName(gameobject.name));
@@ -143,7 +143,7 @@ public class CreateComponentCode : EditorWindow
             var instance = obj.GetComponent(cls);
             if (instance == null)
                 instance = obj.AddComponent(cls);
-            List<string> cachePath = new List<string>();
+            List<KeyValuePair<string, string>> cachePath = new List<KeyValuePair<string, string>>();
             SearchUIBind(obj.transform, cachePath);
 //                foreach (var item in cachePath)
 //                {
@@ -153,14 +153,16 @@ public class CreateComponentCode : EditorWindow
 
             foreach (var item in cachePath)
             {
-                bool isSelf = string.IsNullOrWhiteSpace(item);
+                bool isSelf = string.IsNullOrWhiteSpace(item.Key);
                 var name = isSelf
                     ? ObjectName(generateClassName)
-                    : item.Replace('/', '_');
+                    : item.Key.Replace('/', '_');
 
-                serObj.FindProperty(name).objectReferenceValue = isSelf
+                var ts = isSelf
                     ? obj.transform
-                    : obj.transform.Find(item);
+                    : obj.transform.Find(item.Key);
+
+                serObj.FindProperty(name).objectReferenceValue = ts.GetComponent(item.Value);
             }
 
             serObj.ApplyModifiedPropertiesWithoutUndo();
@@ -185,18 +187,19 @@ public class CreateComponentCode : EditorWindow
     }
 
 
-    public static void SearchUIBind(Transform nowObj, List<string> cachePath, string basePath = null)
+    public static void SearchUIBind(Transform nowObj, List<KeyValuePair<string, string>> cachePath,
+        string basePath = null)
     {
         var bind = nowObj.GetComponent<UIBind>();
         if (bind)
         {
             if (basePath == null)
             {
-                cachePath.Add("");
+                cachePath.Add(new KeyValuePair<string, string>("", bind.Component));
             }
             else
             {
-                cachePath.Add(basePath);
+                cachePath.Add(new KeyValuePair<string, string>(basePath, bind.Component));
             }
         }
 

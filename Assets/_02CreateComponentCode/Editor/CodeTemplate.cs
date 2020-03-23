@@ -51,12 +51,13 @@ public static class CodeTemplate
     }
 
 
-    public static void DesignerWrite(string folder, string className, List<string> bindPath)
+    public static void DesignerWrite(string folder, string className, List<KeyValuePair<string, string>> bindPath)
     {
         if (!Directory.Exists(folder))
         {
             Directory.CreateDirectory(folder);
         }
+
         var scriptFile = folder + "/" + className + ".Designer.cs";
         using (var sw = File.CreateText(scriptFile))
         {
@@ -82,10 +83,10 @@ public static class CodeTemplate
 
             foreach (var item in bindPath)
             {
-                var objName = string.IsNullOrWhiteSpace(item)
+                var objName = string.IsNullOrWhiteSpace(item.Key)
                     ? CreateComponentCode.ObjectName(className)
-                    : item.Replace('/', '_');
-                WriteLine(sw, $"public Transform {objName};");
+                    : item.Key.Replace('/', '_');
+                WriteLine(sw, $"public {item.Value} {objName};");
             }
 
             indentLevel--;
@@ -104,6 +105,7 @@ public static class CodeTemplate
         {
             Directory.CreateDirectory(folder);
         }
+
         var scriptFile = folder + "/" + className + ".cs";
         if (!File.Exists(scriptFile))
         {

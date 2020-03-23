@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4720497857527813182}
   - component: {fileID: 4720497857527813181}
+  - component: {fileID: 4720497859188379737}
   m_Layer: 5
   m_Name: Parent2
   m_TagString: Untagged
@@ -171,6 +172,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc50241148d6c44f8927decee48dfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!23 &4720497859188379737
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4720497857527813183}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &4720497857532451028
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +337,7 @@ MonoBehaviour:
   Parent1: {fileID: 4720497858971130264}
   Parent1_Son1: {fileID: 4720497859390004523}
   Parent1_Son2: {fileID: 4720497858324623652}
-  Parent2: {fileID: 4720497857527813182}
+  Parent2: {fileID: 4720497859188379737}
   Parent3_Son1: {fileID: 4720497857532451027}
 --- !u!1 &4720497858296898872
 GameObject:
