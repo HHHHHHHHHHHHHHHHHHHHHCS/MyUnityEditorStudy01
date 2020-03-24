@@ -7,6 +7,8 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
+//快捷键 % ctrl  & alt  # shift
+
 public class CreateComponentCode : EditorWindow
 {
     public static readonly string namespaceKey = Application.productName + "@CreateCodeNamespace";
@@ -60,6 +62,11 @@ public class CreateComponentCode : EditorWindow
     [MenuItem("GameObject/@EditorExtension-Create Code", true, 0)]
     private static bool ValidateCreateCode()
     {
+        if (Selection.gameObjects == null || Selection.gameObjects.Length <= 0)
+        {
+            return false;
+        }
+
         var gameobject = Selection.gameObjects.First();
 
         if (!gameobject && !EditorUtility.IsPersistent(gameobject))
@@ -72,8 +79,8 @@ public class CreateComponentCode : EditorWindow
         return viewBind != null;
     }
 
-    [MenuItem("EditorMenu/3.EditorExtension-Create Code", false)]
-    [MenuItem("GameObject/@EditorExtension-Create Code", false, 0)]
+    [MenuItem("EditorMenu/3.EditorExtension-Create Code &c", false)]
+    [MenuItem("GameObject/@EditorExtension-Create Code &c", false, 0)]
     private static void CreateCode()
     {
         var gameobject = Selection.gameObjects.First();
@@ -212,7 +219,7 @@ public class CreateComponentCode : EditorWindow
         }
     }
 
-    [MenuItem("EditorMenu/4.Create Code Window", false)]
+    [MenuItem("EditorMenu/4.Create Code Window &t", false)]
     public static void OpenWindow()
     {
         GetWindow<CreateComponentCode>().Show();
@@ -227,7 +234,7 @@ public class CreateComponentCode : EditorWindow
         GUILayout.EndHorizontal();
     }
 
-    [MenuItem("EditorMenu/5.Add Add CodeGenerateInfo", false)]
+    [MenuItem("EditorMenu/5.Add Add CodeGenerateInfo &u", false)]
     public static void AddCodeGenerateInfo()
     {
         var gameobject = Selection.gameObjects.First();

@@ -8,10 +8,11 @@ public class CodeGenerateInfoInspector : Editor
 {
     public override void OnInspectorGUI()
     {
-        var codeGenerateInfo = target as CodeGenerateInfo;
+        var codeGenerateInfo = (CodeGenerateInfo)target;
 
         base.OnInspectorGUI();
 
+        EditorGUI.BeginChangeCheck();
 
         GUILayout.BeginVertical("box");
         GUILayout.Label("代码生成部分", new GUIStyle()
@@ -37,5 +38,9 @@ public class CodeGenerateInfoInspector : Editor
         }
 
         GUILayout.EndVertical();
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedPropertiesWithoutUndo();
+        }
     }
 }

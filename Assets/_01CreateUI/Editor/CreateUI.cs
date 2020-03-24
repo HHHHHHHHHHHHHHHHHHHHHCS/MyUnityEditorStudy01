@@ -7,14 +7,14 @@ using UnityEngine.UI;
 
 public static class CreateUI
 {
-    [MenuItem("EditorMenu/1.MenuItem", true)]
+    [MenuItem("EditorMenu/1.MenuItem %u", true)]
     private static bool ValidateCreateUIRoot()
     {
         return GameObject.Find("UIRoot") == null;
     }
 
     //isValidateFunction 如果写了true/false 代表是检测方法  只是 决定是否启用而已
-    [MenuItem("EditorMenu/1.MenuItem")]
+    [MenuItem("EditorMenu/1.MenuItem %u")]
     private static void DoCreateUIRoot()
     {
         var uiRootObj = new GameObject("UIRoot");

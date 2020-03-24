@@ -318,8 +318,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptSavePath: _02CreateComponentCode
-  prefabPath: _02CreateComponentCode
   createPrefab: 1
+  prefabPath: _02CreateComponentCode
 --- !u!114 &6434313578238259473
 MonoBehaviour:
   m_ObjectHideFlags: 0
