@@ -100,16 +100,33 @@ namespace ToDoList
     }
 
     [System.Serializable]
-    public struct TODOData
+    public class TODOData
     {
         public string content;
 
         public bool finished;
 
-        public TODOData(string content, bool finished)
+        [NonSerialized]
+        public bool finishedChanged;
+
+        public bool finishedValue
         {
-            this.content = content;
-            this.finished = finished;
+            get => finished;
+            set
+            {
+                if (finished != value)
+                {
+                    finished = value;
+                    finishedChanged = true;
+                }
+            }
+        }
+
+        public TODOData(string _content, bool _finished)
+        {
+            this.content = _content;
+            this.finished = _finished;
+            this.finishedChanged = false;
         }
     }
 }

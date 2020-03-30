@@ -17,7 +17,7 @@ namespace ToDoList
         [MenuItem("TodoList/MainWindow %#t")]
         public static void Open()
         {
-            var window = GetWindow<ToDoListMainWindow>();
+            var window = GetWindow<ToDoListMainWindow>(true, "ToDoLists", true);
 
             if (window.isShow)
             {
@@ -27,8 +27,9 @@ namespace ToDoList
             else
             {
                 window.todoListCls = TodoListCls.Load();
-
-                window.Show();
+//                var texture = Resources.Load<Texture2D>("main");
+//                window.titleContent = new GUIContent("ToDoLists", texture);
+                window.ShowUtility();
                 window.isShow = true;
             }
         }
@@ -52,11 +53,18 @@ namespace ToDoList
                 var item = todoListCls.todoList[i];
 
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Toggle(false, item.content);
+                item.finishedValue = GUILayout.Toggle(item.finishedValue, item.content);
+
+                if (item.finishedChanged)
+                {
+                    item.finishedChanged = false;
+                    todoListCls.Save();
+                }
+
                 if (GUILayout.Button("删除"))
                 {
                     todoListCls.todoList.RemoveAt(i);
-                    EditorPrefs.SetString("TodoList_TODOS", JsonUtility.ToJson(todoListCls));
+                    todoListCls.Save();
                 }
 
                 EditorGUILayout.EndHorizontal();
