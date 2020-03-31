@@ -37,38 +37,48 @@ namespace ToDoList
 
         private void OnGUI()
         {
-            //GUILayout 多半不支持中文
-            todoName = EditorGUILayout.TextField(todoName);
-
-            if (GUILayout.Button("添加"))
+            GUILayout.BeginVertical("box");
             {
-                if (!string.IsNullOrEmpty(todoName))
+                //GUILayout 多半不支持中文
+                todoName = EditorGUILayout.TextField(todoName);
+
+                if (GUILayout.Button("添加"))
                 {
-                    todoListCls.Add(todoName, false);
+                    if (!string.IsNullOrEmpty(todoName))
+                    {
+                        todoListCls.Add(todoName, false);
+                    }
                 }
             }
+            GUILayout.EndVertical();
 
-            for (int i = todoListCls.todoList.Count - 1; i >= 0; i--)
+            GUILayout.Space(10);
+
+            GUILayout.BeginVertical("box");
             {
-                var item = todoListCls.todoList[i];
-
-                EditorGUILayout.BeginHorizontal();
-                item.finishedValue = GUILayout.Toggle(item.finishedValue, item.content);
-
-                if (item.finishedChanged)
+                for (int i = todoListCls.todoList.Count - 1; i >= 0; i--)
                 {
-                    item.finishedChanged = false;
-                    todoListCls.Save();
-                }
+                    var item = todoListCls.todoList[i];
 
-                if (GUILayout.Button("删除"))
-                {
-                    todoListCls.todoList.RemoveAt(i);
-                    todoListCls.Save();
-                }
+                    EditorGUILayout.BeginHorizontal();
+                    item.finishedValue = GUILayout.Toggle(item.finishedValue, item.content);
 
-                EditorGUILayout.EndHorizontal();
+                    if (item.finishedChanged)
+                    {
+                        item.finishedChanged = false;
+                        todoListCls.Save();
+                    }
+
+                    if (GUILayout.Button("删除"))
+                    {
+                        todoListCls.todoList.RemoveAt(i);
+                        todoListCls.Save();
+                    }
+
+                    EditorGUILayout.EndHorizontal();
+                }
             }
+            GUILayout.EndVertical();
         }
 
         private void OnDisable()

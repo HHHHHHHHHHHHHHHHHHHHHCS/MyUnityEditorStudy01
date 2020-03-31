@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,7 +43,7 @@ namespace ToDoList
                 {
                     if (version == 0)
                     {
-                        var deprecated = JsonUtility.FromJson<Deprecated.TodoListCls>(todoContext);
+                        var deprecated = JsonConvert.DeserializeObject<Deprecated.TodoListCls>(todoContext);
                         Debug.Log("数据版本不一致,进行升级!");
                         if (deprecated != null && deprecated.todoList.Count > 0)
                         {
@@ -58,7 +59,7 @@ namespace ToDoList
                         }
                     }
 
-                    return JsonUtility.FromJson<TodoListCls>(todoContext);
+                    return JsonConvert.DeserializeObject<TodoListCls>(todoContext);
                 }
             }
             catch (Exception e)
@@ -78,7 +79,7 @@ namespace ToDoList
             }
 
             EditorPrefs.SetInt(todosVersionKey, version);
-            EditorPrefs.SetString(todosKey, JsonUtility.ToJson(cls));
+            EditorPrefs.SetString(todosKey, JsonConvert.SerializeObject(cls));
         }
 
         public List<TODOData> todoList = new List<TODOData>();
