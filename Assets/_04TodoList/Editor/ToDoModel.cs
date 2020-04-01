@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _04TodoList.Util;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace ToDoList
     [System.Serializable]
     public class TodoListCls : TodoListBaseCls
     {
-        [System.NonSerialized] public new const int version = 1;
+        [System.NonSerialized] public new const int version = 2;
 
 
         public static TodoListCls Load()
@@ -41,22 +42,49 @@ namespace ToDoList
                 }
                 else
                 {
-                    if (version == 0)
+                    try
                     {
-                        var deprecated = JsonConvert.DeserializeObject<Deprecated.TodoListCls>(todoContext);
-                        Debug.Log("数据版本不一致,进行升级!");
-                        if (deprecated != null && deprecated.todoList.Count > 0)
+                        if (version == 0)
                         {
-                            var todoList = deprecated.todoList.Select(todo => new TODOData(todo, false)).ToList();
-                            var cls = new TodoListCls();
-                            cls.todoList = todoList;
-                            cls.Save();
-                            return cls;
+                            var deprecated = JsonConvert.DeserializeObject<Deprecated0.TodoListCls>(todoContext);
+                            Debug.Log("数据版本不一致,进行升级!");
+                            if (deprecated != null && deprecated.todoList.Count > 0)
+                            {
+                                var todoList = deprecated.todoList.Select(todo => new TODOData(todo, false)).ToList();
+                                var cls = new TodoListCls();
+                                cls.todoList = todoList;
+                                cls.Save();
+                                return cls;
+                            }
+                            else
+                            {
+                                return new TodoListCls();
+                            }
                         }
-                        else
+                        else if (version == 1)
                         {
-                            return new TodoListCls();
+                            var deprecated = JsonConvert.DeserializeObject<Deprecated1.TodoListCls>(todoContext);
+                            Debug.Log("数据版本不一致,进行升级!");
+                            if (deprecated != null && deprecated.todoList.Count > 0)
+                            {
+                                var cls = new TodoListCls
+                                {
+                                    todoList = deprecated.todoList
+                                        .Select(todo => new TODOData(todo.content, todo.finished))
+                                        .ToList()
+                                };
+                                cls.Save();
+                                return cls;
+                            }
+                            else
+                            {
+                                return new TodoListCls();
+                            }
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError(e);
                     }
 
                     return JsonConvert.DeserializeObject<TodoListCls>(todoContext);
@@ -94,7 +122,7 @@ namespace ToDoList
 
         public static void Add(this TodoListCls cls, string content, bool finished)
         {
-            cls.todoList.Add(new TODOData(content, finished));
+            cls.todoList.Add(new TODOData(content, finished, cls.Save));
 
             cls.Save();
         }
@@ -105,10 +133,52 @@ namespace ToDoList
     {
         public string content;
 
+        public Property<bool> finished;
+
+
+        public TODOData()
+        {
+            this.content = string.Empty;
+            this.finished = new Property<bool>(false);
+        }
+
+        public TODOData(string _content, bool _finished)
+        {
+            this.content = _content;
+            this.finished = new Property<bool>(_finished);
+        }
+
+        public TODOData(string _content, bool _finished, Action _act)
+        {
+            this.content = _content;
+            this.finished = new Property<bool>(_finished);
+            this.finished.SetValueChanged(_act);
+        }
+    }
+}
+
+namespace ToDoList.Deprecated0
+{
+    [Obsolete]
+    [System.Serializable]
+    public class TodoListCls : TodoListBaseCls
+    {
+        [System.NonSerialized] public new const int version = 0;
+
+        public List<string> todoList = new List<string>();
+    }
+}
+
+namespace ToDoList.Deprecated1
+{
+    [System.Serializable]
+    public class TODOData
+    {
+        public string content;
+
         public bool finished;
 
-        [NonSerialized]
-        public bool finishedChanged;
+        [NonSerialized] public bool finishedChanged;
 
         public bool finishedValue
         {
@@ -130,16 +200,13 @@ namespace ToDoList
             this.finishedChanged = false;
         }
     }
-}
 
-namespace ToDoList.Deprecated
-{
     [Obsolete]
     [System.Serializable]
     public class TodoListCls : TodoListBaseCls
     {
-        [System.NonSerialized] public new const int version = 0;
+        [System.NonSerialized] public new const int version = 1;
 
-        public List<string> todoList = new List<string>();
+        public List<TODOData> todoList = new List<TODOData>();
     }
 }

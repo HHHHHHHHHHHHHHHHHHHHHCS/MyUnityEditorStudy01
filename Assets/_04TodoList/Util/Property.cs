@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace _04TodoList.Util
 {
@@ -32,9 +33,20 @@ namespace _04TodoList.Util
             val = v;
         }
 
+
+        public void SetValueChanged(Action act)
+        {
+            onValueChangedEvent = act;
+        }
+
         public void RegisterValueChanged(Action act)
         {
             onValueChangedEvent += act;
+        }
+
+        public void ClearValueChanged()
+        {
+            onValueChangedEvent = null;
         }
 
         public static implicit operator T(Property<T> p)

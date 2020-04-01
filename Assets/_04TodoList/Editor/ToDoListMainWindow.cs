@@ -29,6 +29,11 @@ namespace ToDoList
                 window.todoListCls = TodoListCls.Load();
 //                var texture = Resources.Load<Texture2D>("main");
 //                window.titleContent = new GUIContent("ToDoLists", texture);
+                foreach (var item in window.todoListCls.todoList)
+                {
+                    item.finished.SetValueChanged(window.todoListCls.Save);
+                }
+
                 window.ShowUtility();
                 window.isShow = true;
             }
@@ -56,18 +61,13 @@ namespace ToDoList
 
             GUILayout.BeginVertical("box");
             {
-                for (int i = todoListCls.todoList.Count - 1; i >= 0; i--)
+                for (int i = todoListCls.todoList.Count - 1; i >= 0; --i)
                 {
                     var item = todoListCls.todoList[i];
 
                     EditorGUILayout.BeginHorizontal();
-                    item.finishedValue = GUILayout.Toggle(item.finishedValue, item.content);
-
-                    if (item.finishedChanged)
-                    {
-                        item.finishedChanged = false;
-                        todoListCls.Save();
-                    }
+                    item.finished.Val =
+                        GUILayout.Toggle(item.finished.Val, item.content);
 
                     if (GUILayout.Button("删除"))
                     {
