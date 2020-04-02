@@ -6,7 +6,7 @@ namespace _04TodoList.Util
     [System.Serializable]
     public class Property<T>
     {
-        private T val = default(T);
+        public T val = default(T);
 
         public event Action onValueChangedEvent;
 

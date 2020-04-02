@@ -12,6 +12,7 @@ namespace ToDoList
 
         private TodoListCls todoListCls;
         private string todoName = string.Empty;
+        private bool showFinished = false;
 
 
         [MenuItem("TodoList/MainWindow %#t")]
@@ -59,26 +60,50 @@ namespace ToDoList
 
             GUILayout.Space(10);
 
-            GUILayout.BeginVertical("box");
+
+            if (showFinished)
             {
-                for (int i = todoListCls.todoList.Count - 1; i >= 0; --i)
+                if (GUILayout.Button("显示已未完成"))
                 {
-                    var item = todoListCls.todoList[i];
-
-                    EditorGUILayout.BeginHorizontal();
-                    item.finished.Val =
-                        GUILayout.Toggle(item.finished.Val, item.content);
-
-                    if (GUILayout.Button("删除"))
-                    {
-                        todoListCls.todoList.RemoveAt(i);
-                        todoListCls.Save();
-                    }
-
-                    EditorGUILayout.EndHorizontal();
+                    showFinished = false;
                 }
             }
-            GUILayout.EndVertical();
+            else
+            {
+                if (GUILayout.Button("显示已完成"))
+                {
+                    showFinished = true;
+                }
+            }
+
+            if (todoListCls.todoList.Count > 0)
+            {
+                GUILayout.BeginVertical("box");
+                {
+                    for (int i = todoListCls.todoList.Count - 1; i >= 0; --i)
+                    {
+                        var item = todoListCls.todoList[i];
+
+                        if (item.finished != showFinished)
+                        {
+                            continue;
+                        }
+
+                        EditorGUILayout.BeginHorizontal();
+                        item.finished.Val =
+                            GUILayout.Toggle(item.finished.Val, item.content);
+
+                        if (GUILayout.Button("删除"))
+                        {
+                            todoListCls.todoList.RemoveAt(i);
+                            todoListCls.Save();
+                        }
+
+                        EditorGUILayout.EndHorizontal();
+                    }
+                }
+                GUILayout.EndVertical();
+            }
         }
 
         private void OnDisable()

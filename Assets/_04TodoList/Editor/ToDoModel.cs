@@ -22,7 +22,6 @@ namespace ToDoList
     {
         [System.NonSerialized] public new const int version = 2;
 
-
         public static TodoListCls Load()
         {
             var version = EditorPrefs.GetInt(todosVersionKey, -1);
