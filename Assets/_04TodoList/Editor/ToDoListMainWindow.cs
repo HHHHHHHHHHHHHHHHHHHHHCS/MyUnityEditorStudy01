@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using _04TodoList.FrameWork.Drawer;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ namespace ToDoList
         private TodoListCls todoListCls;
         private string todoName = string.Empty;
         private bool showFinished = false;
+
+        private List<IView> views = new List<IView>();
 
 
         [MenuItem("TodoList/MainWindow %#t")]
@@ -40,9 +43,16 @@ namespace ToDoList
             }
         }
 
+        private void Init()
+        {
+            views.Add(new SpaceView(10));
+        }
+
 
         private void OnGUI()
         {
+            views.ForEach(view=>view.OnGUI());
+
             GUILayout.BeginVertical("box");
             {
                 //GUILayout 多半不支持中文
@@ -58,7 +68,6 @@ namespace ToDoList
             }
             GUILayout.EndVertical();
 
-            GUILayout.Space(10);
 
 
             if (showFinished)

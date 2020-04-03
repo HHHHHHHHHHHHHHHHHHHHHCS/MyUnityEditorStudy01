@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _04TodoList.Util
+namespace _04TodoList.FrameWork
 {
     [System.Serializable]
     public class Property<T>
