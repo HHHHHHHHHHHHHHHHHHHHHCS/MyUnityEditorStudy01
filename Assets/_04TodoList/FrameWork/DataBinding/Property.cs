@@ -1,23 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _04TodoList.FrameWork
+namespace _04TodoList.FrameWork.DataBinding
 {
     [System.Serializable]
     public class Property<T>
     {
-        public T val = default(T);
+        public T _val = default(T);
 
         public event Action onValueChangedEvent;
 
         public T Val
         {
-            get => val;
+            get => _val;
             set
             {
-                if (!val.Equals(value))
+                if (!_val.Equals(value))
                 {
-                    val = value;
+                    _val = value;
                     onValueChangedEvent?.Invoke();
                 }
             }
@@ -30,7 +30,13 @@ namespace _04TodoList.FrameWork
 
         public Property(T v)
         {
-            val = v;
+            _val = v;
+        }
+
+        public Property<T> Bind(Action<T> setter)
+        {
+            RegisterValueChanged(() => { setter?.Invoke(_val); });
+            return this;
         }
 
 

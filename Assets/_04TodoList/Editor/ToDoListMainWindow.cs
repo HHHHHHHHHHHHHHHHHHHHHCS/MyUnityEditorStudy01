@@ -17,6 +17,10 @@ namespace ToDoList
 
         private List<IView> views = new List<IView>();
 
+        private void Awake()
+        {
+            Init();
+        }
 
         [MenuItem("TodoList/MainWindow %#t")]
         public static void Open()
@@ -45,13 +49,19 @@ namespace ToDoList
 
         private void Init()
         {
+            views.Clear();
             views.Add(new SpaceView(10));
+            views.Add(new CustomView(() => GUILayout.BeginVertical("box")));
+            var inputTextArea = new TextAreaView(todoName);
+            inputTextArea.Content.Bind(x => todoName = x);
+            views.Add(inputTextArea);
+            views.Add(new CustomView(GUILayout.EndVertical));
         }
 
 
         private void OnGUI()
         {
-            views.ForEach(view=>view.OnGUI());
+            views.ForEach(view => view.OnGUI());
 
             GUILayout.BeginVertical("box");
             {
@@ -67,7 +77,6 @@ namespace ToDoList
                 }
             }
             GUILayout.EndVertical();
-
 
 
             if (showFinished)
