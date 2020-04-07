@@ -122,8 +122,9 @@ namespace ToDoList
 
         public static void Add(this TodoListCls cls, string content, bool finished)
         {
-            cls.todoList.Add(new TODOData(content, finished, cls.Save));
-
+            var data = new TODOData(content, finished, cls.Save);
+            cls.todoList.Add(data);
+            data.finished.RegisterValueChanged(cls.Save);
             cls.Save();
         }
     }

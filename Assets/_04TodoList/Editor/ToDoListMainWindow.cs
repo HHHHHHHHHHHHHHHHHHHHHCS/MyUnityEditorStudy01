@@ -73,6 +73,7 @@ namespace ToDoList
                     if (!string.IsNullOrEmpty(todoName))
                     {
                         todoListCls.Add(todoName, false);
+                        todoName = string.Empty;
                     }
                 }
             }
