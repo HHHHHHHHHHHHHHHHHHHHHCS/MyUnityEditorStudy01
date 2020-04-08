@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using _04TodoList.FrameWork.DataBinding;
+using UnityEditor;
 using UnityEngine;
 
 namespace _04TodoList.FrameWork.Drawer
@@ -16,7 +17,7 @@ namespace _04TodoList.FrameWork.Drawer
 
         public void OnGUI()
         {
-            Content.Val = GUILayout.TextArea(Content);
+            Content.Val = EditorGUILayout.TextArea(Content);
         }
     }
 }

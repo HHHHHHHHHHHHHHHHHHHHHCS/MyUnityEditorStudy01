@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using _04TodoList.FrameWork.Drawer;
+using _04TodoList.FrameWork.Layout;
 using UnityEditor;
 using UnityEngine;
 
@@ -50,35 +51,26 @@ namespace ToDoList
         private void Init()
         {
             views.Clear();
-            views.Add(new SpaceView(10));
-            views.Add(new CustomView(() => GUILayout.BeginVertical("box")));
+            var layout = new VerticalLayout("box");
+            views.Add(layout);
             var inputTextArea = new TextAreaView(todoName);
             inputTextArea.Content.Bind(x => todoName = x);
-            views.Add(inputTextArea);
-            views.Add(new CustomView(GUILayout.EndVertical));
+            layout.Add(inputTextArea);
+            layout.Add(new ButtonView("添加", () =>
+            {
+                if (!string.IsNullOrEmpty(todoName))
+                {
+                    todoListCls.Add(todoName, false);
+                    todoName = string.Empty;
+                }
+            }));
+            views.Add(new SpaceView(10));
         }
 
 
         private void OnGUI()
         {
             views.ForEach(view => view.OnGUI());
-
-            GUILayout.BeginVertical("box");
-            {
-                //GUILayout 多半不支持中文
-                todoName = EditorGUILayout.TextField(todoName);
-
-                if (GUILayout.Button("添加"))
-                {
-                    if (!string.IsNullOrEmpty(todoName))
-                    {
-                        todoListCls.Add(todoName, false);
-                        todoName = string.Empty;
-                    }
-                }
-            }
-            GUILayout.EndVertical();
-
 
             if (showFinished)
             {
