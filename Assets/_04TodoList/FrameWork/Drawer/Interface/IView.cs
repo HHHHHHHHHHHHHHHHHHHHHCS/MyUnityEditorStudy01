@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace _04TodoList.FrameWork.Drawer
+﻿namespace _04TodoList.FrameWork.Drawer.Interface
 {
     public interface IView
     {
-        void OnGUI();
+        void DrawGUI();
     }
 }

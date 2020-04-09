@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using _04TodoList.FrameWork.Drawer.Interface;
 using UnityEngine;
 
 namespace _04TodoList.FrameWork.Drawer
 {
-    public class ButtonView : IView
+    public class ButtonView : View
     {
         public string text { get; set; }
 
@@ -17,8 +18,7 @@ namespace _04TodoList.FrameWork.Drawer
             OnClickEvent = onClickEvent;
         }
 
-
-        public void OnGUI()
+        protected override void OnGUI()
         {
             if (GUILayout.Button(text ?? string.Empty))
             {

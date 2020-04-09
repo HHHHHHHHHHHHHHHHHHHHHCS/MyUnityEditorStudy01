@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using _04TodoList.FrameWork.Drawer;
+using _04TodoList.FrameWork.Drawer.Interface;
 using _04TodoList.FrameWork.Layout;
 using UnityEditor;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace ToDoList
         private bool showFinished = false;
 
         private List<IView> views = new List<IView>();
+
+        private ButtonView unfinishedBtn, finishedBtn;
 
         private void Awake()
         {
@@ -51,6 +54,7 @@ namespace ToDoList
         private void Init()
         {
             views.Clear();
+
             var layout = new VerticalLayout("box");
             views.Add(layout);
             var inputTextArea = new TextAreaView(todoName);
@@ -64,28 +68,31 @@ namespace ToDoList
                     todoName = string.Empty;
                 }
             }));
-            views.Add(new SpaceView(10));
+            views.Add(new SpaceView(5));
+
+            unfinishedBtn = new ButtonView("显示未完成", () =>
+            {
+                showFinished = false;
+                unfinishedBtn.Hide();
+                finishedBtn.Show();
+            });
+            unfinishedBtn.Hide();
+            views.Add(unfinishedBtn);
+
+            finishedBtn = new ButtonView("显示已完成", () =>
+            {
+                showFinished = true;
+                unfinishedBtn.Show();
+                finishedBtn.Hide();
+            });
+            finishedBtn.Show();
+            views.Add(finishedBtn);
         }
 
 
         private void OnGUI()
         {
-            views.ForEach(view => view.OnGUI());
-
-            if (showFinished)
-            {
-                if (GUILayout.Button("显示已未完成"))
-                {
-                    showFinished = false;
-                }
-            }
-            else
-            {
-                if (GUILayout.Button("显示已完成"))
-                {
-                    showFinished = true;
-                }
-            }
+            views.ForEach(view => view.DrawGUI());
 
             if (todoListCls.todoList.Count > 0)
             {

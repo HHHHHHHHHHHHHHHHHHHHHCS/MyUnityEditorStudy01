@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using _04TodoList.FrameWork.Drawer;
+using _04TodoList.FrameWork.Drawer.Interface;
 using UnityEngine;
 
 namespace _04TodoList.FrameWork.Drawer
 {
-    public class CustomView : IView
+    public class CustomView : View
     {
         public Action OnGUIAction { get; set; }
 
@@ -16,7 +17,7 @@ namespace _04TodoList.FrameWork.Drawer
             OnGUIAction = onGuiAction;
         }
 
-        public void OnGUI()
+        protected override void OnGUI()
         {
             OnGUIAction?.Invoke();
         }

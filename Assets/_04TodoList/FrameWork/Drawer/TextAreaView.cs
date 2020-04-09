@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using _04TodoList.FrameWork.DataBinding;
+using _04TodoList.FrameWork.Drawer.Interface;
 using UnityEditor;
 using UnityEngine;
 
 namespace _04TodoList.FrameWork.Drawer
 {
-    public class TextAreaView : IView
+    public class TextAreaView : View
     {
         public Property<string> Content { get; set; }
 
@@ -15,7 +16,7 @@ namespace _04TodoList.FrameWork.Drawer
             Content = new Property<string>(content);
         }
 
-        public void OnGUI()
+        protected override void OnGUI()
         {
             Content.Val = EditorGUILayout.TextArea(Content);
         }

@@ -1,34 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using _04TodoList.FrameWork.Drawer;
+using _04TodoList.FrameWork.Drawer.Interface;
 using _04TodoList.FrameWork.Layout.Interface;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace _04TodoList.FrameWork.Layout
 {
-    public class VerticalLayout : ILayout
+    public class VerticalLayout : Layout
     {
-        public string Style { get; set; }
-
-        private LinkedList<IView> children = new LinkedList<IView>();
-
         public VerticalLayout(string style)
+            : base(style)
         {
-            Style = style;
         }
 
-        public void Add(IView view)
-        {
-            children.AddLast(view);
-        }
-
-        public void Remove(IView view)
-        {
-            children.Remove(view);
-        }
-
-        public void OnGUI()
+        protected override void OnGUIBegin()
         {
             if (string.IsNullOrEmpty(Style))
             {
@@ -38,14 +25,21 @@ namespace _04TodoList.FrameWork.Layout
             {
                 GUILayout.BeginVertical(Style);
             }
+        }
+
+        protected override void OnGUI()
+        {
             using (var ptr = children.GetEnumerator())
             {
                 while (ptr.MoveNext())
                 {
-                    ptr.Current?.OnGUI();
+                    ptr.Current?.DrawGUI();
                 }
             }
+        }
 
+        protected override void OnGUIEnd()
+        {
             GUILayout.EndVertical();
         }
     }
