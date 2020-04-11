@@ -20,10 +20,22 @@ namespace ToDoList
         private List<IView> views = new List<IView>();
 
         private ButtonView unfinishedBtn, finishedBtn;
+        private VerticalLayout todoItemList;
 
-        private void Awake()
+        private void OnEnable()
         {
+            todoListCls = TodoListCls.Load();
+            foreach (var item in todoListCls.todoList)
+            {
+                item.finished.SetValueChanged(todoListCls.Save);
+            }
+
             Init();
+        }
+
+        private void OnDisable()
+        {
+            todoListCls.Save();
         }
 
         [MenuItem("TodoList/MainWindow %#t")]
@@ -38,13 +50,8 @@ namespace ToDoList
             }
             else
             {
-                window.todoListCls = TodoListCls.Load();
-//                var texture = Resources.Load<Texture2D>("main");
-//                window.titleContent = new GUIContent("ToDoLists", texture);
-                foreach (var item in window.todoListCls.todoList)
-                {
-                    item.finished.SetValueChanged(window.todoListCls.Save);
-                }
+                //var texture = Resources.Load<Texture2D>("main");
+                //window.titleContent = new GUIContent("ToDoLists", texture);
 
                 window.ShowUtility();
                 window.isShow = true;
@@ -75,6 +82,7 @@ namespace ToDoList
                 showFinished = false;
                 unfinishedBtn.Hide();
                 finishedBtn.Show();
+                DrawToDoItem();
             });
             unfinishedBtn.Hide();
             views.Add(unfinishedBtn);
@@ -84,49 +92,50 @@ namespace ToDoList
                 showFinished = true;
                 unfinishedBtn.Show();
                 finishedBtn.Hide();
+                DrawToDoItem();
             });
             finishedBtn.Show();
             views.Add(finishedBtn);
+
+            todoItemList = new VerticalLayout("box");
+            DrawToDoItem();
         }
 
 
         private void OnGUI()
         {
             views.ForEach(view => view.DrawGUI());
-
-            if (todoListCls.todoList.Count > 0)
-            {
-                GUILayout.BeginVertical("box");
-                {
-                    for (int i = todoListCls.todoList.Count - 1; i >= 0; --i)
-                    {
-                        var item = todoListCls.todoList[i];
-
-                        if (item.finished != showFinished)
-                        {
-                            continue;
-                        }
-
-                        EditorGUILayout.BeginHorizontal();
-                        item.finished.Val =
-                            GUILayout.Toggle(item.finished.Val, item.content);
-
-                        if (GUILayout.Button("删除"))
-                        {
-                            todoListCls.todoList.RemoveAt(i);
-                            todoListCls.Save();
-                        }
-
-                        EditorGUILayout.EndHorizontal();
-                    }
-                }
-                GUILayout.EndVertical();
-            }
         }
 
-        private void OnDisable()
+        private void DrawToDoItem()
         {
-            todoListCls.Save();
+            todoItemList.Clear();
+            var dataList = todoListCls.todoList;
+            for (int i = dataList.Count - 1; i >= 0; i--)
+            {
+                var item = todoListCls.todoList[i];
+
+                if (item.finished != showFinished)
+                {
+                    continue;
+                }
+
+                HorizontalLayout horizontalLayout = new HorizontalLayout();
+                var toggle = new ToggleView(item.content, item.finished);
+                toggle.IsToggle.SetValueChanged(() => { item.finished.Val = !item.finished.Val; });
+                horizontalLayout.Add(toggle);
+                var tempIndex = i; //这个是匿名函数嵌套 用的
+                var deleteBtn = new ButtonView("删除", () =>
+                {
+                    item.finished.ClearValueChanged();
+                    todoListCls.todoList.RemoveAt(tempIndex);
+                    todoListCls.Save();
+                });
+                horizontalLayout.Add(deleteBtn);
+                todoItemList.Add(horizontalLayout);
+            }
+
+            views.Add(todoItemList);
         }
     }
 }

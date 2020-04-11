@@ -13,7 +13,7 @@ namespace _04TodoList.FrameWork.Layout
 
         protected readonly LinkedList<IView> children = new LinkedList<IView>();
 
-        protected Layout(string style)
+        protected Layout(string style = null)
         {
             Style = style;
         }
@@ -36,6 +36,11 @@ namespace _04TodoList.FrameWork.Layout
         public void Remove(IView view)
         {
             children.Remove(view);
+        }
+
+        public void Clear()
+        {
+            children.Clear();
         }
 
         public void DrawGUI()
