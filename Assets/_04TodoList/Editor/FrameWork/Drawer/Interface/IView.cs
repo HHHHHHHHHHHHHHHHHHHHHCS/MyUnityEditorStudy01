@@ -1,4 +1,4 @@
-﻿namespace _04TodoList.FrameWork.Drawer.Interface
+﻿namespace _04TodoList.Editor.FrameWork.Drawer.Interface
 {
     public interface IView
     {

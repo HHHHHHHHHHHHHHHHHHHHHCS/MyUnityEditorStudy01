@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using _04TodoList.FrameWork.Drawer;
-using _04TodoList.FrameWork.Drawer.Interface;
-using UnityEngine;
+﻿using _04TodoList.Editor.FrameWork.Drawer.Interface;
 
-namespace _04TodoList.FrameWork.Drawer
+namespace _04TodoList.Editor.FrameWork.Drawer
 {
     public abstract class View : IView
     {

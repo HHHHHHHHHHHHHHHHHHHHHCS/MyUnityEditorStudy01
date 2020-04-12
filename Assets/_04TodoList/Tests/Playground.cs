@@ -1,5 +1,4 @@
-﻿using _04TodoList.FrameWork;
-using _04TodoList.FrameWork.DataBinding;
+﻿using _04TodoList.Editor.FrameWork.DataBinding;
 using NUnit.Framework;
 using UnityEngine;
 using Newtonsoft.Json;

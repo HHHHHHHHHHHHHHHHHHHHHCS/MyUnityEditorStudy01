@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _04TodoList.FrameWork.Layout
+namespace _04TodoList.Editor.FrameWork.Layout
 {
-    public class HorizontalLayout : Layout
+    public class VerticalLayout : Editor.FrameWork.Layout.Layout
     {
-        public HorizontalLayout(string style = null)
+        public VerticalLayout(string style = null)
             : base(style)
         {
         }
@@ -15,11 +13,11 @@ namespace _04TodoList.FrameWork.Layout
         {
             if (string.IsNullOrEmpty(Style))
             {
-                GUILayout.BeginHorizontal();
+                GUILayout.BeginVertical();
             }
             else
             {
-                GUILayout.BeginHorizontal(Style);
+                GUILayout.BeginVertical(Style);
             }
         }
 
@@ -36,7 +34,7 @@ namespace _04TodoList.FrameWork.Layout
 
         protected override void OnGUIEnd()
         {
-            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
     }
 }

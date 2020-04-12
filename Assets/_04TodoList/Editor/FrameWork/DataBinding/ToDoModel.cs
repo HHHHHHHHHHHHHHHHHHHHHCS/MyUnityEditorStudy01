@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using _04TodoList.FrameWork;
-using _04TodoList.FrameWork.DataBinding;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
-namespace ToDoList
+namespace _04TodoList.Editor.FrameWork.DataBinding
 {
     public class TodoListBaseCls
     {
@@ -158,7 +155,7 @@ namespace ToDoList
     }
 }
 
-namespace ToDoList.Deprecated0
+namespace _04TodoList.Editor.FrameWork.DataBinding.Deprecated0
 {
     [Obsolete]
     [System.Serializable]
@@ -170,7 +167,7 @@ namespace ToDoList.Deprecated0
     }
 }
 
-namespace ToDoList.Deprecated1
+namespace _04TodoList.Editor.FrameWork.DataBinding.Deprecated1
 {
     [System.Serializable]
     public class TODOData

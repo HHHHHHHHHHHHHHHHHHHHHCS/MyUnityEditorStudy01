@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine;
 
-namespace _04TodoList.FrameWork.DataBinding
+namespace _04TodoList.Editor.FrameWork.DataBinding
 {
     [System.Serializable]
     public class Property<T>
@@ -15,7 +14,15 @@ namespace _04TodoList.FrameWork.DataBinding
             get => _val;
             set
             {
-                if (!_val.Equals(value))
+                if (_val == null && value == null)
+                {
+                }
+                else if (_val == null && value != null)
+                {
+                    _val = value;
+                    onValueChangedEvent?.Invoke();
+                }
+                else if (!_val.Equals(value))
                 {
                     _val = value;
                     onValueChangedEvent?.Invoke();

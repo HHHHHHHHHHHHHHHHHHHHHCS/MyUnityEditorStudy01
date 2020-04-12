@@ -1,26 +1,28 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using _04TodoList.FrameWork.Drawer;
-using _04TodoList.FrameWork.Drawer.Interface;
-using _04TodoList.FrameWork.Layout;
+﻿using System.Collections.Generic;
+using _04TodoList.Editor.FrameWork.DataBinding;
+using _04TodoList.Editor.FrameWork.Drawer;
+using _04TodoList.Editor.FrameWork.Drawer.Interface;
+using _04TodoList.Editor.FrameWork.Layout;
+using _04TodoList.Editor.FrameWork.ViewController;
 using UnityEditor;
 using UnityEngine;
 
-namespace ToDoList
+namespace _04TodoList.Editor.FrameWork.Window
 {
-    public class ToDoListMainWindow : EditorWindow
+    public class ToDoListMainWindow : Window
     {
         private bool isShow;
 
         private TodoListCls todoListCls;
-        private string todoName = string.Empty;
         private bool showFinished = false;
 
         private List<IView> views = new List<IView>();
 
         private ButtonView unfinishedBtn, finishedBtn;
         private VerticalLayout todoItemList;
+
+
+        private TodoInputController todoInputController;
 
         private void OnEnable()
         {
@@ -60,22 +62,12 @@ namespace ToDoList
 
         private void Init()
         {
-            views.Clear();
+            todoInputController = new TodoInputController(AddAction);
 
-            var layout = new VerticalLayout("box");
-            views.Add(layout);
-            var inputTextArea = new TextAreaView(todoName);
-            inputTextArea.Content.Bind(x => todoName = x);
-            layout.Add(inputTextArea);
-            layout.Add(new ButtonView("添加", () =>
-            {
-                if (!string.IsNullOrEmpty(todoName))
-                {
-                    todoListCls.Add(todoName, false);
-                    todoName = string.Empty;
-                }
-            }));
-            views.Add(new SpaceView(5));
+
+
+            /*
+            views.Clear();
 
             unfinishedBtn = new ButtonView("显示未完成", () =>
             {
@@ -99,12 +91,18 @@ namespace ToDoList
 
             todoItemList = new VerticalLayout("box");
             DrawToDoItem();
+            */
         }
 
-
-        private void OnGUI()
+        protected override void OnGUI()
         {
+            todoInputController.Draw();
             views.ForEach(view => view.DrawGUI());
+        }
+
+        private void AddAction(string _todoName)
+        {
+            todoListCls.Add(_todoName, false);
         }
 
         private void DrawToDoItem()

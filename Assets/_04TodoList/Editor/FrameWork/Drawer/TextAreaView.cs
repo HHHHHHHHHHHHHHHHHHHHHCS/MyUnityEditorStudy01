@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using _04TodoList.FrameWork.DataBinding;
-using _04TodoList.FrameWork.Drawer.Interface;
+﻿using _04TodoList.Editor.FrameWork.DataBinding;
 using UnityEditor;
 using UnityEngine;
 
-namespace _04TodoList.FrameWork.Drawer
+namespace _04TodoList.Editor.FrameWork.Drawer
 {
     public class TextAreaView : View
     {
@@ -18,7 +15,7 @@ namespace _04TodoList.FrameWork.Drawer
 
         protected override void OnGUI()
         {
-            Content.Val = EditorGUILayout.TextArea(Content);
+            Content.Val = EditorGUILayout.TextArea(Content.Val);
         }
     }
 }

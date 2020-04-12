@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using _04TodoList.FrameWork.DataBinding;
-using _04TodoList.FrameWork.Drawer.Interface;
-using JetBrains.Annotations;
+﻿using _04TodoList.Editor.FrameWork.DataBinding;
 using UnityEngine;
 
-namespace _04TodoList.FrameWork.Drawer
+namespace _04TodoList.Editor.FrameWork.Drawer
 {
     public class ToggleView : View
     {

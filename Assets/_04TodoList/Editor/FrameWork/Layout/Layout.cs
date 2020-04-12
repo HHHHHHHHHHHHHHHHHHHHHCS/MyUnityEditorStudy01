@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using _04TodoList.FrameWork.Drawer.Interface;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using _04TodoList.Editor.FrameWork.Drawer.Interface;
 
-namespace _04TodoList.FrameWork.Layout
+namespace _04TodoList.Editor.FrameWork.Layout
 {
     public abstract class Layout : IView
     {
