@@ -1,73 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _04TodoList.Editor.FrameWork.DataBinding;
 using _04TodoList.Editor.FrameWork.Drawer;
 using _04TodoList.Editor.FrameWork.Drawer.Interface;
 using _04TodoList.Editor.FrameWork.Layout;
-using _04TodoList.Editor.FrameWork.ViewController;
-using UnityEditor;
-using UnityEngine;
+using _04TodoList.Editor.FrameWork.ViewGUI;
 
-namespace _04TodoList.Editor.FrameWork.Window
+namespace _04TodoList.Editor.FrameWork.ViewController
 {
-    public class ToDoListMainWindow : Window
+    public class ToDoListController : AbsViewController
     {
         private bool isShow;
 
-        private TodoListCls todoListCls;
+        private readonly TodoListCls todoListCls;
         private bool showFinished = false;
 
-        private List<IView> views = new List<IView>();
+        private readonly ButtonView unfinishedBtn;
+        private readonly ButtonView finishedBtn;
+        private readonly VerticalLayout todoItemList;
 
-        private ButtonView unfinishedBtn, finishedBtn;
-        private VerticalLayout todoItemList;
 
-
-        private TodoInputController todoInputController;
-
-        private void OnEnable()
+        public ToDoListController()
         {
-            todoListCls = TodoListCls.Load();
-            foreach (var item in todoListCls.todoList)
-            {
-                item.finished.SetValueChanged(todoListCls.Save);
-            }
+            todoListCls = TodoListCls.ModelData;
 
-            Init();
-        }
-
-        private void OnDisable()
-        {
-            todoListCls.Save();
-        }
-
-        [MenuItem("TodoList/MainWindow %#t")]
-        public static void Open()
-        {
-            var window = GetWindow<ToDoListMainWindow>(true, "ToDoLists", true);
-
-            if (window.isShow)
-            {
-                window.Close();
-                window.isShow = false;
-            }
-            else
-            {
-                //var texture = Resources.Load<Texture2D>("main");
-                //window.titleContent = new GUIContent("ToDoLists", texture);
-
-                window.ShowUtility();
-                window.isShow = true;
-            }
-        }
-
-        private void Init()
-        {
-            todoInputController = new TodoInputController(AddAction);
-
-
-
-            /*
-            views.Clear();
+            views.Add(new ToDoListInputView(AddAction));
 
             unfinishedBtn = new ButtonView("显示未完成", () =>
             {
@@ -91,13 +48,11 @@ namespace _04TodoList.Editor.FrameWork.Window
 
             todoItemList = new VerticalLayout("box");
             DrawToDoItem();
-            */
         }
 
-        protected override void OnGUI()
+        public void OnDisable()
         {
-            todoInputController.Draw();
-            views.ForEach(view => view.DrawGUI());
+            todoListCls.Save();
         }
 
         private void AddAction(string _todoName)

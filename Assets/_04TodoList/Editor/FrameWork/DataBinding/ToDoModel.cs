@@ -20,6 +20,10 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
     {
         [System.NonSerialized] public new const int version = 2;
 
+        [System.NonSerialized]
+        private static TodoListCls _modelData;
+        public static TodoListCls ModelData => _modelData ?? (_modelData = Load());
+
         public static TodoListCls Load()
         {
             var version = EditorPrefs.GetInt(todosVersionKey, -1);
