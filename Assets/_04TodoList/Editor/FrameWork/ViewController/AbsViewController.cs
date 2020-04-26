@@ -11,7 +11,10 @@ namespace _04TodoList.Editor.FrameWork.ViewController
         protected AbsViewController()
         {
             views = new List<IView>();
+            SetUpView();
         }
+
+        protected abstract void SetUpView();
 
         public virtual void Draw()
         {

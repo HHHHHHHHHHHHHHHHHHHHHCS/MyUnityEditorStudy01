@@ -22,7 +22,7 @@ namespace _04TodoList.Editor.FrameWork.Window
 
         protected override void OnInit()
         {
-            toDoListController = new ToDoListController();
+            toDoListController =  CreateViewController<ToDoListController>();
         }
 
         protected override void Disable()

@@ -1,4 +1,5 @@
 ﻿using System;
+using _04TodoList.Editor.FrameWork.ViewController;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,7 +9,13 @@ namespace _04TodoList.Editor.FrameWork.Window
     {
         protected bool isShow;
 
-        public static void OnOpen<T>(bool isUtility , string windowName,bool focus ) where T : AbsWindow
+        public static T CreateViewController<T>() where T : AbsViewController, new()
+        {
+            T t = new T();
+            return t;
+        }
+
+        public static void OnOpen<T>(bool isUtility, string windowName, bool focus) where T : AbsWindow
         {
             var window = GetWindow<T>(isUtility, windowName, focus);
 
