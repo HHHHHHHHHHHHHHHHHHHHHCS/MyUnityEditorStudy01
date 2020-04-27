@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _04TodoList.Editor.FrameWork.Drawer.Interface;
+using _04TodoList.Editor.FrameWork.Layout.Interface;
 
 namespace _04TodoList.Editor.FrameWork.Layout
 {
@@ -10,6 +11,8 @@ namespace _04TodoList.Editor.FrameWork.Layout
         public string Style { get; set; }
 
         protected readonly LinkedList<IView> children = new LinkedList<IView>();
+
+        public ILayout Parent { get; set; }
 
         protected Layout(string style = null)
         {
@@ -28,18 +31,26 @@ namespace _04TodoList.Editor.FrameWork.Layout
 
         public void Add(IView view)
         {
+            view.Parent = this as ILayout;
             children.AddLast(view);
         }
 
         public void Remove(IView view)
         {
+            view.Parent = null;
             children.Remove(view);
         }
 
         public void Clear()
         {
+            foreach (var child in children)
+            {
+                child.Parent = null;
+            }
+
             children.Clear();
         }
+
 
         public void DrawGUI()
         {

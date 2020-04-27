@@ -16,8 +16,14 @@ namespace _04TodoList.Editor.FrameWork.ViewController
 
         protected abstract void SetUpView();
 
+        protected virtual void OnUpdate()
+        {
+        }
+
+
         public virtual void Draw()
         {
+            OnUpdate();
             views.ForEach(x => x.DrawGUI());
         }
     }

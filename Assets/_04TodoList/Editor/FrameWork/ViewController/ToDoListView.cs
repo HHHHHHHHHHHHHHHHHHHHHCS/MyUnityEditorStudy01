@@ -10,6 +10,8 @@ namespace _04TodoList.Editor.FrameWork.ViewController
     public class ToDoListView : VerticalLayout
     {
         protected bool showFinished;
+        private bool isDirty;
+
 
         public ToDoListView(bool _showFinished) : base("box")
         {
@@ -22,6 +24,20 @@ namespace _04TodoList.Editor.FrameWork.ViewController
         }
 
         public void UpdateToDoItems()
+        {
+            isDirty = true;
+        }
+
+        public void OnUpdate()
+        {
+            if (isDirty)
+            {
+                isDirty = false;
+                ReBuildToDoItems();
+            }
+        }
+
+        public void ReBuildToDoItems()
         {
             var todoListCls = TodoListCls.ModelData;
 
@@ -46,10 +62,13 @@ namespace _04TodoList.Editor.FrameWork.ViewController
                     item.finished.ClearValueChanged();
                     todoListCls.todoList.RemoveAt(tempIndex);
                     todoListCls.Save();
+                    UpdateToDoItems();
                 });
                 horizontalLayout.Add(deleteBtn);
                 children.AddLast(horizontalLayout);
             }
         }
+
+
     }
 }

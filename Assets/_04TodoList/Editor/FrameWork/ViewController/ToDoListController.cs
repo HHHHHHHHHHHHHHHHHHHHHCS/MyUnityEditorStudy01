@@ -62,6 +62,11 @@ namespace _04TodoList.Editor.FrameWork.ViewController
             todoListView.UpdateToDoItems();
         }
 
+        protected override void OnUpdate()
+        {
+            todoListView.OnUpdate();
+        }
+
         public void OnDisable()
         {
             todoListCls.Save();
@@ -70,6 +75,7 @@ namespace _04TodoList.Editor.FrameWork.ViewController
         private void AddAction(string _todoName)
         {
             todoListCls.Add(_todoName, false);
+            todoListView.UpdateToDoItems();
         }
     }
 }
