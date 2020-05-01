@@ -5,6 +5,7 @@ using _04TodoList.Editor.FrameWork.Drawer;
 using _04TodoList.Editor.FrameWork.Drawer.Interface;
 using _04TodoList.Editor.FrameWork.Layout;
 using _04TodoList.Editor.FrameWork.ViewGUI;
+using UnityEngine;
 
 namespace _04TodoList.Editor.FrameWork.ViewController
 {
@@ -34,6 +35,7 @@ namespace _04TodoList.Editor.FrameWork.ViewController
             showFinished.Bind(UpdateShowFinished);
             UpdateShowFinished(showFinished.Val);
 
+            views.Add(new CustomView(() => { GUILayout.Toolbar(0, new string[] {"1", "2"}); }));
             views.Add(todoListInputView);
             views.Add(unfinishedBtn);
             views.Add(finishedBtn);
