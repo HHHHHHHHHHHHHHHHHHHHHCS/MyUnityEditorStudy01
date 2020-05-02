@@ -20,8 +20,7 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
     {
         [System.NonSerialized] public new const int version = 2;
 
-        [System.NonSerialized]
-        private static TodoListCls _modelData;
+        [System.NonSerialized] private static TodoListCls _modelData;
         public static TodoListCls ModelData => _modelData ?? (_modelData = Load());
 
         public static TodoListCls Load()
@@ -123,9 +122,8 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
 
         public static void Add(this TodoListCls cls, string content, bool finished)
         {
-            var data = new TODOData(content, finished, cls.Save);
+            var data = new TODOData(content, finished, _ => cls.Save());
             cls.todoList.Add(data);
-            data.finished.RegisterValueChanged(cls.Save);
             cls.Save();
         }
     }
@@ -150,7 +148,7 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
             this.finished = new Property<bool>(_finished);
         }
 
-        public TODOData(string _content, bool _finished, Action _act)
+        public TODOData(string _content, bool _finished, Action<bool> _act)
         {
             this.content = _content;
             this.finished = new Property<bool>(_finished);

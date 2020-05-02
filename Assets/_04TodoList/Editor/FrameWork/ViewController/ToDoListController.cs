@@ -16,6 +16,8 @@ namespace _04TodoList.Editor.FrameWork.ViewController
         private TodoListCls todoListCls;
         private readonly Property<bool> showFinished = new Property<bool>(false);
 
+        private ToolBarView todoListToolBarView;
+
         private ToDoListInputView todoListInputView;
         private ToDoListView todoListView;
 
@@ -27,6 +29,8 @@ namespace _04TodoList.Editor.FrameWork.ViewController
         {
             todoListCls = TodoListCls.ModelData;
 
+            todoListToolBarView =
+                new ToolBarView(new[] {"11", "22"}, new Action[] {() => Debug.Log(1), () => Debug.Log(2)});
             todoListInputView = new ToDoListInputView(AddAction);
             todoListView = new ToDoListView(showFinished);
             unfinishedBtn = new ButtonView("显示未完成", TurnShowFinished);
@@ -35,7 +39,7 @@ namespace _04TodoList.Editor.FrameWork.ViewController
             showFinished.Bind(UpdateShowFinished);
             UpdateShowFinished(showFinished.Val);
 
-            views.Add(new CustomView(() => { GUILayout.Toolbar(0, new string[] {"1", "2"}); }));
+            views.Add(todoListToolBarView);
             views.Add(todoListInputView);
             views.Add(unfinishedBtn);
             views.Add(finishedBtn);

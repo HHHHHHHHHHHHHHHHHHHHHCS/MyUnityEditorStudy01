@@ -54,7 +54,7 @@ namespace _04TodoList.Editor.FrameWork.ViewController
 
                 HorizontalLayout horizontalLayout = new HorizontalLayout();
                 var toggle = new ToggleView(item.content, item.finished);
-                toggle.IsToggle.SetValueChanged(() => { item.finished.Val = !item.finished.Val; });
+                toggle.IsToggle.SetValueChanged((_val) => { item.finished.Val = _val; });
                 horizontalLayout.Add(toggle);
                 var tempIndex = i; //这个是匿名函数嵌套 用的
                 var deleteBtn = new ButtonView("删除", () =>
@@ -68,7 +68,5 @@ namespace _04TodoList.Editor.FrameWork.ViewController
                 children.AddLast(horizontalLayout);
             }
         }
-
-
     }
 }
