@@ -3,7 +3,7 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "_04TodoList"
+        "_04ToDoList"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

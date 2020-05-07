@@ -1,9 +1,9 @@
 ﻿using System;
-using _04TodoList.Editor.FrameWork.ViewController;
+using _04ToDoList.Editor.FrameWork.ViewController;
 using UnityEditor;
 using UnityEngine;
 
-namespace _04TodoList.Editor.FrameWork.Window
+namespace _04ToDoList.Editor.FrameWork.Window
 {
     public abstract class AbsWindow : EditorWindow
     {

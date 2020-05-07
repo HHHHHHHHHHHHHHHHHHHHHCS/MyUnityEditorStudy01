@@ -1,35 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
-namespace _04TodoList.Editor.FrameWork.DataBinding
+namespace _04ToDoList.Editor.FrameWork.DataBinding
 {
-    public class TodoListBaseCls
+    public class ToDoListBaseCls
     {
-        [System.NonSerialized] public const string todosKey = "TodoList_TODOS";
-        [System.NonSerialized] public const string todosVersionKey = "TodoList_TODOS_Version";
+        [System.NonSerialized] public const string todosKey = "ToDoList_TODOS";
+        [System.NonSerialized] public const string todosVersionKey = "ToDoList_TODOS_Version";
 
         [System.NonSerialized] public const int version = -1;
     }
 
     [System.Serializable]
-    public class TodoListCls : TodoListBaseCls
+    public class ToDoListCls : ToDoListBaseCls
     {
-        [System.NonSerialized] public new const int version = 2;
+        [System.NonSerialized] public new const int version = 3;
 
-        [System.NonSerialized] private static TodoListCls _modelData;
-        public static TodoListCls ModelData => _modelData ?? (_modelData = Load());
+        [System.NonSerialized] private static ToDoListCls _modelData;
+        public static ToDoListCls ModelData => _modelData ?? (_modelData = Load());
 
-        public static TodoListCls Load()
+        public static ToDoListCls Load()
         {
             var version = EditorPrefs.GetInt(todosVersionKey, -1);
 
             if (version == -1)
             {
-                return new TodoListCls();
+                return new ToDoListCls();
             }
 
             var todoContext = EditorPrefs.GetString(todosKey, string.Empty);
@@ -38,7 +39,7 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
             {
                 if (string.IsNullOrEmpty(todoContext))
                 {
-                    return new TodoListCls();
+                    return new ToDoListCls();
                 }
                 else
                 {
@@ -46,31 +47,31 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
                     {
                         if (version == 0)
                         {
-                            var deprecated = JsonConvert.DeserializeObject<Deprecated0.TodoListCls>(todoContext);
+                            var deprecated = JsonConvert.DeserializeObject<Deprecated0.ToDoListCls>(todoContext);
                             Debug.Log("数据版本不一致,进行升级!");
                             if (deprecated != null && deprecated.todoList.Count > 0)
                             {
-                                var todoList = deprecated.todoList.Select(todo => new TODOData(todo, false)).ToList();
-                                var cls = new TodoListCls();
+                                var todoList = deprecated.todoList.Select(todo => new ToDoData(todo, false)).ToList();
+                                var cls = new ToDoListCls();
                                 cls.todoList = todoList;
                                 cls.Save();
                                 return cls;
                             }
                             else
                             {
-                                return new TodoListCls();
+                                return new ToDoListCls();
                             }
                         }
                         else if (version == 1)
                         {
-                            var deprecated = JsonConvert.DeserializeObject<Deprecated1.TodoListCls>(todoContext);
+                            var deprecated = JsonConvert.DeserializeObject<Deprecated1.ToDoListCls>(todoContext);
                             Debug.Log("数据版本不一致,进行升级!");
                             if (deprecated != null && deprecated.todoList.Count > 0)
                             {
-                                var cls = new TodoListCls
+                                var cls = new ToDoListCls
                                 {
                                     todoList = deprecated.todoList
-                                        .Select(todo => new TODOData(todo.content, todo.finished))
+                                        .Select(todo => new ToDoData(todo.content, todo.finished))
                                         .ToList()
                                 };
                                 cls.Save();
@@ -78,7 +79,7 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
                             }
                             else
                             {
-                                return new TodoListCls();
+                                return new ToDoListCls();
                             }
                         }
                     }
@@ -87,7 +88,7 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
                         Debug.LogError(e);
                     }
 
-                    return JsonConvert.DeserializeObject<TodoListCls>(todoContext);
+                    return JsonConvert.DeserializeObject<ToDoListCls>(todoContext);
                 }
             }
             catch (Exception e)
@@ -95,14 +96,14 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
                 Debug.LogError(e.StackTrace);
             }
 
-            return new TodoListCls();
+            return new ToDoListCls();
         }
 
-        public static void Save(TodoListCls cls)
+        public static void Save(ToDoListCls cls)
         {
             if (cls == null)
             {
-                Debug.LogError("TodoListCls is null!");
+                Debug.LogError("ToDoListCls is null!");
                 return;
             }
 
@@ -110,58 +111,83 @@ namespace _04TodoList.Editor.FrameWork.DataBinding
             EditorPrefs.SetString(todosKey, JsonConvert.SerializeObject(cls));
         }
 
-        public List<TODOData> todoList = new List<TODOData>();
+        public List<ToDoData> todoList = new List<ToDoData>();
     }
 
-    public static class TodoListCls_Ex
+    public static class ToDoListCls_Ex
     {
-        public static void Save(this TodoListCls cls)
+        public static void Save(this ToDoListCls cls)
         {
-            TodoListCls.Save(cls);
+            ToDoListCls.Save(cls);
         }
 
-        public static void Add(this TodoListCls cls, string content, bool finished)
+        public static void Add(this ToDoListCls cls, string content, bool finished)
         {
-            var data = new TODOData(content, finished, _ => cls.Save());
+            var data = new ToDoData(content, finished, _ => cls.Save());
             cls.todoList.Add(data);
             cls.Save();
         }
     }
 
     [System.Serializable]
-    public class TODOData
+    public class ToDoData
     {
-        public string content;
+        public enum ToDoState
+        {
+            NoStart,
+            Started,
+            Done,
+        }
 
+        public string content;
         public Property<bool> finished;
 
+        public DateTime createTime;
+        public DateTime finishTime;
+        public DateTime startTime;
 
-        public TODOData()
+        public Property<ToDoState> state;
+
+        public void Init(string content = null
+            , Property<bool> finished = null, Action<bool> finishedChangeAct = null
+            , DateTime? createTime = null, DateTime? finishTime = null, DateTime? startTime = null
+            , Property<ToDoState> state = null)
         {
-            this.content = string.Empty;
-            this.finished = new Property<bool>(false);
+            this.content = content ?? string.Empty;
+            this.finished = finished ?? new Property<bool>(false);
+            if (finishedChangeAct != null)
+            {
+                this.finished.SetValueChanged(finishedChangeAct);
+            }
+            this.createTime = createTime ?? DateTime.Now;
+            this.finishTime = finishTime ?? DateTime.Now;
+            this.startTime = startTime ?? DateTime.Now;
+            this.state = state ?? new Property<ToDoState>(ToDoState.NoStart);
         }
 
-        public TODOData(string _content, bool _finished)
+        public ToDoData()
         {
-            this.content = _content;
-            this.finished = new Property<bool>(_finished);
+            Init();
         }
 
-        public TODOData(string _content, bool _finished, Action<bool> _act)
+
+        public ToDoData(string _content, bool _finished)
         {
-            this.content = _content;
-            this.finished = new Property<bool>(_finished);
-            this.finished.SetValueChanged(_act);
+            Init(content: content, finished: new Property<bool>(_finished));
+        }
+
+        public ToDoData(string _content, bool _finished, Action<bool> _act)
+        {
+            Init(content: content, finished: new Property<bool>(_finished), finishedChangeAct: _act);
         }
     }
 }
 
-namespace _04TodoList.Editor.FrameWork.DataBinding.Deprecated0
+namespace _04ToDoList.Editor.FrameWork.DataBinding.Deprecated0
 {
     [Obsolete]
     [System.Serializable]
-    public class TodoListCls : TodoListBaseCls
+    public class ToDoListCls : ToDoListBaseCls
     {
         [System.NonSerialized] public new const int version = 0;
 
@@ -169,10 +195,10 @@ namespace _04TodoList.Editor.FrameWork.DataBinding.Deprecated0
     }
 }
 
-namespace _04TodoList.Editor.FrameWork.DataBinding.Deprecated1
+namespace _04ToDoList.Editor.FrameWork.DataBinding.Deprecated1
 {
     [System.Serializable]
-    public class TODOData
+    public class ToDoData
     {
         public string content;
 
@@ -193,7 +219,7 @@ namespace _04TodoList.Editor.FrameWork.DataBinding.Deprecated1
             }
         }
 
-        public TODOData(string _content, bool _finished)
+        public ToDoData(string _content, bool _finished)
         {
             this.content = _content;
             this.finished = _finished;
@@ -203,10 +229,50 @@ namespace _04TodoList.Editor.FrameWork.DataBinding.Deprecated1
 
     [Obsolete]
     [System.Serializable]
-    public class TodoListCls : TodoListBaseCls
+    public class ToDoListCls : ToDoListBaseCls
     {
         [System.NonSerialized] public new const int version = 1;
 
-        public List<TODOData> todoList = new List<TODOData>();
+        public List<ToDoData> todoList = new List<ToDoData>();
+    }
+}
+
+namespace _04ToDoList.Editor.FrameWork.DataBinding.Deprecated2
+{
+    [System.Serializable]
+    public class ToDoData
+    {
+        public string content;
+
+        public Property<bool> finished;
+
+
+        public ToDoData()
+        {
+            this.content = string.Empty;
+            this.finished = new Property<bool>(false);
+        }
+
+        public ToDoData(string _content, bool _finished)
+        {
+            this.content = _content;
+            this.finished = new Property<bool>(_finished);
+        }
+
+        public ToDoData(string _content, bool _finished, Action<bool> _act)
+        {
+            this.content = _content;
+            this.finished = new Property<bool>(_finished);
+            this.finished.SetValueChanged(_act);
+        }
+    }
+
+    [Obsolete]
+    [System.Serializable]
+    public class ToDoListCls : ToDoListBaseCls
+    {
+        [System.NonSerialized] public new const int version = 2;
+
+        public List<ToDoData> modelData = new List<ToDoData>();
     }
 }

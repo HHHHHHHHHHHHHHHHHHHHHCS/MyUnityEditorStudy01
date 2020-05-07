@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using _04TodoList.Editor.FrameWork.Drawer.Interface;
-using _04TodoList.Editor.FrameWork.Layout.Interface;
+using _04ToDoList.Editor.FrameWork.Drawer.Interface;
+using _04ToDoList.Editor.FrameWork.Layout.Interface;
 
-namespace _04TodoList.Editor.FrameWork.Layout
+namespace _04ToDoList.Editor.FrameWork.Layout
 {
     public abstract class Layout : IView
     {

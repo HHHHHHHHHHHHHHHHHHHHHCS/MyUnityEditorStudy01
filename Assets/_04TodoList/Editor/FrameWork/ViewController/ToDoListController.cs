@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using _04TodoList.Editor.FrameWork.DataBinding;
-using _04TodoList.Editor.FrameWork.Drawer;
-using _04TodoList.Editor.FrameWork.Drawer.Interface;
-using _04TodoList.Editor.FrameWork.Layout;
-using _04TodoList.Editor.FrameWork.ViewGUI;
+using _04ToDoList.Editor.FrameWork.DataBinding;
+using _04ToDoList.Editor.FrameWork.Drawer;
+using _04ToDoList.Editor.FrameWork.Drawer.Interface;
+using _04ToDoList.Editor.FrameWork.Layout;
+using _04ToDoList.Editor.FrameWork.ViewGUI;
 using UnityEngine;
 
-namespace _04TodoList.Editor.FrameWork.ViewController
+namespace _04ToDoList.Editor.FrameWork.ViewController
 {
     public class ToDoListController : AbsViewController
     {
         private bool isShow;
 
-        private TodoListCls todoListCls;
+        private ToDoListCls _toDoListCls;
         private readonly Property<bool> showFinished = new Property<bool>(false);
 
         private ToolBarView todoListToolBarView;
@@ -27,7 +27,7 @@ namespace _04TodoList.Editor.FrameWork.ViewController
 
         protected override void SetUpView()
         {
-            todoListCls = TodoListCls.ModelData;
+            _toDoListCls = ToDoListCls.ModelData;
 
             todoListToolBarView =
                 new ToolBarView(new[] {"11", "22"}, new Action[] {() => Debug.Log(1), () => Debug.Log(2)});
@@ -75,12 +75,12 @@ namespace _04TodoList.Editor.FrameWork.ViewController
 
         public void OnDisable()
         {
-            todoListCls.Save();
+            _toDoListCls.Save();
         }
 
         private void AddAction(string _todoName)
         {
-            todoListCls.Add(_todoName, false);
+            _toDoListCls.Add(_todoName, false);
             todoListView.UpdateToDoItems();
         }
     }

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using _04TodoList.Editor.FrameWork.DataBinding;
-using _04TodoList.Editor.FrameWork.Drawer;
-using _04TodoList.Editor.FrameWork.Layout;
+using _04ToDoList.Editor.FrameWork.DataBinding;
+using _04ToDoList.Editor.FrameWork.Drawer;
+using _04ToDoList.Editor.FrameWork.Layout;
 using UnityEngine;
 
-namespace _04TodoList.Editor.FrameWork.ViewController
+namespace _04ToDoList.Editor.FrameWork.ViewController
 {
     public class ToDoListView : VerticalLayout
     {
@@ -39,7 +39,7 @@ namespace _04TodoList.Editor.FrameWork.ViewController
 
         public void ReBuildToDoItems()
         {
-            var todoListCls = TodoListCls.ModelData;
+            var todoListCls = ToDoListCls.ModelData;
 
             children.Clear();
             var dataList = todoListCls.todoList;

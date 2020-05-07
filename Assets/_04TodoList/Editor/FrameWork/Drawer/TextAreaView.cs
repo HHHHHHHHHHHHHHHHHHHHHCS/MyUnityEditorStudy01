@@ -1,8 +1,8 @@
-﻿using _04TodoList.Editor.FrameWork.DataBinding;
+﻿using _04ToDoList.Editor.FrameWork.DataBinding;
 using UnityEditor;
 using UnityEngine;
 
-namespace _04TodoList.Editor.FrameWork.Drawer
+namespace _04ToDoList.Editor.FrameWork.Drawer
 {
     public class TextAreaView : View
     {

@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using _04TodoList.Editor.FrameWork.DataBinding;
-using _04TodoList.Editor.FrameWork.Drawer;
-using _04TodoList.Editor.FrameWork.Drawer.Interface;
-using _04TodoList.Editor.FrameWork.Layout;
-using _04TodoList.Editor.FrameWork.ViewController;
+using _04ToDoList.Editor.FrameWork.DataBinding;
+using _04ToDoList.Editor.FrameWork.Drawer;
+using _04ToDoList.Editor.FrameWork.Drawer.Interface;
+using _04ToDoList.Editor.FrameWork.Layout;
+using _04ToDoList.Editor.FrameWork.ViewController;
 using UnityEditor;
 using UnityEngine;
 
-namespace _04TodoList.Editor.FrameWork.Window
+namespace _04ToDoList.Editor.FrameWork.Window
 {
     public class ToDoListMainAbsWindow : AbsWindow
     {
         private ToDoListController toDoListController;
 
-        [MenuItem("TodoList/MainWindow %#t")]
+        [MenuItem("ToDoList/MainWindow %#t")]
         public static void Open()
         {
             OnOpen<ToDoListMainAbsWindow>(true, "ToDoLists", true);

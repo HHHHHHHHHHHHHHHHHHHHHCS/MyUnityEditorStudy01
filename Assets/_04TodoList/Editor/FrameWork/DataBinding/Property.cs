@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace _04TodoList.Editor.FrameWork.DataBinding
+namespace _04ToDoList.Editor.FrameWork.DataBinding
 {
     [System.Serializable]
     public class Property<T>

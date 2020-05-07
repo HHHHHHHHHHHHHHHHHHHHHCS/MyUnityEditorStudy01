@@ -1,9 +1,9 @@
 ﻿using System;
-using _04TodoList.Editor.FrameWork.Drawer;
-using _04TodoList.Editor.FrameWork.Layout;
+using _04ToDoList.Editor.FrameWork.Drawer;
+using _04ToDoList.Editor.FrameWork.Layout;
 using UnityEngine;
 
-namespace _04TodoList.Editor.FrameWork.ViewGUI
+namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListInputView : VerticalLayout
     {
