@@ -43,29 +43,38 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
             children.Clear();
             var dataList = todoListCls.todoList;
-            for (int i = dataList.Count - 1; i >= 0; i--)
+            if (dataList.Count == 0)
             {
-                var item = todoListCls.todoList[i];
+                Style = null;
+            }
+            else
+            {
+                Style = "box";
 
-                if (item.finished != showFinished)
+                for (int i = dataList.Count - 1; i >= 0; --i)
                 {
-                    continue;
+                    var item = todoListCls.todoList[i];
+
+                    if (item.finished != showFinished)
+                    {
+                        continue;
+                    }
+
+                    HorizontalLayout horizontalLayout = new HorizontalLayout();
+                    var toggle = new ToggleView(item.content, item.finished);
+                    toggle.IsToggle.SetValueChanged((_val) => { item.finished.Val = _val; });
+                    horizontalLayout.Add(toggle);
+                    var tempIndex = i; //这个是匿名函数嵌套 用的
+                    var deleteBtn = new ButtonView("删除", () =>
+                    {
+                        item.finished.ClearValueChanged();
+                        todoListCls.todoList.RemoveAt(tempIndex);
+                        todoListCls.Save();
+                        UpdateToDoItems();
+                    });
+                    horizontalLayout.Add(deleteBtn);
+                    children.AddLast(horizontalLayout);
                 }
-
-                HorizontalLayout horizontalLayout = new HorizontalLayout();
-                var toggle = new ToggleView(item.content, item.finished);
-                toggle.IsToggle.SetValueChanged((_val) => { item.finished.Val = _val; });
-                horizontalLayout.Add(toggle);
-                var tempIndex = i; //这个是匿名函数嵌套 用的
-                var deleteBtn = new ButtonView("删除", () =>
-                {
-                    item.finished.ClearValueChanged();
-                    todoListCls.todoList.RemoveAt(tempIndex);
-                    todoListCls.Save();
-                    UpdateToDoItems();
-                });
-                horizontalLayout.Add(deleteBtn);
-                children.AddLast(horizontalLayout);
             }
         }
     }

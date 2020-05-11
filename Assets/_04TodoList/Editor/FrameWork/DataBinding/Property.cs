@@ -80,5 +80,10 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         {
             return p.Val;
         }
+
+        public override string ToString()
+        {
+            return Val.ToString();
+        }
     }
 }

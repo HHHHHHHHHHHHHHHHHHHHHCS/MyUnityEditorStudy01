@@ -47,40 +47,54 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
                     {
                         if (version == 0)
                         {
+                            ToDoListCls cls;
                             var deprecated = JsonConvert.DeserializeObject<Deprecated0.ToDoListCls>(todoContext);
                             Debug.Log("数据版本不一致,进行升级!");
                             if (deprecated != null && deprecated.todoList.Count > 0)
                             {
                                 var todoList = deprecated.todoList.Select(todo => new ToDoData(todo, false)).ToList();
-                                var cls = new ToDoListCls();
-                                cls.todoList = todoList;
-                                cls.Save();
-                                return cls;
+                                cls = new ToDoListCls {todoList = todoList};
                             }
                             else
                             {
-                                return new ToDoListCls();
+                                cls = new ToDoListCls();
                             }
+
+                            cls.Save();
+                            return cls;
                         }
                         else if (version == 1)
                         {
+                            ToDoListCls cls;
                             var deprecated = JsonConvert.DeserializeObject<Deprecated1.ToDoListCls>(todoContext);
                             Debug.Log("数据版本不一致,进行升级!");
                             if (deprecated != null && deprecated.todoList.Count > 0)
                             {
-                                var cls = new ToDoListCls
+                                cls = new ToDoListCls
                                 {
                                     todoList = deprecated.todoList
                                         .Select(todo => new ToDoData(todo.content, todo.finished))
                                         .ToList()
                                 };
                                 cls.Save();
-                                return cls;
                             }
                             else
                             {
-                                return new ToDoListCls();
+                                cls = new ToDoListCls();
                             }
+
+                            cls.Save();
+                            return cls;
+                        }
+                        else if (version == 2)
+                        {
+                            ToDoListCls cls;
+                            var deprecated = JsonConvert.DeserializeObject<Deprecated2.ToDoListCls>(todoContext);
+                            Debug.Log("数据版本不一致,进行升级!");
+                            var helper = new ToDoModelUpgradeActionV1();
+                            cls = helper.Execute(deprecated);
+                            cls.Save();
+                            return cls;
                         }
                     }
                     catch (Exception e)
@@ -112,6 +126,30 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         }
 
         public List<ToDoData> todoList = new List<ToDoData>();
+
+        public ToDoData this[int index]
+        {
+            get
+            {
+                if (index >= 0 && index < todoList.Count)
+                {
+                    return todoList[index];
+                }
+
+                Debug.LogError("Index out of array!");
+                return null;
+            }
+
+            set
+            {
+                if (index >= 0 && index < todoList.Count)
+                {
+                    todoList[index] = value;
+                }
+
+                Debug.LogError("Index out of array!");
+            }
+        }
     }
 
     public static class ToDoListCls_Ex
@@ -159,10 +197,12 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             {
                 this.finished.SetValueChanged(finishedChangeAct);
             }
+
             this.createTime = createTime ?? DateTime.Now;
             this.finishTime = finishTime ?? DateTime.Now;
             this.startTime = startTime ?? DateTime.Now;
             this.state = state ?? new Property<ToDoState>(ToDoState.NoStart);
+            Debug.Log(ToString());
         }
 
         public ToDoData()
@@ -173,12 +213,18 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
         public ToDoData(string _content, bool _finished)
         {
-            Init(content: content, finished: new Property<bool>(_finished));
+            Init(content: _content, finished: new Property<bool>(_finished));
         }
 
         public ToDoData(string _content, bool _finished, Action<bool> _act)
         {
-            Init(content: content, finished: new Property<bool>(_finished), finishedChangeAct: _act);
+            Init(content: _content, finished: new Property<bool>(_finished), finishedChangeAct: _act);
+        }
+
+        public override string ToString()
+        {
+            return
+                $"{nameof(content)}: {content}, {nameof(finished)}: {finished}, {nameof(createTime)}: {createTime}, {nameof(finishTime)}: {finishTime}, {nameof(startTime)}: {startTime}, {nameof(state)}: {state}";
         }
     }
 }
