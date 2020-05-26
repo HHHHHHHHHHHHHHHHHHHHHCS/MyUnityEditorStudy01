@@ -19,7 +19,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
     [System.Serializable]
     public class ToDoListCls : ToDoListBaseCls
     {
-        [System.NonSerialized] public new const int version = 3;
+        public new const int version = 3;
 
         [System.NonSerialized] private static ToDoListCls _modelData;
         public static ToDoListCls ModelData => _modelData ?? (_modelData = Load());
@@ -235,7 +235,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding.Deprecated0
     [System.Serializable]
     public class ToDoListCls : ToDoListBaseCls
     {
-        [System.NonSerialized] public new const int version = 0;
+        public new const int version = 0;
 
         public List<string> todoList = new List<string>();
     }
@@ -277,7 +277,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding.Deprecated1
     [System.Serializable]
     public class ToDoListCls : ToDoListBaseCls
     {
-        [System.NonSerialized] public new const int version = 1;
+        public new const int version = 1;
 
         public List<ToDoData> todoList = new List<ToDoData>();
     }
@@ -317,7 +317,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding.Deprecated2
     [System.Serializable]
     public class ToDoListCls : ToDoListBaseCls
     {
-        [System.NonSerialized] public new const int version = 2;
+        public new const int version = 2;
 
         public List<ToDoData> modelData = new List<ToDoData>();
     }

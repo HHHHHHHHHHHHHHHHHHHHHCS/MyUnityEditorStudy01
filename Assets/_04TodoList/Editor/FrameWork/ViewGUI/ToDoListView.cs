@@ -55,14 +55,25 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                 {
                     var item = todoListCls.todoList[i];
 
-                    if (item.finished != showFinished)
+                    if ((item.state == ToDoData.ToDoState.Done) != showFinished)
                     {
                         continue;
                     }
 
                     HorizontalLayout horizontalLayout = new HorizontalLayout();
                     var toggle = new ToggleView(item.content, item.finished);
-                    toggle.IsToggle.SetValueChanged((_val) => { item.finished.Val = _val; });
+                    toggle.IsToggle.SetValueChanged((_val) =>
+                    {
+                        if (_val)
+                        {
+                            item.state.Val = ToDoData.ToDoState.Done;
+                        }
+                        else
+                        {
+                            item.state.Val = ToDoData.ToDoState.NoStart;
+                        }
+                        item.finished.Val = _val;
+                    });
                     horizontalLayout.Add(toggle);
                     var tempIndex = i; //这个是匿名函数嵌套 用的
                     var deleteBtn = new ButtonView("删除", () =>
