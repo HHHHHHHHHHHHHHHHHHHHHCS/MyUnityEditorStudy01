@@ -14,35 +14,36 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         private bool isShow;
 
         private ToDoListCls _toDoListCls;
-        private readonly Property<bool> showFinished = new Property<bool>(false);
+        public readonly Property<bool> showFinished = new Property<bool>(false);
 
         private ToolBarView todoListToolBarView;
 
         private ToDoListInputView todoListInputView;
         private ToDoListView todoListView;
 
-        private ButtonView unfinishedBtn;
-        private ButtonView finishedBtn;
-
-
         protected override void SetUpView()
         {
             _toDoListCls = ToDoListCls.ModelData;
+            todoListToolBarView = new ToolBarView {style = "box"};
+            todoListToolBarView.AddMenu("清单", () =>
+            {
+                showFinished.Val = false;
+                todoListInputView.Show();
+            });
+            todoListToolBarView.AddMenu("已完成", () =>
+            {
+                showFinished.Val = true;
+                todoListInputView.Hide();
+            });
 
-            todoListToolBarView =
-                new ToolBarView(new[] {"11", "22"}, new Action[] {() => Debug.Log(1), () => Debug.Log(2)});
             todoListInputView = new ToDoListInputView(AddAction);
             todoListView = new ToDoListView(showFinished);
-            unfinishedBtn = new ButtonView("显示未完成", TurnShowFinished);
-            finishedBtn = new ButtonView("显示已完成", TurnShowFinished);
 
             showFinished.Bind(UpdateShowFinished);
             UpdateShowFinished(showFinished.Val);
 
             views.Add(todoListToolBarView);
             views.Add(todoListInputView);
-            views.Add(unfinishedBtn);
-            views.Add(finishedBtn);
             views.Add(todoListView);
         }
 
@@ -53,17 +54,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         public void UpdateShowFinished(bool _showFinished)
         {
-            if (showFinished)
-            {
-                unfinishedBtn.Show();
-                finishedBtn.Hide();
-            }
-            else
-            {
-                unfinishedBtn.Hide();
-                finishedBtn.Show();
-            }
-
             todoListView.UpdateShowFinished(showFinished);
             todoListView.UpdateToDoItems();
         }

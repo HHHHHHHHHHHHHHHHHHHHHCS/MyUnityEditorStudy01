@@ -11,6 +11,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 {
     public class ToolBarView : View
     {
+        public string style;
         private readonly List<string> menus;
         private readonly List<Action> actions;
         private readonly Property<int> selectIndex;
@@ -39,9 +40,18 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
+            bool haveStyle = !string.IsNullOrWhiteSpace(style);
+            if (haveStyle)
+            {
+                GUILayout.BeginHorizontal(style);
+            }
             if (menus.Count > 0)
             {
                 selectIndex.Val = GUILayout.Toolbar(selectIndex.Val, menus.ToArray());
+            }
+            if (haveStyle)
+            {
+                GUILayout.EndHorizontal();
             }
         }
 

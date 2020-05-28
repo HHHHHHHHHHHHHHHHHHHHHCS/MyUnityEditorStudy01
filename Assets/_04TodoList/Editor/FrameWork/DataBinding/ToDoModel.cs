@@ -202,7 +202,6 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             this.finishTime = finishTime ?? DateTime.Now;
             this.startTime = startTime ?? DateTime.Now;
             this.state = state ?? new Property<ToDoState>(ToDoState.NoStart);
-            Debug.Log(ToString());
         }
 
         public ToDoData()

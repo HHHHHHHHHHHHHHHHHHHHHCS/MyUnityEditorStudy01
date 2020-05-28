@@ -17,7 +17,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
-            if (GUILayout.Button(text ?? string.Empty))
+            if (GUILayout.Button(text ?? string.Empty, GUILayout.Width(40)))
             {
                 OnClickEvent?.Invoke();
             }
