@@ -12,16 +12,26 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         public ToDoListInputView(Action<string> onInputClick)
             : base("box")
         {
+            var horizontalLayout = new HorizontalLayout("box");
+
             var inputTextArea = new TextAreaView(todoName);
             inputTextArea.Content.Bind(x => todoName = x);
-            Add(inputTextArea);
+            horizontalLayout.Add(inputTextArea);
 
-            Add(new ButtonView("添加", () =>
+            var inputBtn = new ButtonView("添加", () =>
             {
-                onInputClick(todoName);
-                inputTextArea.Content.Val = string.Empty;
-                GUI.FocusControl(null);
-            }));
+                if (!string.IsNullOrEmpty(todoName))
+                {
+                    onInputClick(todoName);
+                    inputTextArea.Content.Val = string.Empty;
+                    GUI.FocusControl(null);
+                }
+            });
+
+            horizontalLayout.Add(inputBtn);
+
+            Add(horizontalLayout);
+
         }
     }
 }

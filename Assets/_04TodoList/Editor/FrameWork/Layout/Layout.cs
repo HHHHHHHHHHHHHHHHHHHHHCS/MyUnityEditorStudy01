@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using _04ToDoList.Editor.FrameWork.Layout.Interface;
+using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Layout
 {
@@ -11,6 +12,8 @@ namespace _04ToDoList.Editor.FrameWork.Layout
         public string Style { get; set; }
 
         protected readonly LinkedList<IView> children = new LinkedList<IView>();
+
+        public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
 
         public ILayout Parent { get; set; }
 

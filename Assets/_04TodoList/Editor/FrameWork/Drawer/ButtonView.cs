@@ -17,7 +17,19 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
-            if (GUILayout.Button(text ?? string.Empty, GUILayout.Width(40)))
+            bool isClick;
+
+            if (guiLayoutOptions != null && guiLayoutOptions.Length > 0)
+            {
+                isClick = GUILayout.Button(text ?? string.Empty, guiLayoutOptions);
+            }
+            else
+            {
+                isClick = GUILayout.Button(text ?? string.Empty, GUILayout.Width(40));
+            }
+
+
+            if (isClick)
             {
                 OnClickEvent?.Invoke();
             }
