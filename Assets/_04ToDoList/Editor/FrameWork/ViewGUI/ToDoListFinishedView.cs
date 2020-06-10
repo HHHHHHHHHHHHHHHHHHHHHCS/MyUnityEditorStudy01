@@ -1,20 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using _04ToDoList.Editor.FrameWork.DataBinding;
-using _04ToDoList.Editor.FrameWork.Drawer;
+﻿using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Layout;
-using _04ToDoList.Editor.FrameWork.ViewGUI;
 using UnityEngine;
 
-namespace _04ToDoList.Editor.FrameWork.ViewController
+namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-    public class ToDoListView : VerticalLayout
+    public class ToDoListFinishedView : VerticalLayout
     {
         private bool isDirty;
 
-        public ToDoListView() : base("box")
+        public ToDoListFinishedView() : base("box")
         {
         }
 
@@ -41,7 +35,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             for (int i = dataList.Count - 1; i >= 0; --i)
             {
                 var item = dataList[i];
-                if ((item.state.Val == ToDoData.ToDoState.Done) == false)
+                if ((item.state.Val == ToDoData.ToDoState.Done) == true)
                 {
                     children.AddLast(new ToDoListItemView(item, UpdateToDoItems));
                 }

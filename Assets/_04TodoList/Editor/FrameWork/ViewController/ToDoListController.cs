@@ -20,6 +20,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         private ToDoListInputView todoListInputView;
         private ToDoListView todoListView;
+        private ToDoListFinishedView todoListFinishedView;
+
 
         protected override void SetUpView()
         {
@@ -37,7 +39,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             });
 
             todoListInputView = new ToDoListInputView(AddAction);
-            todoListView = new ToDoListView(showFinished);
+            todoListView = new ToDoListView();
+            todoListFinishedView = new ToDoListFinishedView();
 
             showFinished.Bind(UpdateShowFinished);
             UpdateShowFinished(showFinished.Val);
@@ -45,6 +48,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             views.Add(todoListToolBarView);
             views.Add(todoListInputView);
             views.Add(todoListView);
+            views.Add(todoListFinishedView);
         }
 
         public void TurnShowFinished()
@@ -54,13 +58,24 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         public void UpdateShowFinished(bool _showFinished)
         {
-            todoListView.UpdateShowFinished(showFinished);
-            todoListView.UpdateToDoItems();
+            if (_showFinished)
+            {
+                todoListView.Hide();
+                todoListFinishedView.Show();
+                todoListFinishedView.ReBuildToDoItems();
+            }
+            else
+            {
+                todoListView.Show();
+                todoListFinishedView.Hide();
+                todoListView.ReBuildToDoItems();
+            }
         }
 
         protected override void OnUpdate()
         {
             todoListView.OnUpdate();
+            todoListFinishedView.OnUpdate();
         }
 
         public void OnDisable()
