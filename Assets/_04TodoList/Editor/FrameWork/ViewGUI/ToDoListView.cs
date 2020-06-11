@@ -14,8 +14,19 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
     {
         private bool isDirty;
 
-        public ToDoListView() : base("box")
+        private ToDoListInputView todoListInputView;
+        private VerticalLayout todoListItemsLayout;
+
+        private string itemsStyle;
+
+        public ToDoListView() : base()
         {
+            itemsStyle = null;
+            todoListInputView = new ToDoListInputView(AddAction);
+            todoListItemsLayout = new VerticalLayout();
+            Add(todoListInputView);
+            Add(new SpaceView(4));
+            Add(todoListItemsLayout);
         }
 
         public void UpdateToDoItems()
@@ -25,6 +36,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         public void OnUpdate()
         {
+            todoListItemsLayout.Refresh();
             if (isDirty)
             {
                 isDirty = false;
@@ -36,14 +48,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         {
             var dataList = ToDoListCls.ModelData.todoList;
 
-            children.Clear();
+            todoListItemsLayout.Clear();
 
             for (int i = dataList.Count - 1; i >= 0; --i)
             {
                 var item = dataList[i];
                 if ((item.state.Val == ToDoData.ToDoState.Done) == false)
                 {
-                    children.AddLast(new ToDoListItemView(item, UpdateToDoItems));
+                    todoListItemsLayout.Add(new ToDoListItemView(item, RemoveFromParent));
                 }
             }
 
@@ -52,7 +64,18 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         private void RefreshVisible()
         {
-            Style = children.Count > 0 ? "box" : null;
+            todoListItemsLayout.Style = children.Count > 0 ? "box" : null;
+        }
+
+        private void AddAction(string _todoName)
+        {
+            ToDoListCls.ModelData.Add(_todoName, false);
+            UpdateToDoItems();
+        }
+
+        private void RemoveFromParent(ToDoListItemView item)
+        {
+            todoListItemsLayout.Remove(item);
         }
     }
 }

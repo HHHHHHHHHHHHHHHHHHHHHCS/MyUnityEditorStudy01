@@ -19,11 +19,30 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         public void Show()
         {
             Visible = true;
+            OnShow();
+        }
+
+        protected virtual void OnShow()
+        {
         }
 
         public void Hide()
         {
             Visible = false;
+            OnHide();
+        }
+
+        protected virtual void OnHide()
+        {
+        }
+
+        public void Refresh()
+        {
+            OnRefresh();
+        }
+
+        protected virtual void OnRefresh()
+        {
         }
 
         public void OnBeforeDraw()

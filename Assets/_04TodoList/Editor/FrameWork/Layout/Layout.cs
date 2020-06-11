@@ -11,7 +11,7 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         public string Style { get; set; }
 
-        protected readonly LinkedList<IView> children = new LinkedList<IView>();
+        protected readonly List<IView> children = new List<IView>();
 
         public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
 
@@ -25,17 +25,41 @@ namespace _04ToDoList.Editor.FrameWork.Layout
         public void Show()
         {
             Visible = true;
+            OnShow();
+        }
+
+        protected virtual void OnShow()
+        {
         }
 
         public void Hide()
         {
             Visible = false;
+            OnHide();
+        }
+
+        protected virtual void OnHide()
+        {
+        }
+
+        public void Refresh()
+        {
+            OnRefresh();
+        }
+
+        protected virtual void OnRefresh()
+        {
+            for (int i = children.Count - 1; i >= 0; --i)
+            {
+                children[i].Refresh();
+            }
+ 
         }
 
         public void Add(IView view)
         {
             view.Parent = this as ILayout;
-            children.AddLast(view);
+            children.Add(view);
         }
 
         public void Remove(IView view)

@@ -8,6 +8,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
     {
         private bool isDirty;
 
+
         public ToDoListFinishedView() : base("box")
         {
         }
@@ -19,6 +20,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         public void OnUpdate()
         {
+            Refresh();
             if (isDirty)
             {
                 isDirty = false;
@@ -37,7 +39,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 var item = dataList[i];
                 if ((item.state.Val == ToDoData.ToDoState.Done) == true)
                 {
-                    children.AddLast(new ToDoListItemView(item, UpdateToDoItems));
+                    children.Add(new ToDoListItemView(item, RemoveFromParent));
                 }
             }
 
@@ -47,6 +49,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private void RefreshVisible()
         {
             Style = children.Count > 0 ? "box" : null;
+        }
+
+        private void RemoveFromParent(ToDoListItemView item)
+        {
+            children.Remove(item);
         }
     }
 }

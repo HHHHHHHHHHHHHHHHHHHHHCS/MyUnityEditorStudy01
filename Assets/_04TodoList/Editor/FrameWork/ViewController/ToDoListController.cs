@@ -18,7 +18,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         private ToolBarView todoListToolBarView;
 
-        private ToDoListInputView todoListInputView;
         private ToDoListView todoListView;
         private ToDoListFinishedView todoListFinishedView;
 
@@ -30,15 +29,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             todoListToolBarView.AddMenu("清单", () =>
             {
                 showFinished.Val = false;
-                todoListInputView.Show();
             });
             todoListToolBarView.AddMenu("已完成", () =>
             {
                 showFinished.Val = true;
-                todoListInputView.Hide();
             });
 
-            todoListInputView = new ToDoListInputView(AddAction);
             todoListView = new ToDoListView();
             todoListFinishedView = new ToDoListFinishedView();
 
@@ -46,7 +42,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             UpdateShowFinished(showFinished.Val);
 
             views.Add(todoListToolBarView);
-            views.Add(todoListInputView);
             views.Add(todoListView);
             views.Add(todoListFinishedView);
         }
@@ -83,10 +78,5 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             _toDoListCls.Save();
         }
 
-        private void AddAction(string _todoName)
-        {
-            _toDoListCls.Add(_todoName, false);
-            todoListView.UpdateToDoItems();
-        }
     }
 }

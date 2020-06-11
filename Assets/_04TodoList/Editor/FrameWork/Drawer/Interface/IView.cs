@@ -14,6 +14,8 @@ namespace _04ToDoList.Editor.FrameWork.Drawer.Interface
 
         void Hide();
 
+        void Refresh();
+
         void DrawGUI();
     }
 }
