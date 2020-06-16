@@ -10,5 +10,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewExtension
             view.guiLayouts.Add(GUILayout.Width(width));
             return view;
         }
+
+        public static T Height<T>(this T view, float height) where T : IView
+        {
+            view.guiLayouts.Add(GUILayout.Width(height));
+            return view;
+        }
     }
 }

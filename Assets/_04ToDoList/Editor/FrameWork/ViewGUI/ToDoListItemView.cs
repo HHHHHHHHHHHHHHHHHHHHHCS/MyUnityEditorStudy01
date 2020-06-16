@@ -5,6 +5,7 @@ using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.Layout.Interface;
+using UnityEditor;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
@@ -17,10 +18,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private bool needFresh;
         private bool needRemove;
 
+        private Texture2D playIcon;
 
         public ToDoListItemView(ToDoData _item, Action<ToDoListItemView> _removeAct)
             : base()
         {
+            playIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Play.png");
+
             this.data = _item;
             this.removeAct = _removeAct;
             BuildItem();
@@ -42,6 +46,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         public void BuildItem()
         {
             Clear();
+
+            Add(new CustomView(() =>
+            {
+                GUILayout.Button(playIcon, GUILayout.Width(40), GUILayout.Height(20));
+            }));
 
             if (data.state == ToDoData.ToDoState.NoStart)
             {
