@@ -47,18 +47,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         {
             Clear();
 
-            Add(new CustomView(() =>
-            {
-                GUILayout.Button(playIcon, GUILayout.Width(40), GUILayout.Height(20));
-            }));
-
             if (data.state == ToDoData.ToDoState.NoStart)
             {
-                var startBtn = new ButtonView("开始", () =>
+                var startBtn = new ImageButtonView(playIcon, () =>
                 {
                     data.state.Val = ToDoData.ToDoState.Started;
                     needFresh = true;
-                });
+                }).Height(20).Width(40);
                 Add(startBtn);
             }
             else if (data.state == ToDoData.ToDoState.Started)

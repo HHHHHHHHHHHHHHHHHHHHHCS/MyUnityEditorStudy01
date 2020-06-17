@@ -1,7 +1,7 @@
 ﻿using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using UnityEngine;
 
-namespace _04ToDoList.Editor.FrameWork.ViewExtension
+namespace _04ToDoList.Editor.FrameWork
 {
     public static class ViewExtension 
     {
@@ -13,7 +13,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewExtension
 
         public static T Height<T>(this T view, float height) where T : IView
         {
-            view.guiLayouts.Add(GUILayout.Width(height));
+            view.guiLayouts.Add(GUILayout.Height(height));
             return view;
         }
     }

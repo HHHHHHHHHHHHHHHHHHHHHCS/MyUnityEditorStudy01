@@ -47,7 +47,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         public void OnBeforeDraw()
         {
-            if (!beforeDrawCalled)
+            if (beforeDrawCalled)
             {
                 return;
             }
