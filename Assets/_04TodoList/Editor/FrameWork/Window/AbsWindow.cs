@@ -27,7 +27,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
             else
             {
                 //if is isUtility can't show icon
-                //var texture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/main.png");
+                //var texture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Main.png");
                 //window.titleContent = new GUIContent("ToDoLists", texture);
 
                 window.ShowUtility();

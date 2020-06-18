@@ -18,13 +18,22 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private bool needFresh;
         private bool needRemove;
 
-        private Texture2D playIcon;
+        private static Texture2D playIcon;
+        private static Texture2D finishIcon;
+        private static Texture2D resetIcon;
+        private static GUIStyle fontStyle;
+
+        static ToDoListItemView()
+        {
+            playIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Play.png");
+            finishIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Finish.png");
+            resetIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Reset.png");
+            fontStyle = new GUIStyle() {fontSize = 14};
+        }
 
         public ToDoListItemView(ToDoData _item, Action<ToDoListItemView> _removeAct)
             : base()
         {
-            playIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Play.png");
-
             this.data = _item;
             this.removeAct = _removeAct;
             BuildItem();
@@ -58,25 +67,29 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
             else if (data.state == ToDoData.ToDoState.Started)
             {
-                var finishedBtn = new ButtonView("完成", () =>
+                var finishedBtn = new ImageButtonView(finishIcon, () =>
                 {
                     data.state.Val = ToDoData.ToDoState.Done;
                     needRemove = true;
-                });
+                }).Height(20).Width(40);
                 Add(finishedBtn);
             }
             else if (data.state == ToDoData.ToDoState.Done)
             {
-                var finishedBtn = new ButtonView("重置", () =>
+                var resetBtn = new ImageButtonView(resetIcon, () =>
                 {
                     data.state.Val = ToDoData.ToDoState.NoStart;
                     needRemove = true;
-                });
-                Add(finishedBtn);
+                }).Height(20).Width(40);
+                Add(resetBtn);
             }
 
 
-            var contentLabel = new CustomView(() => { GUILayout.Label(data.content); });
+            var contentLabel = new CustomView(() =>
+            {
+                GUILayout.Label(data.content
+                    , fontStyle, GUILayout.Height(30));
+            });
             Add(contentLabel);
 
             var deleteBtn = new ButtonView("删除", () =>
