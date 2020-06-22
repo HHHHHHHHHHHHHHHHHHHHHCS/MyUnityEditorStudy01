@@ -21,7 +21,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
             if (guiLayouts != null && guiLayouts.Count > 0)
             {
-                isClick = GUILayout.Button(text ?? string.Empty, guiLayouts.ToArray());
+                isClick = GUILayout.Button(text ?? string.Empty,  guiLayouts.ToArray());
             }
             else
             {

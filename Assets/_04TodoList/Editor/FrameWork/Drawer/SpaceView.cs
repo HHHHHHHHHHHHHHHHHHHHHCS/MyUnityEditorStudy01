@@ -13,7 +13,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
-            GUILayout.Space(10);
+            GUILayout.Space(Pixel);
         }
     }
 }

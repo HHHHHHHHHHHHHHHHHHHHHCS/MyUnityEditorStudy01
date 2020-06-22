@@ -10,25 +10,26 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-    public class ToDoListItemView : HorizontalLayout
+    public class ToDoListItemView : VerticalLayout
     {
+        private static Texture2D playIcon;
+        private static Texture2D finishIcon;
+        private static Texture2D resetIcon;
+
+        private HorizontalLayout container;
+
         public ToDoData data;
         public Action<ToDoListItemView> removeAct;
 
         private bool needFresh;
         private bool needRemove;
 
-        private static Texture2D playIcon;
-        private static Texture2D finishIcon;
-        private static Texture2D resetIcon;
-        private static GUIStyle fontStyle;
 
         static ToDoListItemView()
         {
             playIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Play.png");
             finishIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Finish.png");
             resetIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Reset.png");
-            fontStyle = new GUIStyle() {fontSize = 14};
         }
 
         public ToDoListItemView(ToDoData _item, Action<ToDoListItemView> _removeAct)
@@ -36,6 +37,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         {
             this.data = _item;
             this.removeAct = _removeAct;
+            container = new HorizontalLayout();
+            Add(container);
+            Add(new SpaceView(4));
             BuildItem();
         }
 
@@ -54,7 +58,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         public void BuildItem()
         {
-            Clear();
+            container.Clear();
 
             if (data.state == ToDoData.ToDoState.NoStart)
             {
@@ -63,7 +67,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     data.state.Val = ToDoData.ToDoState.Started;
                     needFresh = true;
                 }).Height(20).Width(40);
-                Add(startBtn);
+                container.Add(startBtn);
             }
             else if (data.state == ToDoData.ToDoState.Started)
             {
@@ -72,7 +76,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     data.state.Val = ToDoData.ToDoState.Done;
                     needRemove = true;
                 }).Height(20).Width(40);
-                Add(finishedBtn);
+                container.Add(finishedBtn);
             }
             else if (data.state == ToDoData.ToDoState.Done)
             {
@@ -81,16 +85,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     data.state.Val = ToDoData.ToDoState.NoStart;
                     needRemove = true;
                 }).Height(20).Width(40);
-                Add(resetBtn);
+                container.Add(resetBtn);
             }
 
 
-            var contentLabel = new CustomView(() =>
-            {
-                GUILayout.Label(data.content
-                    , fontStyle, GUILayout.Height(30));
-            });
-            Add(contentLabel);
+            var contentLabel = new LabelView(data.content).FontSize(15).TextMiddleLeft().Height(20);
+            container.Add(contentLabel);
 
             var deleteBtn = new ButtonView("删除", () =>
             {
@@ -100,7 +100,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 todoListCls.Save();
                 needRemove = true;
             });
-            Add(deleteBtn);
+            container.Add(deleteBtn);
         }
     }
 }

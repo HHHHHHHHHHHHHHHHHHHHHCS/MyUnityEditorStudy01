@@ -53,7 +53,6 @@ namespace _04ToDoList.Editor.FrameWork.Layout
             {
                 children[i].Refresh();
             }
- 
         }
 
         public void Add(IView view)
