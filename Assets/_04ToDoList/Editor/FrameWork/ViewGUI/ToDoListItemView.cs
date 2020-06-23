@@ -15,6 +15,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private static Texture2D playIcon;
         private static Texture2D finishIcon;
         private static Texture2D resetIcon;
+        private static Texture2D deleteIcon;
+
 
         private HorizontalLayout container;
 
@@ -30,6 +32,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             playIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Play.png");
             finishIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Finish.png");
             resetIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Reset.png");
+            deleteIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Delete.png");
         }
 
         public ToDoListItemView(ToDoData _item, Action<ToDoListItemView> _removeAct)
@@ -66,7 +69,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 {
                     data.state.Val = ToDoData.ToDoState.Started;
                     needFresh = true;
-                }).Height(20).Width(40);
+                }).Height(20).Width(40).BackgroundColor(Color.green);
                 container.Add(startBtn);
             }
             else if (data.state == ToDoData.ToDoState.Started)
@@ -75,7 +78,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 {
                     data.state.Val = ToDoData.ToDoState.Done;
                     needRemove = true;
-                }).Height(20).Width(40);
+                }).Height(20).Width(40).BackgroundColor(Color.green);
                 container.Add(finishedBtn);
             }
             else if (data.state == ToDoData.ToDoState.Done)
@@ -84,7 +87,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 {
                     data.state.Val = ToDoData.ToDoState.NoStart;
                     needRemove = true;
-                }).Height(20).Width(40);
+                }).Height(20).Width(40).BackgroundColor(Color.grey);
                 container.Add(resetBtn);
             }
 
@@ -92,14 +95,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             var contentLabel = new LabelView(data.content).FontSize(15).TextMiddleLeft().Height(20);
             container.Add(contentLabel);
 
-            var deleteBtn = new ButtonView("删除", () =>
+            var deleteBtn = new ImageButtonView(deleteIcon, () =>
             {
                 data.finished.ClearValueChanged();
                 var todoListCls = ToDoListCls.ModelData;
                 todoListCls.todoList.Remove(data);
                 todoListCls.Save();
                 needRemove = true;
-            });
+            }).Height(20).Width(40).BackgroundColor(Color.red);
             container.Add(deleteBtn);
         }
     }

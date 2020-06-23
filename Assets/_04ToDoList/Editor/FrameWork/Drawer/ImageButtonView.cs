@@ -27,6 +27,9 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
+            var lastBgColor = GUI.backgroundColor;
+            GUI.backgroundColor = backgroundColor;
+
             bool isClick;
 
             if (guiLayoutOptions != null && guiLayoutOptions.Length > 0)
@@ -43,6 +46,8 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             {
                 OnClickEvent?.Invoke();
             }
+
+            GUI.backgroundColor = lastBgColor;
         }
     }
 }
