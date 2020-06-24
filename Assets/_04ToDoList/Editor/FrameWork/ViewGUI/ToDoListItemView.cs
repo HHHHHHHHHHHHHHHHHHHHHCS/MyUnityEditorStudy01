@@ -102,7 +102,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 todoListCls.todoList.Remove(data);
                 todoListCls.Save();
                 needRemove = true;
-            }).Height(20).Width(40).BackgroundColor(Color.red);
+            }).Height(20).Width(30).BackgroundColor(Color.red);
             container.Add(deleteBtn);
         }
     }

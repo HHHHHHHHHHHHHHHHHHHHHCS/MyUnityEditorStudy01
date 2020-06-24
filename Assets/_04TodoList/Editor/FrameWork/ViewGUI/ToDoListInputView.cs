@@ -1,24 +1,31 @@
 ﻿using System;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
+using UnityEditor;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListInputView : HorizontalLayout
     {
+        private static Texture2D addIcon;
+
         private string todoName = string.Empty;
+
+        static ToDoListInputView()
+        {
+            addIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Add.png");
+        }
 
         public ToDoListInputView(Action<string> onInputClick)
             : base("box")
         {
-            var horizontalLayout = new HorizontalLayout("box");
 
-            var inputTextArea = new TextAreaView(todoName);
+            var inputTextArea = new TextAreaView(todoName).Height(20);
             inputTextArea.Content.Bind(x => todoName = x);
-            horizontalLayout.Add(inputTextArea);
+            Add(inputTextArea);
 
-            var inputBtn = new ButtonView("添加", () =>
+            var addBtn = new ImageButtonView(addIcon, () =>
             {
                 if (!string.IsNullOrEmpty(todoName))
                 {
@@ -26,11 +33,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     inputTextArea.Content.Val = string.Empty;
                     GUI.FocusControl(null);
                 }
-            });
+            }).Width(20).Height(20).BackgroundColor(Color.yellow);
 
-            horizontalLayout.Add(inputBtn);
-
-            Add(horizontalLayout);
+            Add(addBtn);
 
         }
     }

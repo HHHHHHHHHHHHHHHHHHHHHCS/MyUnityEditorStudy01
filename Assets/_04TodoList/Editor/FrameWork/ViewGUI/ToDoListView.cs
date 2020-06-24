@@ -25,6 +25,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             itemsStyle = null;
             todoListInputView = new ToDoListInputView(AddAction);
             todoListItemsLayout = new VerticalLayout();
+            Add(new SpaceView(4));
             Add(todoListInputView);
             Add(new SpaceView(4));
             Add(todoListItemsLayout);

@@ -62,8 +62,11 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         {
             if (Visible)
             {
+                var lastBgColor = GUI.backgroundColor;
+                GUI.backgroundColor = backgroundColor;
                 OnBeforeDraw();
                 OnGUI();
+                GUI.backgroundColor = lastBgColor;
             }
         }
 

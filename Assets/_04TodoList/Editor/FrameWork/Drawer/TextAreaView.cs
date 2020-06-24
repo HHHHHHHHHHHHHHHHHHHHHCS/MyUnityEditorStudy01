@@ -15,7 +15,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
-            Content.Val = EditorGUILayout.TextArea(Content.Val);
+            Content.Val = EditorGUILayout.TextArea(Content.Val, guiLayoutOptions);
         }
     }
 }
