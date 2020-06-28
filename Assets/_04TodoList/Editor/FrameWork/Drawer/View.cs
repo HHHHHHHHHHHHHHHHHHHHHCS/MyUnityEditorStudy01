@@ -15,7 +15,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected bool beforeDrawCalled = false;
         protected GUILayoutOption[] guiLayoutOptions;
-        public GUIStyle style { get; protected set; } = new GUIStyle();
+        public GUIStyle guiStyle { get; protected set; } = new GUIStyle();
         public Color backgroundColor { get; set; } = GUI.backgroundColor;
 
         public void Show()

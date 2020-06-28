@@ -67,7 +67,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             {
                 var startBtn = new ImageButtonView(playIcon, () =>
                 {
-                    data.state.Val = ToDoData.ToDoState.Started;
+                    data.startTime = DateTime.Now;
+                    data.state.Val = ToDoData.ToDoState.Started;//改变了state会自动储存
                     needFresh = true;
                 }).Height(20).Width(40).BackgroundColor(Color.green);
                 container.Add(startBtn);
@@ -76,6 +77,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             {
                 var finishedBtn = new ImageButtonView(finishIcon, () =>
                 {
+                    data.startTime = DateTime.Now;
                     data.state.Val = ToDoData.ToDoState.Done;
                     needRemove = true;
                 }).Height(20).Width(40).BackgroundColor(Color.green);
@@ -85,6 +87,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             {
                 var resetBtn = new ImageButtonView(resetIcon, () =>
                 {
+                    data.startTime = DateTime.Now;
                     data.state.Val = ToDoData.ToDoState.NoStart;
                     needRemove = true;
                 }).Height(20).Width(40).BackgroundColor(Color.grey);

@@ -13,7 +13,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
-            GUILayout.Label(content, style, guiLayoutOptions);
+            GUILayout.Label(content, guiStyle, guiLayoutOptions);
         }
     }
 }

@@ -25,15 +25,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         protected override void SetUpView()
         {
             _toDoListCls = ToDoListCls.ModelData;
-            todoListToolBarView = new ToolBarView {style = "box"};
-            todoListToolBarView.AddMenu("清单", () =>
-            {
-                showFinished.Val = false;
-            });
-            todoListToolBarView.AddMenu("已完成", () =>
-            {
-                showFinished.Val = true;
-            });
+            todoListToolBarView = new ToolBarView {style = "box"}.FontSize(15);
+            todoListToolBarView
+                .AddMenu("清单", () => { showFinished.Val = false; })
+                .AddMenu("已完成", () => { showFinished.Val = true; });
 
             todoListView = new ToDoListView();
             todoListFinishedView = new ToDoListFinishedView();
@@ -77,6 +72,5 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         {
             _toDoListCls.Save();
         }
-
     }
 }

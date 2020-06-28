@@ -11,11 +11,12 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         public TextAreaView(string content)
         {
             Content = new Property<string>(content);
+            guiStyle = GUI.skin.textArea;
         }
 
         protected override void OnGUI()
         {
-            Content.Val = EditorGUILayout.TextArea(Content.Val, guiLayoutOptions);
+            Content.Val = EditorGUILayout.TextArea(Content.Val, guiStyle, guiLayoutOptions);
         }
     }
 }

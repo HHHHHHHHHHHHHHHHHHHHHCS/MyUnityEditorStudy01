@@ -21,7 +21,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             : base("box")
         {
 
-            var inputTextArea = new TextAreaView(todoName).Height(20);
+            var inputTextArea = new TextAreaView(todoName).Height(20).FontSize(15);
             inputTextArea.Content.Bind(x => todoName = x);
             Add(inputTextArea);
 

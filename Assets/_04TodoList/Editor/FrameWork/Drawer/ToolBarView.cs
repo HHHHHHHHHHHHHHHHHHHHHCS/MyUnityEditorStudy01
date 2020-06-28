@@ -21,6 +21,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             menus = new List<string>();
             actions = new List<Action>();
             selectIndex = new Property<int>(0, ClickAct);
+            guiStyle = GUI.skin.button;
         }
 
         public ToolBarView(string[] _menus, Action[] _actions)
@@ -28,6 +29,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             menus = _menus == null ? new List<string>() : _menus.ToList();
             actions = _actions == null ? new List<Action>() : _actions.ToList();
             selectIndex = new Property<int>(0, ClickAct);
+            guiStyle = GUI.skin.button;
         }
 
 
@@ -36,6 +38,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             menus = _menus == null ? new List<string>() : _menus.ToList();
             actions = _actions == null ? new List<Action>() : _actions.ToList();
             selectIndex = new Property<int>(0, ClickAct);
+            guiStyle = GUI.skin.button;
         }
 
         protected override void OnGUI()
@@ -45,10 +48,12 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             {
                 GUILayout.BeginHorizontal(style);
             }
+
             if (menus.Count > 0)
             {
-                selectIndex.Val = GUILayout.Toolbar(selectIndex.Val, menus.ToArray());
+                selectIndex.Val = GUILayout.Toolbar(selectIndex.Val, menus.ToArray(), guiStyle, guiLayoutOptions);
             }
+
             if (haveStyle)
             {
                 GUILayout.EndHorizontal();

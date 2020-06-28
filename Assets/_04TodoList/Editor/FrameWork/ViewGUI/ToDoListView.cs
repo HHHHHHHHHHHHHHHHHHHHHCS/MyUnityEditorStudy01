@@ -59,6 +59,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                 if ((item.state.Val == ToDoData.ToDoState.Done) == false)
                 {
                     todoListItemsLayout.Add(new ToDoListItemView(item, RemoveFromParent));
+                    todoListItemsLayout.Add(new SpaceView(4));
                 }
             }
 

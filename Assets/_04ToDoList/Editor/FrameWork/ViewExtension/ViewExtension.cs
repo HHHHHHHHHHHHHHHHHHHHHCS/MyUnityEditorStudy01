@@ -20,13 +20,13 @@ namespace _04ToDoList.Editor.FrameWork
 
         public static T FontSize<T>(this T view, int fontSize) where T : View
         {
-            view.style.fontSize = fontSize;
+            view.guiStyle.fontSize = fontSize;
             return view;
         }
 
         public static T TextPosition<T>(this T view, TextAnchor textAnchor) where T : View
         {
-            view.style.alignment = textAnchor;
+            view.guiStyle.alignment = textAnchor;
             return view;
         }
 
