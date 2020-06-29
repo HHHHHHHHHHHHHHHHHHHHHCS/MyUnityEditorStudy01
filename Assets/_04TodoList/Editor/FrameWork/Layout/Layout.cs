@@ -11,7 +11,7 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         public string Style { get; set; }
 
-        protected readonly List<IView> children = new List<IView>();
+        public readonly List<IView> children = new List<IView>();
 
         public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
 

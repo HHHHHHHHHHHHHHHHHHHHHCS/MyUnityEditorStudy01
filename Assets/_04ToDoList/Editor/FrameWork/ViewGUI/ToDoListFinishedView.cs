@@ -36,18 +36,17 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             children.Clear();
 
-
             var groupsByDay = dataList.Where(item => item.state.Val == ToDoData.ToDoState.Done)
                 .GroupBy(item => item.finishTime.Date);
 
             foreach (var group in groupsByDay)
             {
-                children.Add(new LabelView(group.Key.ToString("yyyy年MM月dd日"))
+                Add(new LabelView(group.Key.ToString("yyyy年MM月dd日"))
                     .FontSize(20).TextMiddleCenter());
                 foreach (var item in group)
                 {
-                    children.Add(new ToDoListItemView(item, RemoveFromParent));
-                    children.Add(new SpaceView(4));
+                    Add(new ToDoListItemView(item, RemoveFromParent, true));
+                    Add(new SpaceView(4));
                 }
             }
 
@@ -62,7 +61,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private void RemoveFromParent(ToDoListItemView item)
         {
-            children.Remove(item);
+            isDirty = true;
         }
     }
 }

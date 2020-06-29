@@ -18,11 +18,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         private ToDoListInputView todoListInputView;
         private VerticalLayout todoListItemsLayout;
 
-        private string itemsStyle;
-
         public ToDoListView() : base()
         {
-            itemsStyle = null;
             todoListInputView = new ToDoListInputView(AddAction);
             todoListItemsLayout = new VerticalLayout();
             Add(new SpaceView(4));
@@ -68,7 +65,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         private void RefreshVisible()
         {
-            todoListItemsLayout.Style = children.Count > 0 ? "box" : null;
+            todoListItemsLayout.Style = todoListItemsLayout.children.Count > 0 ? "box" : null;
         }
 
         private void AddAction(string _todoName)
@@ -79,7 +76,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         private void RemoveFromParent(ToDoListItemView item)
         {
-            todoListItemsLayout.Remove(item);
+            isDirty = true;
         }
     }
 }
