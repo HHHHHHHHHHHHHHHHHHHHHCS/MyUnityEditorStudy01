@@ -45,6 +45,16 @@ namespace _04ToDoList.Editor.FrameWork
             return TextPosition(view, TextAnchor.MiddleRight);
         }
 
+        public static T TextLowCenter<T>(this T view) where T : View
+        {
+            return TextPosition(view, TextAnchor.LowerCenter);
+        }
+
+        public static T TextLowRight<T>(this T view) where T : View
+        {
+            return TextPosition(view, TextAnchor.LowerRight);
+        }
+
         public static T BackgroundColor<T>(this T view, Color color) where T : View
         {
             view.backgroundColor = color;

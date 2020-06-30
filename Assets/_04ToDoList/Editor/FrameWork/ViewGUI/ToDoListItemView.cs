@@ -103,8 +103,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             if (showTime)
             {
-                container.Add(new LabelView((data.finishTime - data.startTime).ToString())
-                    .Width(100).TextMiddleRight());
+                container.Add(new LabelView(data.UsedTimeText)
+                    .Height(20).Width(100).TextLowRight());
             }
 
             var deleteBtn = new ImageButtonView(deleteIcon, () =>

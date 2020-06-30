@@ -186,6 +186,32 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
         public Property<ToDoState> state;
 
+        public string UsedTimeText
+        {
+            get
+            {
+                var usedTime = finishTime - startTime;
+                if (usedTime.TotalSeconds < 60)
+                {
+                    return $"花费 {usedTime.Seconds} 秒";
+                }
+                else if (usedTime.TotalMinutes < 60)
+                {
+                    return $"花费 {usedTime.Minutes} 分钟";
+                }
+                else if (usedTime.TotalHours < 24)
+                {
+                    return $"花费 {usedTime.Hours} 小时";
+                }
+                else if (usedTime.TotalDays < 7)
+                {
+                    return $"花费 {usedTime.Days} 天";
+                }
+
+                return $"花费 {usedTime.TotalDays/7} 周";
+            }
+        }
+
         public void Init(string content = null, Action saveAct = null
             , Property<bool> finished = null, Action<bool> finishedChangeAct = null
             , DateTime? createTime = null, DateTime? finishTime = null, DateTime? startTime = null

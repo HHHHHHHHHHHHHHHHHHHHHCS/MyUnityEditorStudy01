@@ -37,13 +37,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             children.Clear();
 
             var groupsByDay = dataList.Where(item => item.state.Val == ToDoData.ToDoState.Done)
-                .GroupBy(item => item.finishTime.Date);
+                .GroupBy(item => item.finishTime.Date)
+                .OrderByDescending(item => item.Key);
 
             foreach (var group in groupsByDay)
             {
                 Add(new LabelView(group.Key.ToString("yyyy年MM月dd日"))
-                    .FontSize(20).TextMiddleCenter());
-                foreach (var item in group)
+                    .FontSize(20).TextLowCenter());
+                foreach (var item in group.OrderByDescending(val => val.finishTime))
                 {
                     Add(new ToDoListItemView(item, RemoveFromParent, true));
                     Add(new SpaceView(4));
