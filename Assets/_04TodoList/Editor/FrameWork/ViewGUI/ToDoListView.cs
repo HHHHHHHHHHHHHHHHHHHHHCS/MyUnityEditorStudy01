@@ -22,11 +22,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         {
             todoListInputView = new ToDoListInputView(AddAction);
             todoListItemsLayout = new VerticalLayout();
-            Add(new SpaceView(4));
-            Add(todoListInputView);
-            Add(new SpaceView(4));
-            Add(todoListItemsLayout);
-
+            new SpaceView(4).AddTo(this);
+            todoListInputView.AddTo(this);
+            new SpaceView(4).AddTo(this);
+            todoListItemsLayout.AddTo(this);
         }
 
         public void UpdateToDoItems()
@@ -55,8 +54,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                 var item = dataList[i];
                 if ((item.state.Val == ToDoData.ToDoState.Done) == false)
                 {
-                    todoListItemsLayout.Add(new ToDoListItemView(item, RemoveFromParent));
-                    todoListItemsLayout.Add(new SpaceView(4));
+                    new ToDoListItemView(item, RemoveFromParent).AddTo(todoListItemsLayout);
+                    new SpaceView(4).AddTo(todoListItemsLayout);
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
@@ -42,8 +43,16 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             foreach (var group in groupsByDay)
             {
-                Add(new LabelView(group.Key.ToString("yyyy年MM月dd日"))
+                TimeSpan totalTime = TimeSpan.Zero;
+                foreach (var item in group)
+                {
+                    totalTime += item.UsedTime;
+                }
+
+                Add(new LabelView(group.Key.ToString("yyyy年MM月dd日 (共" + ToDoData.UsedTimeToString(totalTime) + ")"))
                     .FontSize(20).TextLowCenter());
+
+
                 foreach (var item in group.OrderByDescending(val => val.finishTime))
                 {
                     Add(new ToDoListItemView(item, RemoveFromParent, true));

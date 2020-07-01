@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Layout
 {
-    public abstract class Layout : IView
+    public abstract class Layout : ILayout
     {
         public bool Visible { get; set; } = true;
 

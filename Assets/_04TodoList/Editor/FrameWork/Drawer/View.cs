@@ -70,6 +70,17 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             }
         }
 
+        public void RemoveFromParent()
+        {
+            Parent.Remove(this);
+        }
+
+        public T AddTo<T>(ILayout parent) where T : View
+        {
+            parent.Add(this);
+            return this as T;
+        }
+
         protected abstract void OnGUI();
     }
 }
