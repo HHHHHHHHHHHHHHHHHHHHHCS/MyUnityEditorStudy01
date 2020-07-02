@@ -97,6 +97,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 container.Add(resetBtn);
             }
 
+            new EnumPopupView<ToDoData.Priority>(ToDoData.Priority.None, (val) => { Debug.Log(val); })
+                .Width(60).Height(20).AddTo(container);
 
             var contentLabel = new LabelView(data.content).Height(20).FontSize(15).TextMiddleLeft();
             container.Add(contentLabel);

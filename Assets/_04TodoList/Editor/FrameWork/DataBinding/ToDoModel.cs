@@ -170,11 +170,21 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
     [System.Serializable]
     public class ToDoData
     {
+        [Serializable]
         public enum ToDoState
         {
             NoStart,
             Started,
             Done,
+        }
+
+        public enum Priority
+        {
+            A,
+            B,
+            C,
+            D,
+            None,
         }
 
         public string content;
