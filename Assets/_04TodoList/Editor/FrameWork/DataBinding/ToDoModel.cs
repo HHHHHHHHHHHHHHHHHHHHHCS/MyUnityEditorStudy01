@@ -178,7 +178,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             Done,
         }
 
-        public enum Priority
+        public enum ToDoPriority
         {
             A,
             B,
@@ -195,6 +195,9 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         public DateTime startTime;
 
         public Property<ToDoState> state;
+
+        public Property<ToDoPriority> priority;
+
 
         public TimeSpan UsedTime => finishTime - startTime;
 
@@ -225,7 +228,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         public void Init(string content = null, Action saveAct = null
             , Property<bool> finished = null, Action<bool> finishedChangeAct = null
             , DateTime? createTime = null, DateTime? finishTime = null, DateTime? startTime = null
-            , Property<ToDoState> state = null, Action<ToDoState> stateChangeAct = null)
+            , Property<ToDoState> state = null, Action<ToDoState> stateChangeAct = null
+            , Property<ToDoPriority> priority = null)
         {
             this.content = content ?? string.Empty;
             this.finished = finished ?? new Property<bool>(false);
@@ -238,6 +242,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             this.finishTime = finishTime ?? DateTime.Now;
             this.startTime = startTime ?? DateTime.Now;
             this.state = state ?? new Property<ToDoState>(ToDoState.NoStart);
+            this.priority = priority ?? new Property<ToDoPriority>(ToDoPriority.None);
             if (stateChangeAct != null)
             {
                 this.state.RegisterValueChanged(stateChangeAct);
@@ -248,6 +253,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             {
                 this.finished.RegisterValueChanged(_ => saveAct());
                 this.state.RegisterValueChanged(_ => saveAct());
+                this.priority.RegisterValueChanged(_ => saveAct());
             }
         }
 

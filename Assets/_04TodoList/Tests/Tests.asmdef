@@ -5,7 +5,9 @@
         "UnityEditor.TestRunner",
         "_04ToDoList"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

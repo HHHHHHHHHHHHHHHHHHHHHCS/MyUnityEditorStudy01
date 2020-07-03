@@ -21,8 +21,9 @@ namespace Tests
         public void LoadData()
         {
             var todoList = ToDoListCls.Load();
-            Debug.Log("Data");
-            Debug.Log(JsonConvert.SerializeObject(todoList));
+            Debug.Log("Data:");
+            //Formatting.Indented 输出更加格式化
+            Debug.Log(JsonConvert.SerializeObject(todoList, Formatting.Indented));
         }
     }
 }

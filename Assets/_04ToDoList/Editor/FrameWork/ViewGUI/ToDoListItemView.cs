@@ -97,8 +97,53 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 container.Add(resetBtn);
             }
 
-            new EnumPopupView<ToDoData.Priority>(ToDoData.Priority.None, (val) => { Debug.Log(val); })
-                .Width(60).Height(20).AddTo(container);
+            var priorityVal = data.priority.Val;
+            Color priorityColor = Color.clear;
+            switch (priorityVal)
+            {
+                case ToDoData.ToDoPriority.A:
+                    priorityColor = Color.red;
+                    break;
+                case ToDoData.ToDoPriority.B:
+                    priorityColor = Color.yellow;
+                    break;
+                case ToDoData.ToDoPriority.C:
+                    priorityColor = Color.cyan;
+                    break;
+                case ToDoData.ToDoPriority.D:
+                    priorityColor = Color.blue;
+                    break;
+                case ToDoData.ToDoPriority.None:
+                    priorityColor = Color.clear;
+                    break;
+            }
+
+            var priority = new EnumPopupView<ToDoData.ToDoPriority>(priorityVal)
+                .Width(30).Height(20).BackgroundColor(priorityColor).AddTo(container);
+
+            priority.ValueProperty.RegisterValueChanged((val) =>
+            {
+                data.priority.Val = val;
+
+                switch (val)
+                {
+                    case ToDoData.ToDoPriority.A:
+                        priority.BackgroundColor(Color.red);
+                        break;
+                    case ToDoData.ToDoPriority.B:
+                        priority.BackgroundColor(Color.yellow);
+                        break;
+                    case ToDoData.ToDoPriority.C:
+                        priority.BackgroundColor(Color.cyan);
+                        break;
+                    case ToDoData.ToDoPriority.D:
+                        priority.BackgroundColor(Color.blue);
+                        break;
+                    case ToDoData.ToDoPriority.None:
+                        priority.BackgroundColor(Color.clear); 
+                        break;
+                }
+            });
 
             var contentLabel = new LabelView(data.content).Height(20).FontSize(15).TextMiddleLeft();
             container.Add(contentLabel);
