@@ -21,13 +21,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private HorizontalLayout container;
 
         public ToDoData data;
-        public Action<ToDoListItemView> removeAct;
+        public Action<ToDoListItemView> changeProperty;
         public bool showTime = false;
 
-
         private bool needFresh;
-        private bool needRemove;
-
 
         static ToDoListItemView()
         {
@@ -37,11 +34,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             deleteIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Delete.png");
         }
 
-        public ToDoListItemView(ToDoData _item, Action<ToDoListItemView> _removeAct, bool _showTime = false)
+        public ToDoListItemView(ToDoData _item, Action<ToDoListItemView> _changeProperty, bool _showTime = false)
             : base()
         {
             this.data = _item;
-            this.removeAct = _removeAct;
+            this.changeProperty = _changeProperty;
             this.showTime = _showTime;
             container = new HorizontalLayout();
             Add(container);
@@ -51,14 +48,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         protected override void OnRefresh()
         {
-            if (needRemove)
-            {
-                removeAct(this);
-            }
-            else if (needFresh)
+            if (needFresh)
             {
                 needFresh = false;
-                BuildItem();
+                changeProperty(this);
             }
         }
 
@@ -82,7 +75,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 {
                     data.finishTime = DateTime.Now;
                     data.state.Val = ToDoData.ToDoState.Done;
-                    needRemove = true;
+                    needFresh = true;
                 }).Height(20).Width(40).BackgroundColor(Color.green);
                 container.Add(finishedBtn);
             }
@@ -92,7 +85,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 {
                     data.createTime = DateTime.Now;
                     data.state.Val = ToDoData.ToDoState.NoStart;
-                    needRemove = true;
+                    needFresh = true;
                 }).Height(20).Width(40).BackgroundColor(Color.grey);
                 container.Add(resetBtn);
             }
@@ -143,6 +136,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                         priority.BackgroundColor(Color.clear); 
                         break;
                 }
+
+                changeProperty(this);
             });
 
             var contentLabel = new LabelView(data.content).Height(20).FontSize(15).TextMiddleLeft();
@@ -162,7 +157,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 var todoListCls = ToDoListCls.ModelData;
                 todoListCls.todoList.Remove(data);
                 todoListCls.Save();
-                needRemove = true;
+                needFresh = true;
             }).Height(20).Width(30).BackgroundColor(Color.red);
             container.Add(deleteBtn);
         }

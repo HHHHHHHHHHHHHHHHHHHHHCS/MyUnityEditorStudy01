@@ -45,18 +45,17 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         public void ReBuildToDoItems()
         {
-            var dataList = ToDoListCls.ModelData.todoList;
-
             todoListItemsLayout.Clear();
 
-            for (int i = dataList.Count - 1; i >= 0; --i)
+            var dataList = ToDoListCls.ModelData.todoList
+                .Where(item => (item.state.Val == ToDoData.ToDoState.Done) == false)
+                .OrderByDescending(item=>item.state.Val)
+                .ThenBy(item=>item.priority.Val);
+
+            foreach (var item in dataList)
             {
-                var item = dataList[i];
-                if ((item.state.Val == ToDoData.ToDoState.Done) == false)
-                {
-                    new ToDoListItemView(item, RemoveFromParent).AddTo(todoListItemsLayout);
-                    new SpaceView(4).AddTo(todoListItemsLayout);
-                }
+                new ToDoListItemView(item, ChangeProperty).AddTo(todoListItemsLayout);
+                new SpaceView(4).AddTo(todoListItemsLayout);
             }
 
             RefreshVisible();
@@ -73,7 +72,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             UpdateToDoItems();
         }
 
-        private void RemoveFromParent(ToDoListItemView item)
+        private void ChangeProperty(ToDoListItemView item)
         {
             isDirty = true;
         }

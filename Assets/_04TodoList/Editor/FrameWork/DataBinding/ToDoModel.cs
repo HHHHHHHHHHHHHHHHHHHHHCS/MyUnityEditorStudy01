@@ -180,7 +180,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
         public enum ToDoPriority
         {
-            A,
+            A = 0,
             B,
             C,
             D,
