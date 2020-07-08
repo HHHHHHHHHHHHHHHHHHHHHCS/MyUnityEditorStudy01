@@ -25,7 +25,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             new SpaceView(4).AddTo(this);
             todoListInputView.AddTo(this);
             new SpaceView(4).AddTo(this);
-            todoListItemsLayout.AddTo(this);
+            todoListItemsLayout.AddTo(new ScrollLayout().AddTo(this));
         }
 
         public void UpdateToDoItems()
@@ -49,8 +49,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
             var dataList = ToDoListCls.ModelData.todoList
                 .Where(item => (item.state.Val == ToDoData.ToDoState.Done) == false)
-                .OrderByDescending(item=>item.state.Val)
-                .ThenBy(item=>item.priority.Val);
+                .OrderByDescending(item => item.state.Val)
+                .ThenBy(item => item.priority.Val);
 
             foreach (var item in dataList)
             {

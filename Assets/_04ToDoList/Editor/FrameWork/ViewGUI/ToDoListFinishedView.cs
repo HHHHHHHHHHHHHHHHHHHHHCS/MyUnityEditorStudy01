@@ -11,9 +11,15 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
     {
         private bool isDirty;
 
+        private VerticalLayout todosParent;
 
-        public ToDoListFinishedView() : base("box")
+        public ToDoListFinishedView() : base(null)
         {
+            Add(new SpaceView());
+            var scrollLayout = new ScrollLayout();
+            todosParent = new VerticalLayout();
+            scrollLayout.Add(todosParent);
+            Add(scrollLayout);
         }
 
         public void UpdateToDoItems()
@@ -35,7 +41,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         {
             var dataList = ToDoListCls.ModelData.todoList;
 
-            children.Clear();
+            todosParent.children.Clear();
 
             var groupsByDay = dataList.Where(item => item.state.Val == ToDoData.ToDoState.Done)
                 .GroupBy(item => item.finishTime.Date)
@@ -49,14 +55,15 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     totalTime += item.UsedTime;
                 }
 
-                Add(new LabelView(group.Key.ToString("yyyy年MM月dd日 (共" + ToDoData.UsedTimeToString(totalTime) + ")"))
-                    .FontSize(20).TextLowCenter());
+                todosParent.Add(
+                    new LabelView(group.Key.ToString("yyyy年MM月dd日 (共" + ToDoData.UsedTimeToString(totalTime) + ")"))
+                        .FontSize(20).TextLowCenter());
 
 
                 foreach (var item in group.OrderByDescending(val => val.finishTime))
                 {
-                    Add(new ToDoListItemView(item, RemoveFromParent, true));
-                    Add(new SpaceView(4));
+                    todosParent.Add(new ToDoListItemView(item, RemoveFromParent, true));
+                    todosParent.Add(new SpaceView(4));
                 }
             }
 
@@ -66,7 +73,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private void RefreshVisible()
         {
-            Style = children.Count > 0 ? "box" : null;
+            todosParent.Style = todosParent.children.Count > 0 ? "box" : null;
         }
 
         private void RemoveFromParent(ToDoListItemView item)

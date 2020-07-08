@@ -59,6 +59,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         {
             container.Clear();
 
+            new CustomView(() =>
+            {
+                GUI.backgroundColor = Color.red;
+                var boxStyle = GUI.skin.box;
+                boxStyle.normal.textColor = Color.white;
+                boxStyle.border = new RectOffset(0, 0, 0, 0);
+            }).AddTo(container);
+
             if (data.state == ToDoData.ToDoState.NoStart)
             {
                 var startBtn = new ImageButtonView(playIcon, () =>
@@ -107,7 +115,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     priorityColor = Color.blue;
                     break;
                 case ToDoData.ToDoPriority.None:
-                    priorityColor = Color.clear;
+                    priorityColor = Color.gray;
                     break;
             }
 
@@ -133,7 +141,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                         priority.BackgroundColor(Color.blue);
                         break;
                     case ToDoData.ToDoPriority.None:
-                        priority.BackgroundColor(Color.clear); 
+                        priority.BackgroundColor(Color.gray);
                         break;
                 }
 

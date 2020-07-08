@@ -19,6 +19,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
         {
             var window = GetWindow<T>(isUtility, windowName, focus);
 
+            window.position = new Rect(new Vector2(Screen.width / 2f - 400, Screen.height / 2f - 300),
+                new Vector2(800, 600));
             if (window.isShow)
             {
                 window.Close();

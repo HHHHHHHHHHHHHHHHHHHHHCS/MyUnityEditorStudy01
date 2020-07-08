@@ -14,7 +14,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         private bool isShow;
 
         private ToDoListCls _toDoListCls;
-        public readonly Property<bool> showFinished = new Property<bool>(false);
 
         private ToolBarView todoListToolBarView;
 
@@ -27,38 +26,52 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             _toDoListCls = ToDoListCls.ModelData;
             todoListToolBarView = new ToolBarView {style = "box"}.FontSize(15);
             todoListToolBarView
-                .AddMenu("清单", () => { showFinished.Val = false; })
-                .AddMenu("已完成", () => { showFinished.Val = true; });
+                .AddMenu("清单", () => { ChangePage(0); })
+                .AddMenu("分类管理", () => { ChangePage(1); })
+                .AddMenu("已完成", () => { ChangePage(2); });
 
             todoListView = new ToDoListView();
             todoListFinishedView = new ToDoListFinishedView();
 
-            showFinished.Bind(UpdateShowFinished);
-            UpdateShowFinished(showFinished.Val);
+            ChangePage(0);
 
             views.Add(todoListToolBarView);
             views.Add(todoListView);
             views.Add(todoListFinishedView);
         }
 
-        public void TurnShowFinished()
+        public void ChangePage(int i)
         {
-            showFinished.Val = !showFinished.Val;
-        }
+            switch (i)
+            {
+                case 0:
+                {
+                    todoListView.Show();
+                    todoListFinishedView.Hide();
+                    todoListView.ReBuildToDoItems();
+                    break;
+                }
 
-        public void UpdateShowFinished(bool _showFinished)
-        {
-            if (_showFinished)
-            {
-                todoListView.Hide();
-                todoListFinishedView.Show();
-                todoListFinishedView.ReBuildToDoItems();
-            }
-            else
-            {
-                todoListView.Show();
-                todoListFinishedView.Hide();
-                todoListView.ReBuildToDoItems();
+                case 1:
+                {
+                    todoListView.Hide();
+                    todoListFinishedView.Hide();
+                    break;
+                }
+
+                case 2:
+                {
+                    todoListView.Hide();
+                    todoListFinishedView.Show();
+                    todoListFinishedView.ReBuildToDoItems();
+                    break;
+                }
+
+                default:
+                {
+                    Debug.Log(i + " page index is no exits!");
+                    break;
+                }
             }
         }
 
