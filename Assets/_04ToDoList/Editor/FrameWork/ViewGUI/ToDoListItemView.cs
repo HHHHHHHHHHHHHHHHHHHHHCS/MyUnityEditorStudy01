@@ -59,13 +59,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         {
             container.Clear();
 
-            new CustomView(() =>
-            {
-                GUI.backgroundColor = Color.red;
-                var boxStyle = GUI.skin.box;
-                boxStyle.normal.textColor = Color.white;
-                boxStyle.border = new RectOffset(0, 0, 0, 0);
-            }).AddTo(container);
 
             if (data.state == ToDoData.ToDoState.NoStart)
             {
@@ -98,23 +91,43 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 container.Add(resetBtn);
             }
 
+            var boxView = new BoxView("无").AddTo(container)
+                .FontColor(Color.white).BackgroundColor(Color.red);
+
+
+            var contentLabel = new LabelView(data.content).Height(20).FontSize(15).TextMiddleCenter();
+            container.Add(contentLabel);
+
+            if (showTime)
+            {
+                container.Add(new LabelView(data.finishTime.ToString("完成于 HH:mm:ss"))
+                    .Height(20).Width(80).TextLowRight());
+                container.Add(new LabelView(data.UsedTimeText)
+                    .Height(20).Width(100).TextLowRight());
+            }
+
             var priorityVal = data.priority.Val;
             Color priorityColor = Color.clear;
             switch (priorityVal)
             {
                 case ToDoData.ToDoPriority.A:
+                    boxView.Text = "A";
                     priorityColor = Color.red;
                     break;
                 case ToDoData.ToDoPriority.B:
+                    boxView.Text = "B";
                     priorityColor = Color.yellow;
                     break;
                 case ToDoData.ToDoPriority.C:
+                    boxView.Text = "C";
                     priorityColor = Color.cyan;
                     break;
                 case ToDoData.ToDoPriority.D:
+                    boxView.Text = "D";
                     priorityColor = Color.blue;
                     break;
                 case ToDoData.ToDoPriority.None:
+                    boxView.Text = "无";
                     priorityColor = Color.gray;
                     break;
             }
@@ -129,35 +142,29 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 switch (val)
                 {
                     case ToDoData.ToDoPriority.A:
+                        boxView.Text = "A";
                         priority.BackgroundColor(Color.red);
                         break;
                     case ToDoData.ToDoPriority.B:
+                        boxView.Text = "B";
                         priority.BackgroundColor(Color.yellow);
                         break;
                     case ToDoData.ToDoPriority.C:
+                        boxView.Text = "C";
                         priority.BackgroundColor(Color.cyan);
                         break;
                     case ToDoData.ToDoPriority.D:
+                        boxView.Text = "D";
                         priority.BackgroundColor(Color.blue);
                         break;
                     case ToDoData.ToDoPriority.None:
+                        boxView.Text = "无";
                         priority.BackgroundColor(Color.gray);
                         break;
                 }
 
                 changeProperty(this);
             });
-
-            var contentLabel = new LabelView(data.content).Height(20).FontSize(15).TextMiddleLeft();
-            container.Add(contentLabel);
-
-            if (showTime)
-            {
-                container.Add(new LabelView(data.finishTime.ToString("完成于 HH:mm:ss"))
-                    .Height(20).Width(80).TextLowRight());
-                container.Add(new LabelView(data.UsedTimeText)
-                    .Height(20).Width(100).TextLowRight());
-            }
 
             var deleteBtn = new ImageButtonView(deleteIcon, () =>
             {

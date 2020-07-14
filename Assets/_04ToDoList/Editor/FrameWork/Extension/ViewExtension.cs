@@ -60,5 +60,12 @@ namespace _04ToDoList.Editor.FrameWork
             view.backgroundColor = color;
             return view;
         }
+
+        public static T FontColor<T>(this T view, Color color) where T : View
+        {
+            view.guiStyle.normal.textColor = color;
+
+            return view;
+        }
     }
 }
