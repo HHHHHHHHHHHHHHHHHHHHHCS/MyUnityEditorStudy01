@@ -18,6 +18,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         private ToolBarView todoListToolBarView;
 
         private ToDoListView todoListView;
+        private ToDoListCategoryListView todoListCategoryListView;
         private ToDoListFinishedView todoListFinishedView;
 
 
@@ -31,12 +32,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                 .AddMenu("已完成", () => { ChangePage(2); });
 
             todoListView = new ToDoListView();
+            todoListCategoryListView =  new ToDoListCategoryListView();
             todoListFinishedView = new ToDoListFinishedView();
 
             ChangePage(0);
 
             views.Add(todoListToolBarView);
             views.Add(todoListView);
+            views.Add(todoListCategoryListView);
             views.Add(todoListFinishedView);
         }
 
@@ -48,6 +51,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                 {
                     todoListView.Show();
                     todoListFinishedView.Hide();
+                    todoListCategoryListView.Hide();
                     todoListView.ReBuildToDoItems();
                     break;
                 }
@@ -56,6 +60,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                 {
                     todoListView.Hide();
                     todoListFinishedView.Hide();
+                    todoListCategoryListView.Show();
                     break;
                 }
 
@@ -63,6 +68,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                 {
                     todoListView.Hide();
                     todoListFinishedView.Show();
+                    todoListCategoryListView.Hide();
                     todoListFinishedView.ReBuildToDoItems();
                     break;
                 }

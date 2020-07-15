@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.DataBinding
 {
-    public class ToDoListBaseCls
+    public class ToDoListBaseCls : IToDoModel
     {
         [System.NonSerialized] public const string todosKey = "ToDoList_TODOS";
         [System.NonSerialized] public const string todosVersionKey = "ToDoList_TODOS_Version";
@@ -127,6 +127,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
         public List<ToDoData> todoList = new List<ToDoData>();
 
+        public List<ToDoData.TodoCategory> categoryList = new List<ToDoData.TodoCategory>();
+
         public ToDoData this[int index]
         {
             get
@@ -171,6 +173,13 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
     public class ToDoData
     {
         [Serializable]
+        public class TodoCategory
+        {
+            public string name;
+            public Color color;
+        }
+
+        [Serializable]
         public enum ToDoState
         {
             NoStart,
@@ -197,6 +206,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         public Property<ToDoState> state;
 
         public Property<ToDoPriority> priority;
+
+        public TodoCategory category;
 
 
         public TimeSpan UsedTime => finishTime - startTime;

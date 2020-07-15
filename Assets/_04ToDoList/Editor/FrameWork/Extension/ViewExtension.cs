@@ -67,5 +67,12 @@ namespace _04ToDoList.Editor.FrameWork
 
             return view;
         }
+
+        public static T TheFontStyle<T>(this T view, FontStyle fontStyle) where T : View
+        {
+            view.guiStyle.fontStyle = fontStyle;
+
+            return view;
+        }
     }
 }

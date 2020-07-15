@@ -92,7 +92,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
 
             var boxView = new BoxView("无").AddTo(container)
-                .FontColor(Color.white).BackgroundColor(Color.red);
+                .TextMiddleCenter().Width(20).FontSize(12)
+                .FontColor(Color.white).TheFontStyle(FontStyle.Bold);
 
 
             var contentLabel = new LabelView(data.content).Height(20).FontSize(15).TextMiddleCenter();
@@ -113,22 +114,27 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 case ToDoData.ToDoPriority.A:
                     boxView.Text = "A";
                     priorityColor = Color.red;
+                    boxView.BackgroundColor(Color.red);
                     break;
                 case ToDoData.ToDoPriority.B:
                     boxView.Text = "B";
                     priorityColor = Color.yellow;
+                    boxView.BackgroundColor(Color.yellow);
                     break;
                 case ToDoData.ToDoPriority.C:
                     boxView.Text = "C";
                     priorityColor = Color.cyan;
+                    boxView.BackgroundColor(Color.cyan);
                     break;
                 case ToDoData.ToDoPriority.D:
                     boxView.Text = "D";
                     priorityColor = Color.blue;
+                    boxView.BackgroundColor(Color.blue);
                     break;
                 case ToDoData.ToDoPriority.None:
                     boxView.Text = "无";
                     priorityColor = Color.gray;
+                    boxView.BackgroundColor(Color.gray);
                     break;
             }
 
@@ -144,22 +150,27 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     case ToDoData.ToDoPriority.A:
                         boxView.Text = "A";
                         priority.BackgroundColor(Color.red);
+                        boxView.BackgroundColor(Color.red);
                         break;
                     case ToDoData.ToDoPriority.B:
                         boxView.Text = "B";
                         priority.BackgroundColor(Color.yellow);
+                        boxView.BackgroundColor(Color.yellow);
                         break;
                     case ToDoData.ToDoPriority.C:
                         boxView.Text = "C";
                         priority.BackgroundColor(Color.cyan);
+                        boxView.BackgroundColor(Color.cyan);
                         break;
                     case ToDoData.ToDoPriority.D:
                         boxView.Text = "D";
                         priority.BackgroundColor(Color.blue);
+                        boxView.BackgroundColor(Color.blue);
                         break;
                     case ToDoData.ToDoPriority.None:
                         boxView.Text = "无";
                         priority.BackgroundColor(Color.gray);
+                        boxView.BackgroundColor(Color.gray);
                         break;
                 }
 
