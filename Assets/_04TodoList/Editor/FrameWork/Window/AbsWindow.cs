@@ -15,7 +15,12 @@ namespace _04ToDoList.Editor.FrameWork.Window
             return t;
         }
 
-        public static void OnOpen<T>(bool isUtility, string windowName, bool focus) where T : AbsWindow
+        public static T Open<T>(string windowName) where T : AbsWindow
+        {
+            return Open<T>(false, windowName, true);
+        }
+
+        public static T Open<T>(bool isUtility, string windowName, bool focus) where T : AbsWindow
         {
             var window = GetWindow<T>(isUtility, windowName, focus);
 
@@ -35,6 +40,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 window.ShowUtility();
                 window.isShow = true;
             }
+
+            return window;
         }
 
         protected void OnEnable()

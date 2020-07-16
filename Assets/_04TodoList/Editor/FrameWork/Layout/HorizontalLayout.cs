@@ -21,17 +21,6 @@ namespace _04ToDoList.Editor.FrameWork.Layout
             }
         }
 
-        protected override void OnGUI()
-        {
-            using (var ptr = children.GetEnumerator())
-            {
-                while (ptr.MoveNext())
-                {
-                    ptr.Current?.DrawGUI();
-                }
-            }
-        }
-
         protected override void OnGUIEnd()
         {
             GUILayout.EndHorizontal();

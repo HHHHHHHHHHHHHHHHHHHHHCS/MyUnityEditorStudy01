@@ -90,7 +90,16 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         protected abstract void OnGUIBegin();
 
-        protected abstract void OnGUI();
+        protected virtual void OnGUI()
+        {
+            using (var ptr = children.GetEnumerator())
+            {
+                while (ptr.MoveNext())
+                {
+                    ptr.Current?.DrawGUI();
+                }
+            }
+        }
 
         protected abstract void OnGUIEnd();
     }

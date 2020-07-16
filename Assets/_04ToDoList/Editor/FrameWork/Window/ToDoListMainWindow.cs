@@ -10,14 +10,14 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Window
 {
-    public class ToDoListMainAbsWindow : AbsWindow
+    public class ToDoListMainWindow : AbsWindow
     {
         private ToDoListController toDoListController;
 
         [MenuItem("ToDoList/MainWindow %#t")]
-        public static void Open()
+        public static ToDoListMainWindow Open()
         {
-            OnOpen<ToDoListMainAbsWindow>(true, "ToDoLists", true);
+            return Open<ToDoListMainWindow>(true, "ToDoLists", true);
         }
 
         protected override void OnInit()

@@ -12,17 +12,6 @@ namespace _04ToDoList.Editor.FrameWork.Layout
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
         }
 
-        protected override void OnGUI()
-        {
-            using (var ptr = children.GetEnumerator())
-            {
-                while (ptr.MoveNext())
-                {
-                    ptr.Current?.DrawGUI();
-                }
-            }
-        }
-
         protected override void OnGUIEnd()
         {
             EditorGUILayout.EndScrollView();
