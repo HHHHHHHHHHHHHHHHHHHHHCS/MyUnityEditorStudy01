@@ -7,36 +7,42 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListCategoryListView : VerticalLayout
     {
-        public ToDoListCategoryListView()
+        private SubWindow categorySubWindow;
+
+        public ToDoListCategoryListView() : base("box")
         {
             new LabelView("this is category list view").AddTo(this);
 
-            new ButtonView("+", () =>
+            new ButtonView("+", CreateSubWindow, true).AddTo(this);
+        }
+
+        private void CreateSubWindow()
+        {
+            categorySubWindow = ToDoListMainWindow.instance.CreateSubWindow();
+
+            categorySubWindow.Clear();
+
+            new ButtonView("添加", () => { Debug.Log("add"); }, true)
+                .AddTo(categorySubWindow);
+
+            new ButtonView("关闭", () => { categorySubWindow.Close(); }, true)
+                .AddTo(categorySubWindow);
+
+            categorySubWindow.Show();
+        }
+
+        private void CloseSubWindow()
+        {
+            if (categorySubWindow != null)
             {
-                Debug.Log("add");
-
-                AbsWindow.Open<ToDoListCategoryWindow>("123");
-            }).AddTo(this);
-        }
-    }
-
-    public class ToDoListCategoryWindow : AbsWindow
-    {
-        protected override void OnGUI()
-        {
-            
+                categorySubWindow.Close();
+            }
         }
 
-        protected override void OnInit()
+        protected override void OnHide()
         {
-        }
-
-        protected override void Disable()
-        {
-        }
-
-        protected override void Dispose()
-        {
+            base.OnHide();
+            CloseSubWindow();
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Window
 {
-    public class SubWindow : EditorWindow, ILayout 
+    public class SubWindow : EditorWindow, ILayout
     {
         //隐式屏蔽接口 无法访问
         ILayout IView.Parent { get; set; }
@@ -14,9 +14,10 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         public readonly List<IView> children = new List<IView>();
 
-        public static T Open<T>(string windowName) where T : SubWindow
+        public static SubWindow Open(string name = "SubWindow")
         {
-            var window = GetWindow<T>(true);
+            var window = GetWindow<SubWindow>(true, name, true);
+            window.position = new Rect(Screen.width / 2, Screen.height / 2, 300, 300);
             return window;
         }
 
@@ -36,6 +37,11 @@ namespace _04ToDoList.Editor.FrameWork.Window
             {
                 children[i].Refresh();
             }
+        }
+
+        protected void OnGUI()
+        {
+            DrawGUI();
         }
 
         public void DrawGUI()
@@ -59,6 +65,16 @@ namespace _04ToDoList.Editor.FrameWork.Window
         {
             children.Remove(view);
             view.Parent = null;
+        }
+
+        public void Clear()
+        {
+            foreach (var item in children)
+            {
+                item.Parent = null;
+            }
+
+            children.Clear();
         }
     }
 }

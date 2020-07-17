@@ -9,10 +9,13 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         public Action OnClickEvent { get; set; }
 
-        public ButtonView(string _text, Action onClickEvent = null)
+        public bool fullSize = false;
+
+        public ButtonView(string _text, Action onClickEvent = null, bool _fullSize = false)
         {
             text = _text;
             OnClickEvent = onClickEvent;
+            fullSize = _fullSize;
         }
 
         protected override void OnGUI()
@@ -21,7 +24,11 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
             if (guiLayouts != null && guiLayouts.Count > 0)
             {
-                isClick = GUILayout.Button(text ?? string.Empty,  guiLayouts.ToArray());
+                isClick = GUILayout.Button(text ?? string.Empty, guiLayouts.ToArray());
+            }
+            else if (fullSize)
+            {
+                isClick = GUILayout.Button(text ?? string.Empty);
             }
             else
             {
@@ -33,7 +40,6 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             {
                 OnClickEvent?.Invoke();
             }
-
         }
     }
 }
