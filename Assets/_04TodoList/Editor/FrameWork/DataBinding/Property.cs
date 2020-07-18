@@ -16,25 +16,26 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             get => _val;
             set
             {
-//                if (_val == null && value == null)
-//                {
-//                }
-//                else if (_val == null && value != null)
-//                {
-//                    _val = value;
-//                    onValueChangedEvent?.Invoke(_val);
-//                }
-//                else if (!_val.Equals(value))
-//                {
-//                    _val = value;
-//                    onValueChangedEvent?.Invoke(_val);
-//                }
+                if (_val == null && value == null)
+                {
+                }
+                else if (_val == null && value != null)
+                {
+                    _val = value;
+                    onValueChangedEvent?.Invoke(_val);
+                }
+                else if (!_val.Equals(value))
+                {
+                    _val = value;
+                    onValueChangedEvent?.Invoke(_val);
+                }
 
-                if (Comparer<T>.Default.Compare(_val, value) == 0)
-                    return;
-
-                _val = value;
-                onValueChangedEvent?.Invoke(_val);
+// 下面这个方法需要类型能继承IComparer   所以放弃
+//                if (Comparer<T>.Default.Compare(_val, value) == 0)
+//                    return;
+//
+//                _val = value;
+//                onValueChangedEvent?.Invoke(_val);
             }
         }
 

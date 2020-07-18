@@ -175,8 +175,19 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         [Serializable]
         public class TodoCategory
         {
+            public TodoCategory()
+            {
+            }
+
+            public TodoCategory(string name, string color)
+            {
+                this.name = name;
+                this.color = color;
+            }
+
             public string name;
-            public Color color;
+            //因为正常的Color 没有序列化  所以用了string
+            public string color;
         }
 
         [Serializable]

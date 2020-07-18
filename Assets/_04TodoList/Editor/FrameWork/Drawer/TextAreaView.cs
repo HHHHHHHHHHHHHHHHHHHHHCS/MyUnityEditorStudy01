@@ -1,4 +1,5 @@
-﻿using _04ToDoList.Editor.FrameWork.DataBinding;
+﻿using System;
+using _04ToDoList.Editor.FrameWork.DataBinding;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,9 +9,9 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
     {
         public Property<string> Content { get; set; }
 
-        public TextAreaView(string content)
+        public TextAreaView(string content, Action<string> _act = null)
         {
-            Content = new Property<string>(content);
+            Content = new Property<string>(content, _act);
             guiStyle = GUI.skin.textArea;
         }
 
