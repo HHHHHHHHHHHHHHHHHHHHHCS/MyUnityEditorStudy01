@@ -10,59 +10,59 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListCategoryListView : VerticalLayout
     {
-        private SubWindow categorySubWindow;
+        private static Texture2D editorIcon;
+
+        private ToDoListCategorySubWindow _categorySubWindow;
+
+        private ToDoListCategorySubWindow categorySubWindow
+        {
+            get
+            {
+                if (_categorySubWindow == null)
+                {
+                    _categorySubWindow = ToDoListMainWindow.CreateCategorySubWindow();
+                }
+
+                return _categorySubWindow;
+            }
+        }
+
+
+        static ToDoListCategoryListView()
+        {
+            editorIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Editor.png");
+        }
 
         public ToDoListCategoryListView() : base("box")
         {
             new LabelView("this is category list view").AddTo(this);
 
-            new ButtonView("+", CreateSubWindow, true).AddTo(this);
-        }
-
-        private void CreateSubWindow()
-        {
-            categorySubWindow = ToDoListMainWindow.instance.CreateSubWindow();
-
-            categorySubWindow.Clear();
-
-            new LabelView("名字").AddTo(categorySubWindow);
-
-            string itemName = string.Empty;
-
-            new TextAreaView(itemName, (s) => itemName = s).AddTo(categorySubWindow);
-
-            new LabelView("颜色").AddTo(categorySubWindow);
-
-            Color itemColor = Color.black;
-
-            new ColorView(itemColor, (c) => itemColor = c).AddTo(categorySubWindow);
-
-            new ButtonView("添加", () =>
-                {
-                    ToDoListCls.ModelData.categoryList.Add(new ToDoData.TodoCategory(itemName, itemColor.ToText()));
-                    ToDoListCls.ModelData.Save();
-                    CloseSubWindow();
-                }, true)
-                .AddTo(categorySubWindow);
-
-            new ButtonView("关闭", () => { categorySubWindow.Close(); }, true)
-                .AddTo(categorySubWindow);
-
-            categorySubWindow.Show();
-        }
-
-        private void CloseSubWindow()
-        {
-            if (categorySubWindow != null)
+            foreach (var item in ToDoListCls.ModelData.categoryList)
             {
-                categorySubWindow.Close();
+                var layout = new HorizontalLayout("box").AddTo(this);
+                new BoxView(item.name).BackgroundColor(item.color.ToColor()).AddTo(layout);
+                new FlexibleSpaceView().AddTo(layout);
+
+                new ImageButtonView(editorIcon, () =>
+                    {
+
+                        OpenSubWindow(item);
+                    })
+                    .Width(25).Height(25).BackgroundColor(Color.black).AddTo(layout);
             }
+
+            new ButtonView("+", () => OpenSubWindow(), true).AddTo(this);
+        }
+
+        private void OpenSubWindow(ToDoData.TodoCategory item = null)
+        {
+            categorySubWindow.ShowWindow(item);
         }
 
         protected override void OnHide()
         {
             base.OnHide();
-            CloseSubWindow();
+            categorySubWindow.Close();
         }
     }
 }

@@ -27,8 +27,6 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
-
-
             bool isClick;
 
             if (guiLayoutOptions != null && guiLayoutOptions.Length > 0)

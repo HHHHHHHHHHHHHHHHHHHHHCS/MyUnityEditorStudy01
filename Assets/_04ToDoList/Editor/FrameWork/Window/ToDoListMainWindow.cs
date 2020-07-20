@@ -15,7 +15,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
     {
         public static ToDoListMainWindow instance;
 
-        public SubWindow subWindow;
+        public static ToDoListCategorySubWindow categorySubWindow;
 
         private ToDoListController toDoListController;
 
@@ -27,18 +27,17 @@ namespace _04ToDoList.Editor.FrameWork.Window
             return instance;
         }
 
-        //一定确保instance是存在的
-        public SubWindow CreateSubWindow(string name = "SubWindow")
+        public static ToDoListCategorySubWindow CreateCategorySubWindow(string name = "ToDoListCategorySubWindow")
         {
-            if (subWindow == null)
+            if (categorySubWindow == null)
             {
-                subWindow = SubWindow.Open(name);
+                categorySubWindow = ToDoListCategorySubWindow.Open(name);
             }
             else
             {
-                subWindow.name = name;
+                categorySubWindow.name = name;
             }
-            return subWindow;
+            return categorySubWindow;
         }
 
         protected override void OnInit()
@@ -53,10 +52,10 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         protected override void Dispose()
         {
-            if (subWindow)
+            if (categorySubWindow)
             {
-                subWindow.Close();
-                subWindow = null;
+                categorySubWindow.Close();
+                categorySubWindow = null;
             }
             instance = null;
         }

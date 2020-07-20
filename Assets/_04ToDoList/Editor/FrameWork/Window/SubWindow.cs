@@ -14,9 +14,9 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         public readonly List<IView> children = new List<IView>();
 
-        public static SubWindow Open(string name = "SubWindow")
+        public static T Open<T>(string name = "SubWindow") where T : SubWindow
         {
-            var window = GetWindow<SubWindow>(true, name, true);
+            var window = GetWindow<T>(true, name, true);
             window.position = new Rect(Screen.width / 2, Screen.height / 2, 300, 300);
             return window;
         }
