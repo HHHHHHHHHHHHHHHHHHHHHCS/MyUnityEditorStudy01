@@ -2,12 +2,15 @@
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Utils;
+using _04ToDoList.Editor.FrameWork.ViewGUI;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Window
 {
     public class ToDoListCategorySubWindow : SubWindow
     {
+        public ToDoListCategoryListView listView;
+
         private TextAreaView textAreaView;
 
         private ColorView colorView;
@@ -70,6 +73,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                     ToDoListCls.ModelData.categoryList.Add(new ToDoData.TodoCategory(textAreaView.Content.Val,
                         colorView.colorProperty.Val.ToText()));
                     ToDoListCls.ModelData.Save();
+                    listView.UpdateToDoItems();
                     Close();
                 };
             }
@@ -84,6 +88,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                     item.name = textAreaView.Content.Val;
                     item.color = colorView.colorProperty.Val.ToText();
                     ToDoListCls.ModelData.Save();
+                    listView.UpdateToDoItems();
                     Close();
                 };
             }

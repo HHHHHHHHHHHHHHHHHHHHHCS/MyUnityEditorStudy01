@@ -84,6 +84,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         protected override void OnUpdate()
         {
             todoListView.OnUpdate();
+            todoListCategoryListView.OnUpdate();
             todoListFinishedView.OnUpdate();
         }
 

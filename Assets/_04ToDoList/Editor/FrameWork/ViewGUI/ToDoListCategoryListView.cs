@@ -10,9 +10,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListCategoryListView : VerticalLayout
     {
-        private static Texture2D editorIcon;
+        private static readonly Texture2D editorIcon;
 
         private ToDoListCategorySubWindow _categorySubWindow;
+
+        private bool isDirty;
 
         private ToDoListCategorySubWindow categorySubWindow
         {
@@ -21,6 +23,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 if (_categorySubWindow == null)
                 {
                     _categorySubWindow = ToDoListMainWindow.CreateCategorySubWindow();
+                    _categorySubWindow.listView = this;
                 }
 
                 return _categorySubWindow;
@@ -35,7 +38,30 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         public ToDoListCategoryListView() : base("box")
         {
-            new LabelView("this is category list view").AddTo(this);
+        }
+
+
+        public void OnUpdate()
+        {
+            if (isDirty)
+            {
+                isDirty = false;
+                Rebuild();
+            }
+        }
+
+        public void UpdateToDoItems()
+        {
+            isDirty = true;
+
+            //如果不focus 则会不刷新
+            ToDoListMainWindow.instance.Focus();
+        }
+
+
+        private void Rebuild()
+        {
+            Clear();
 
             foreach (var item in ToDoListCls.ModelData.categoryList)
             {
@@ -43,13 +69,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 new BoxView(item.name).BackgroundColor(item.color.ToColor()).AddTo(layout);
                 new FlexibleSpaceView().AddTo(layout);
 
-                new ImageButtonView(editorIcon, () =>
-                    {
-
-                        OpenSubWindow(item);
-                    })
+                new ImageButtonView(editorIcon, () => { OpenSubWindow(item); })
                     .Width(25).Height(25).BackgroundColor(Color.black).AddTo(layout);
             }
+
+            new FlexibleSpaceView().AddTo(this);
 
             new ButtonView("+", () => OpenSubWindow(), true).AddTo(this);
         }
@@ -59,10 +83,19 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             categorySubWindow.ShowWindow(item);
         }
 
+        protected override void OnShow()
+        {
+            isDirty = true;
+        }
+
         protected override void OnHide()
         {
             base.OnHide();
-            categorySubWindow.Close();
+            //_categorySubWindow 可能是空的 不一定要创建
+            if (_categorySubWindow != null)
+            {
+                _categorySubWindow.Close();
+            }
         }
     }
 }

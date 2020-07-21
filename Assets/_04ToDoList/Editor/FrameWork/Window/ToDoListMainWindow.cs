@@ -29,14 +29,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         public static ToDoListCategorySubWindow CreateCategorySubWindow(string name = "ToDoListCategorySubWindow")
         {
-            if (categorySubWindow == null)
-            {
-                categorySubWindow = ToDoListCategorySubWindow.Open(name);
-            }
-            else
-            {
-                categorySubWindow.name = name;
-            }
+            //close 会自动destroy  所以都要重新new
+            categorySubWindow = ToDoListCategorySubWindow.Open(name);
             return categorySubWindow;
         }
 
