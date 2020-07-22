@@ -12,10 +12,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListItemView : VerticalLayout
     {
-        private static Texture2D playIcon;
-        private static Texture2D finishIcon;
-        private static Texture2D resetIcon;
-        private static Texture2D deleteIcon;
+        private static readonly Texture2D playIcon;
+        private static readonly Texture2D finishIcon;
+        private static readonly Texture2D resetIcon;
+        private static readonly Texture2D deleteIcon;
 
 
         private HorizontalLayout container;

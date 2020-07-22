@@ -16,6 +16,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             text = _text;
             OnClickEvent = onClickEvent;
             fullSize = _fullSize;
+            guiStyle = GUI.skin.button;
         }
 
         protected override void OnGUI()
@@ -24,15 +25,15 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
             if (guiLayouts != null && guiLayouts.Count > 0)
             {
-                isClick = GUILayout.Button(text ?? string.Empty, guiLayouts.ToArray());
+                isClick = GUILayout.Button(text ?? string.Empty, guiStyle, guiLayouts.ToArray());
             }
             else if (fullSize)
             {
-                isClick = GUILayout.Button(text ?? string.Empty);
+                isClick = GUILayout.Button(text ?? string.Empty, guiStyle);
             }
             else
             {
-                isClick = GUILayout.Button(text ?? string.Empty, GUILayout.Width(40));
+                isClick = GUILayout.Button(text ?? string.Empty, guiStyle, GUILayout.Width(40));
             }
 
 

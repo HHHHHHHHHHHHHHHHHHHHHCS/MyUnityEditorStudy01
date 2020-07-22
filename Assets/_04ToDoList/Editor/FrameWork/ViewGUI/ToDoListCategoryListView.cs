@@ -11,8 +11,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
     public class ToDoListCategoryListView : VerticalLayout
     {
         private static readonly Texture2D editorIcon;
+        private static readonly Texture2D deleteIcon;
 
         private ToDoListCategorySubWindow _categorySubWindow;
+
+        private VerticalLayout verticalLayout;
 
         private bool isDirty;
 
@@ -34,10 +37,17 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         static ToDoListCategoryListView()
         {
             editorIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Editor.png");
+            deleteIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Delete.png");
         }
 
         public ToDoListCategoryListView() : base("box")
         {
+            new ButtonView("+", () => OpenSubWindow(), true)
+                .BackgroundColor(Color.yellow).AddTo(this);
+
+            new SpaceView(4f).AddTo(this);
+
+            verticalLayout = new VerticalLayout("box").AddTo(this);
         }
 
 
@@ -61,21 +71,25 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private void Rebuild()
         {
-            Clear();
+            verticalLayout.Clear();
 
             foreach (var item in ToDoListCls.ModelData.categoryList)
             {
-                var layout = new HorizontalLayout("box").AddTo(this);
+                var layout = new HorizontalLayout("box").AddTo(verticalLayout);
                 new BoxView(item.name).BackgroundColor(item.color.ToColor()).AddTo(layout);
                 new FlexibleSpaceView().AddTo(layout);
 
                 new ImageButtonView(editorIcon, () => { OpenSubWindow(item); })
                     .Width(25).Height(25).BackgroundColor(Color.black).AddTo(layout);
+
+                new ImageButtonView(deleteIcon, () =>
+                    {
+                        ToDoListCls.ModelData.categoryList.Remove(item);
+                        ToDoListCls.ModelData.Save();
+                        UpdateToDoItems();
+                    })
+                    .Width(25).Height(25).BackgroundColor(Color.red).AddTo(layout);
             }
-
-            new FlexibleSpaceView().AddTo(this);
-
-            new ButtonView("+", () => OpenSubWindow(), true).AddTo(this);
         }
 
         private void OpenSubWindow(ToDoData.TodoCategory item = null)
