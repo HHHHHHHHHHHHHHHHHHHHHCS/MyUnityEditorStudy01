@@ -161,9 +161,9 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             ToDoListCls.Save(cls);
         }
 
-        public static void Add(this ToDoListCls cls, string content, bool finished)
+        public static void Add(this ToDoListCls cls, string content, bool finished, ToDoData.TodoCategory category)
         {
-            var data = new ToDoData(content, finished, cls.Save);
+            var data = new ToDoData(content, finished, cls.Save, category);
             cls.todoList.Add(data);
             cls.Save();
         }
@@ -186,6 +186,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             }
 
             public string name;
+
             //因为正常的Color 没有序列化  所以用了string
             public string color;
         }
@@ -251,7 +252,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             , Property<bool> finished = null, Action<bool> finishedChangeAct = null
             , DateTime? createTime = null, DateTime? finishTime = null, DateTime? startTime = null
             , Property<ToDoState> state = null, Action<ToDoState> stateChangeAct = null
-            , Property<ToDoPriority> priority = null)
+            , Property<ToDoPriority> priority = null, TodoCategory category = null)
         {
             this.content = content ?? string.Empty;
             this.finished = finished ?? new Property<bool>(false);
@@ -265,6 +266,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             this.startTime = startTime ?? DateTime.Now;
             this.state = state ?? new Property<ToDoState>(ToDoState.NoStart);
             this.priority = priority ?? new Property<ToDoPriority>(ToDoPriority.None);
+            this.category = category ?? new TodoCategory();
             if (stateChangeAct != null)
             {
                 this.state.RegisterValueChanged(stateChangeAct);
@@ -293,6 +295,11 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         public ToDoData(string _content, bool _finished, Action _saveAct)
         {
             Init(content: _content, saveAct: _saveAct, finished: new Property<bool>(_finished));
+        }
+
+        public ToDoData(string _content, bool _finished, Action _saveAct, TodoCategory _category)
+        {
+            Init(content: _content, saveAct: _saveAct, finished: new Property<bool>(_finished), category: _category);
         }
 
         public override string ToString()

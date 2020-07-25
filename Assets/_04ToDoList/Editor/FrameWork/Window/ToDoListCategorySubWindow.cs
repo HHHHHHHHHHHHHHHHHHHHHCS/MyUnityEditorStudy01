@@ -1,6 +1,7 @@
 ﻿using System;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
+using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.Utils;
 using _04ToDoList.Editor.FrameWork.ViewGUI;
 using UnityEngine;
@@ -27,9 +28,12 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         private void Awake()
         {
-            new SpaceView(4).AddTo(this);
 
-            new LabelView("名字").AddTo(this);
+            var verticalLayout = new VerticalLayout("box").AddTo(this);
+
+            new SpaceView(4).AddTo(verticalLayout);
+
+            new LabelView("名字").FontSize(15).AddTo(verticalLayout);
 
             string itemName = string.Empty;
 
@@ -37,20 +41,20 @@ namespace _04ToDoList.Editor.FrameWork.Window
             //因为按钮事件的时候 background 还是在被更改的期间
             //所以 需要一个颜色 来显示自己的颜色
             textAreaView = new TextAreaView(itemName, (s) => itemName = s)
-                .BackgroundColor(Color.white).AddTo(this);
+                .BackgroundColor(Color.white).AddTo(verticalLayout);
 
-            new LabelView("颜色").AddTo(this);
+            new LabelView("颜色").FontSize(15).AddTo(verticalLayout);
 
             Color itemColor = Color.black;
 
             colorView = new ColorView(itemColor, (c) => itemColor = c)
-                .BackgroundColor(Color.white).AddTo(this);
+                .BackgroundColor(Color.white).AddTo(verticalLayout);
 
             changeButton = new ButtonView("添加", () => { }, true)
-                .BackgroundColor(Color.white).AddTo(this);
+                .BackgroundColor(Color.white).AddTo(verticalLayout);
 
             new ButtonView("关闭", Close, true)
-                .BackgroundColor(Color.white).AddTo(this);
+                .BackgroundColor(Color.white).AddTo(verticalLayout);
         }
 
         public void ShowWindow(ToDoData.TodoCategory item = null)

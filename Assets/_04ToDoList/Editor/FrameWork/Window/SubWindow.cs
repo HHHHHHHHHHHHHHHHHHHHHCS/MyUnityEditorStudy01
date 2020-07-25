@@ -17,7 +17,12 @@ namespace _04ToDoList.Editor.FrameWork.Window
         public static T Open<T>(string name = "SubWindow") where T : SubWindow
         {
             var window = GetWindow<T>(true, name, true);
-            window.position = new Rect(Screen.width / 2, Screen.height / 2, 300, 300);
+
+            float width = 1920;//Screen.width
+            float height = 1080;//Screen.height
+
+
+            window.position = new Rect(width / 2f - 150, height / 2f - 150, 300, 300);
             return window;
         }
 
