@@ -1,4 +1,5 @@
-﻿using _04ToDoList.Editor.FrameWork.DataBinding;
+﻿using _04ToDoList.Editor.Component;
+using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.Utils;
@@ -16,6 +17,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private ToDoListCategorySubWindow _categorySubWindow;
 
         private VerticalLayout verticalLayout;
+        private CategoryComponent categoryComponent;
 
         private bool isDirty;
 
@@ -76,7 +78,17 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             foreach (var item in ToDoListCls.ModelData.categoryList)
             {
                 var layout = new HorizontalLayout("box").AddTo(verticalLayout);
-                new BoxView(item.name).BackgroundColor(item.color.ToColor()).AddTo(layout);
+
+                //new BoxView(item.name).BackgroundColor(item.color.ToColor()).AddTo(layout);
+                if (categoryComponent == null)
+                {
+                    categoryComponent = new CategoryComponent(item).AddTo(layout);
+                }
+                else
+                {
+                    categoryComponent.AddTo(layout);
+                }
+
                 new FlexibleSpaceView().AddTo(layout);
 
                 new ImageButtonView(editorIcon, () => { OpenSubWindow(item); })
