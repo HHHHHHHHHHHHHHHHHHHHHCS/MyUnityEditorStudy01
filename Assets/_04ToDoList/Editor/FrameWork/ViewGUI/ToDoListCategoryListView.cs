@@ -1,4 +1,6 @@
-﻿using _04ToDoList.Editor.Component;
+﻿using System;
+using System.Collections.Generic;
+using _04ToDoList.Editor.Component;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
@@ -17,8 +19,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private ToDoListCategorySubWindow _categorySubWindow;
 
         private VerticalLayout verticalLayout;
-        private CategoryComponent categoryComponent;
 
+        private Queue<Action> cmdQueue = new Queue<Action>();
         private bool isDirty;
 
         private ToDoListCategorySubWindow categorySubWindow
@@ -27,8 +29,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             {
                 if (_categorySubWindow == null)
                 {
-                    _categorySubWindow = ToDoListMainWindow.CreateCategorySubWindow();
-                    _categorySubWindow.listView = this;
+                    _categorySubWindow = ToDoListMainWindow.CreateCategorySubWindow(this);
                 }
 
                 return _categorySubWindow;
@@ -60,6 +61,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 isDirty = false;
                 Rebuild();
             }
+
+            while (cmdQueue.Count > 0)
+            {
+                cmdQueue.Dequeue()?.Invoke();
+            }
         }
 
         public void UpdateToDoItems()
@@ -80,18 +86,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 var layout = new HorizontalLayout("box").AddTo(verticalLayout);
 
                 //new BoxView(item.name).BackgroundColor(item.color.ToColor()).AddTo(layout);
-                if (categoryComponent == null)
-                {
-                    categoryComponent = new CategoryComponent(item).AddTo(layout);
-                }
-                else
-                {
-                    categoryComponent.AddTo(layout);
-                }
+
+                var categoryComponent = new CategoryComponent(item).AddTo(layout);
+
 
                 new FlexibleSpaceView().AddTo(layout);
 
-                new ImageButtonView(editorIcon, () => { OpenSubWindow(item); })
+                new ImageButtonView(editorIcon, () => OpenSubWindow(item))
                     .Width(25).Height(25).BackgroundColor(Color.black).AddTo(layout);
 
                 new ImageButtonView(deleteIcon, () =>
@@ -106,7 +107,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private void OpenSubWindow(ToDoData.TodoCategory item = null)
         {
-            categorySubWindow.ShowWindow(item);
+            cmdQueue.Enqueue(() => { categorySubWindow.ShowWindow(item); });
         }
 
         protected override void OnShow()

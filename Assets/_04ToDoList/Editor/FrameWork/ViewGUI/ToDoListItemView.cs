@@ -5,6 +5,7 @@ using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.Layout.Interface;
+using _04ToDoList.Editor.FrameWork.Window;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,8 +16,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private static readonly Texture2D playIcon;
         private static readonly Texture2D finishIcon;
         private static readonly Texture2D resetIcon;
+        private static readonly Texture2D editorIcon;
         private static readonly Texture2D deleteIcon;
 
+        private static Queue<Action> cmdQueue = new Queue<Action>();
 
         private HorizontalLayout container;
 
@@ -31,6 +34,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             playIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Play.png");
             finishIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Finish.png");
             resetIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Reset.png");
+            editorIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Editor.png");
             deleteIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Delete.png");
         }
 
@@ -52,6 +56,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             {
                 needFresh = false;
                 changeProperty(this);
+            }
+
+            while (cmdQueue.Count > 0)
+            {
+                cmdQueue.Dequeue()?.Invoke();
             }
         }
 
@@ -177,6 +186,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 changeProperty(this);
             });
 
+            new ImageButtonView(editorIcon, () => { OpenSubWindow(); })
+                .Width(25).Height(25).BackgroundColor(Color.black).AddTo(container);
+
             var deleteBtn = new ImageButtonView(deleteIcon, () =>
             {
                 data.finished.ClearValueChanged();
@@ -186,6 +198,24 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 needFresh = true;
             }).Height(20).Width(30).BackgroundColor(Color.red);
             container.Add(deleteBtn);
+        }
+
+        public void UpdateItem()
+        {
+            needFresh = true;
+
+            //如果不focus 则会不刷新
+            ToDoListMainWindow.instance.Focus();
+        }
+
+        private void OpenSubWindow()
+        {
+            cmdQueue.Enqueue(() =>
+                {
+                    var window = ToDoListEditorSubWindow.Open(this, "ToDo 编辑器");
+                    window.ShowWindow(this);
+                }
+            );
         }
     }
 }

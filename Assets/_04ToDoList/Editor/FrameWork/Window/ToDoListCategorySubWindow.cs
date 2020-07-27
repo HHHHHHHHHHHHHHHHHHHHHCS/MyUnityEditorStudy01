@@ -19,16 +19,16 @@ namespace _04ToDoList.Editor.FrameWork.Window
         private ButtonView changeButton;
 
 
-        public static ToDoListCategorySubWindow Open(string name = "ToDoListCategorySubWindow")
+        public static ToDoListCategorySubWindow Open(ToDoListCategoryListView listView,
+            string name = "ToDoListCategorySubWindow")
         {
             var window = Open<ToDoListCategorySubWindow>(name);
-
+            window.listView = listView;
             return window;
         }
 
         private void Awake()
         {
-
             var verticalLayout = new VerticalLayout("box").AddTo(this);
 
             new SpaceView(4).AddTo(verticalLayout);
@@ -40,21 +40,22 @@ namespace _04ToDoList.Editor.FrameWork.Window
             //加.BackgroundColor(Color.white)  的原因 
             //因为按钮事件的时候 background 还是在被更改的期间
             //所以 需要一个颜色 来显示自己的颜色
+            //不过后面用cmdQueue延迟加载了所以无所谓
             textAreaView = new TextAreaView(itemName, (s) => itemName = s)
-                .BackgroundColor(Color.white).AddTo(verticalLayout);
+                .AddTo(verticalLayout);
 
             new LabelView("颜色").FontSize(15).AddTo(verticalLayout);
 
             Color itemColor = Color.black;
 
             colorView = new ColorView(itemColor, (c) => itemColor = c)
-                .BackgroundColor(Color.white).AddTo(verticalLayout);
+                .AddTo(verticalLayout);
 
             changeButton = new ButtonView("添加", () => { }, true)
-                .BackgroundColor(Color.white).AddTo(verticalLayout);
+                .AddTo(verticalLayout);
 
             new ButtonView("关闭", Close, true)
-                .BackgroundColor(Color.white).AddTo(verticalLayout);
+                .AddTo(verticalLayout);
         }
 
         public void ShowWindow(ToDoData.TodoCategory item = null)

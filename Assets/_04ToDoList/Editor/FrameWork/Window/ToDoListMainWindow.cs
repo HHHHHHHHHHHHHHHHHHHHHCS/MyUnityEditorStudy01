@@ -5,6 +5,7 @@ using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.ViewController;
+using _04ToDoList.Editor.FrameWork.ViewGUI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -27,10 +28,11 @@ namespace _04ToDoList.Editor.FrameWork.Window
             return instance;
         }
 
-        public static ToDoListCategorySubWindow CreateCategorySubWindow(string name = "ToDoListCategorySubWindow")
+        public static ToDoListCategorySubWindow CreateCategorySubWindow(ToDoListCategoryListView listView,
+            string name = "ToDoListCategorySubWindow")
         {
             //close 会自动destroy  所以都要重新new
-            categorySubWindow = ToDoListCategorySubWindow.Open(name);
+            categorySubWindow = ToDoListCategorySubWindow.Open(listView, name);
             return categorySubWindow;
         }
 
@@ -51,6 +53,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 categorySubWindow.Close();
                 categorySubWindow = null;
             }
+
             instance = null;
         }
 
