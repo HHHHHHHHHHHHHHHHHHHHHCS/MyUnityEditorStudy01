@@ -9,7 +9,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
     {
         public Property<int> ValueProperty { get; }
 
-        public string[] MenuArray { get; }
+        public string[] MenuArray { get; set; }
 
         public PopupView(int initValue, string[] menuArray, Action<int> changeAct = null)
         {
@@ -20,7 +20,10 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         protected override void OnGUI()
         {
-            ValueProperty.Val = EditorGUILayout.Popup(ValueProperty.Val, MenuArray, guiStyle, guiLayoutOptions);
+            if (ValueProperty.Val >= 0 && MenuArray != null)
+            {
+                ValueProperty.Val = EditorGUILayout.Popup(ValueProperty.Val, MenuArray, guiStyle, guiLayoutOptions);
+            }
         }
     }
 }

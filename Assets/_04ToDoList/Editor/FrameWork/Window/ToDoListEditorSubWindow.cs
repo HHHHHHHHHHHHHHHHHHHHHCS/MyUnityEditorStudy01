@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
@@ -11,6 +12,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
         public ToDoListItemView itemView;
 
         private TextAreaView contentTextArea;
+        private PopupView enumPopupView;
         private ButtonView saveButton;
 
 
@@ -27,7 +29,12 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
 
             new LabelView("描述").FontSize(15).AddTo(verticalLayout);
-            contentTextArea = new TextAreaView("").Height(30).FontSize(20).AddTo(verticalLayout);
+
+            contentTextArea = new TextAreaView("")
+                .Height(30).FontSize(20)
+                .ExpandHeight(true).AddTo(verticalLayout);
+
+            enumPopupView = new PopupView(-1, null).AddTo(verticalLayout);
 
             saveButton = new ButtonView("保存", _fullSize: true).AddTo(verticalLayout);
 
@@ -44,11 +51,29 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         public void ResetWindow(ToDoData item)
         {
+            var categoryList = ToDoListCls.ModelData.categoryList;
+
             contentTextArea.Content.Val = item.content;
+
+            if (categoryList.Count > 0)
+            {
+                var index = 0;
+
+                if (item.category != null)
+                {
+                    index = categoryList.IndexOf(item.category);
+                }
+
+                enumPopupView.ValueProperty.Val = index < 0 ? 0 : index;
+                enumPopupView.MenuArray = categoryList.Select(category => category.name).ToArray();
+            }
+
 
             saveButton.OnClickEvent = () =>
             {
                 item.content = contentTextArea.Content.Val;
+                item.category = categoryList[enumPopupView.ValueProperty.Val];
+
                 ToDoListCls.ModelData.Save();
                 itemView.UpdateItem();
                 Close();

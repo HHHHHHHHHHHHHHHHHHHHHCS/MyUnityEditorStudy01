@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _04ToDoList.Editor.Component;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
@@ -146,6 +147,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     boxView.BackgroundColor(Color.gray);
                     break;
             }
+
+            new CategoryComponent(data.category).AddTo(container);
 
             var priority = new EnumPopupView<ToDoData.ToDoPriority>(priorityVal)
                 .Width(30).Height(20).BackgroundColor(priorityColor).AddTo(container);

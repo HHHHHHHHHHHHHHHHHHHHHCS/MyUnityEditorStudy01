@@ -27,10 +27,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         public ToDoListInputView(Action<string> onInputClick)
             : base("box")
         {
-            popupView = new PopupView(0,
-                    ToDoListCls.ModelData.categoryList.Select(x => x.name).ToArray(),
-                    (index) => { Debug.Log(index); })
-                .Width(100f).Height(20).AddTo(this);
+            if (ToDoListCls.ModelData.categoryList.Count > 0)
+            {
+                popupView = new PopupView(0,
+                        ToDoListCls.ModelData.categoryList.Select(x => x.name).ToArray())
+                    .Width(100f).Height(20).AddTo(this);
+            }
+
 
             var inputTextArea = new TextAreaView(todoName).Height(20).FontSize(15);
             inputTextArea.Content.Bind(x => todoName = x);

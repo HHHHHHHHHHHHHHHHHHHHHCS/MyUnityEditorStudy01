@@ -18,6 +18,19 @@ namespace _04ToDoList.Editor.FrameWork
             return view;
         }
 
+        public static T MaxHeight<T>(this T view, float maxHeight) where T : IView
+        {
+            view.guiLayouts.Add(GUILayout.MaxHeight(maxHeight));
+            return view;
+        }
+
+        public static T ExpandHeight<T>(this T view, bool expandHeight) where T : IView
+        {
+            view.guiLayouts.Add(GUILayout.ExpandHeight(expandHeight));
+            return view;
+        }
+
+
         public static T FontSize<T>(this T view, int fontSize) where T : View
         {
             view.guiStyle.fontSize = fontSize;
