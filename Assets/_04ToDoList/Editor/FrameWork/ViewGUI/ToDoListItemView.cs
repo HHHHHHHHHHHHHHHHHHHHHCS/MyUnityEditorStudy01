@@ -105,6 +105,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 .TextMiddleCenter().Width(20).FontSize(12)
                 .FontColor(Color.white).TheFontStyle(FontStyle.Bold);
 
+            new CategoryComponent(data.category).AddTo(container);
 
             var contentLabel = new LabelView(data.content).Height(20).FontSize(15).TextMiddleCenter();
             container.Add(contentLabel);
@@ -148,7 +149,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     break;
             }
 
-            new CategoryComponent(data.category).AddTo(container);
 
             var priority = new EnumPopupView<ToDoData.ToDoPriority>(priorityVal)
                 .Width(30).Height(20).BackgroundColor(priorityColor).AddTo(container);

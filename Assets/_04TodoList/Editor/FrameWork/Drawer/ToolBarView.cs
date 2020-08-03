@@ -12,6 +12,8 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
     public class ToolBarView : View
     {
         public string style;
+
+
         private readonly List<string> menus;
         private readonly List<Action> actions;
         private readonly Property<int> selectIndex;
@@ -80,6 +82,15 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         {
             if (index >= 0 && index <= actions.Count)
             {
+                actions[index]?.Invoke();
+            }
+        }
+
+        public void ForceClick(int index)
+        {
+            if (index >= 0 && index <= actions.Count)
+            {
+                selectIndex._val = index;
                 actions[index]?.Invoke();
             }
         }

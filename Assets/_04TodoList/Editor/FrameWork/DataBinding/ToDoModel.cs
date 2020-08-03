@@ -175,6 +175,13 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         [Serializable]
         public class TodoCategory
         {
+            public string id = Guid.NewGuid().ToString();
+
+            public string name;
+
+            //因为正常的Color 没有序列化  所以用了string
+            public string color;
+
             public TodoCategory()
             {
             }
@@ -184,11 +191,20 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
                 this.name = name;
                 this.color = color;
             }
+        }
 
-            public string name;
+        [Serializable]
+        public class ToDoNote
+        {
+            public string id = Guid.NewGuid().ToString();
 
-            //因为正常的Color 没有序列化  所以用了string
-            public string color;
+            public string title;
+
+            public string content;
+
+            public ToDoNote()
+            {
+            }
         }
 
         [Serializable]
@@ -199,6 +215,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             Done,
         }
 
+        [Serializable]
         public enum ToDoPriority
         {
             A = 0,
@@ -207,6 +224,9 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             D,
             None,
         }
+
+        public string id = Guid.NewGuid().ToString();
+
 
         public string content;
         public Property<bool> finished;
@@ -254,6 +274,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             , Property<ToDoState> state = null, Action<ToDoState> stateChangeAct = null
             , Property<ToDoPriority> priority = null, TodoCategory category = null)
         {
+            //this.id = Guid.NewGuid().ToString();
             this.content = content ?? string.Empty;
             this.finished = finished ?? new Property<bool>(false);
             if (finishedChangeAct != null)
@@ -305,7 +326,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         public override string ToString()
         {
             return
-                $"{nameof(content)}: {content}, {nameof(finished)}: {finished}, {nameof(createTime)}: {createTime}, {nameof(finishTime)}: {finishTime}, {nameof(startTime)}: {startTime}, {nameof(state)}: {state}";
+                $"{nameof(id)}:{id} , {nameof(content)}: {content}, {nameof(finished)}: {finished}, {nameof(createTime)}: {createTime}, {nameof(finishTime)}: {finishTime}, {nameof(startTime)}: {startTime}, {nameof(state)}: {state}";
         }
     }
 }

@@ -17,6 +17,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         private ToolBarView todoListToolBarView;
 
+        private ToDoListNoteView todoListNoteView;
         private ToDoListView todoListView;
         private ToDoListCategoryListView todoListCategoryListView;
         private ToDoListFinishedView todoListFinishedView;
@@ -27,20 +28,25 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             _toDoListCls = ToDoListCls.ModelData;
             todoListToolBarView = new ToolBarView {style = "box"}.FontSize(15);
             todoListToolBarView
-                .AddMenu("清单", () => { ChangePage(0); })
-                .AddMenu("分类管理", () => { ChangePage(1); })
-                .AddMenu("已完成", () => { ChangePage(2); });
+                .AddMenu("笔记", () => { ChangePage(0); })
+                .AddMenu("清单", () => { ChangePage(1); })
+                .AddMenu("分类管理", () => { ChangePage(2); })
+                .AddMenu("已完成", () => { ChangePage(3); });
 
+            todoListNoteView = new ToDoListNoteView();
             todoListView = new ToDoListView();
-            todoListCategoryListView =  new ToDoListCategoryListView();
+            todoListCategoryListView = new ToDoListCategoryListView();
             todoListFinishedView = new ToDoListFinishedView();
 
-            ChangePage(0);
 
             views.Add(todoListToolBarView);
+            views.Add(todoListNoteView);
             views.Add(todoListView);
             views.Add(todoListCategoryListView);
             views.Add(todoListFinishedView);
+
+
+            todoListToolBarView.ForceClick(1);
         }
 
         public void ChangePage(int i)
@@ -49,26 +55,39 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             {
                 case 0:
                 {
-                    todoListView.Show();
-                    todoListFinishedView.Hide();
+                    todoListNoteView.Show();
+                    todoListView.Hide();
                     todoListCategoryListView.Hide();
+                    todoListFinishedView.Hide();
                     todoListView.ReBuildToDoItems();
                     break;
                 }
 
                 case 1:
                 {
-                    todoListView.Hide();
+                    todoListNoteView.Hide();
+                    todoListView.Show();
+                    todoListCategoryListView.Hide();
                     todoListFinishedView.Hide();
-                    todoListCategoryListView.Show();
+                    todoListView.ReBuildToDoItems();
                     break;
                 }
 
                 case 2:
                 {
+                    todoListNoteView.Hide();
                     todoListView.Hide();
-                    todoListFinishedView.Show();
+                    todoListCategoryListView.Show();
+                    todoListFinishedView.Hide();
+                    break;
+                }
+
+                case 3:
+                {
+                    todoListNoteView.Hide();
+                    todoListView.Hide();
                     todoListCategoryListView.Hide();
+                    todoListFinishedView.Show();
                     todoListFinishedView.ReBuildToDoItems();
                     break;
                 }
@@ -79,6 +98,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                     break;
                 }
             }
+
         }
 
         protected override void OnUpdate()
