@@ -15,7 +15,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         {
             ValueProperty = new Property<int>(initValue, changeAct);
             MenuArray = menuArray;
-            guiStyle = EditorStyles.popup;
+            guiStyle = new GUIStyle(EditorStyles.popup);
         }
 
         protected override void OnGUI()

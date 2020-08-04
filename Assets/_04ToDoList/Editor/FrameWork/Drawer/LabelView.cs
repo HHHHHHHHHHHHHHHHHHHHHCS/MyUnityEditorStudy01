@@ -9,6 +9,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         public LabelView(string _content)
         {
             content = _content;
+            guiStyle = new GUIStyle(GUI.skin.label);
         }
 
         protected override void OnGUI()

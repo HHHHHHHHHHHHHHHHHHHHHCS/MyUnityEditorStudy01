@@ -57,7 +57,7 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         public void Add(IView view)
         {
-            view.Parent = this as ILayout;
+            view.Parent = this;
             children.Add(view);
         }
 

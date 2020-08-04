@@ -12,7 +12,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         public TextAreaView(string content, Action<string> _act = null)
         {
             Content = new Property<string>(content, _act);
-            guiStyle = GUI.skin.textArea;
+            guiStyle = new GUIStyle(GUI.skin.textArea);
         }
 
         protected override void OnGUI()

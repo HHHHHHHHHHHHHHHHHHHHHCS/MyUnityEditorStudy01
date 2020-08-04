@@ -16,7 +16,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             text = _text;
             OnClickEvent = onClickEvent;
             fullSize = _fullSize;
-            guiStyle = GUI.skin.button;
+            guiStyle = new GUIStyle(GUI.skin.button);
         }
 
         protected override void OnGUI()

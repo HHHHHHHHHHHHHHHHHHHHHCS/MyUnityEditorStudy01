@@ -9,7 +9,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         public BoxView(string text)
         {
             Text = text;
-            guiStyle = GUI.skin.box;
+            guiStyle = new GUIStyle( GUI.skin.box);
         }
 
         protected override void OnGUI()

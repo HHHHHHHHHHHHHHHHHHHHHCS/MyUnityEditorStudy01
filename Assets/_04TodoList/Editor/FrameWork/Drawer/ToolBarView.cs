@@ -23,7 +23,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             menus = new List<string>();
             actions = new List<Action>();
             selectIndex = new Property<int>(0, ClickAct);
-            guiStyle = GUI.skin.button;
+            guiStyle = new GUIStyle(GUI.skin.button);
         }
 
         public ToolBarView(string[] _menus, Action[] _actions)
@@ -31,7 +31,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             menus = _menus == null ? new List<string>() : _menus.ToList();
             actions = _actions == null ? new List<Action>() : _actions.ToList();
             selectIndex = new Property<int>(0, ClickAct);
-            guiStyle = GUI.skin.button;
+            guiStyle = new GUIStyle(GUI.skin.button);
         }
 
 
@@ -40,7 +40,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             menus = _menus == null ? new List<string>() : _menus.ToList();
             actions = _actions == null ? new List<Action>() : _actions.ToList();
             selectIndex = new Property<int>(0, ClickAct);
-            guiStyle = GUI.skin.button;
+            guiStyle = new GUIStyle(GUI.skin.button);
         }
 
         protected override void OnGUI()
