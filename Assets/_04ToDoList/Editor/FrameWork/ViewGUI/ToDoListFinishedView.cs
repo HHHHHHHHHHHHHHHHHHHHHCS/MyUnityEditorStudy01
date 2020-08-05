@@ -27,9 +27,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             isDirty = true;
         }
 
-        public void OnUpdate()
+        protected override void OnRefresh()
         {
-            Refresh();
             if (isDirty)
             {
                 isDirty = false;

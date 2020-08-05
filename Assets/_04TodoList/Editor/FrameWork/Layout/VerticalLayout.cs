@@ -2,7 +2,7 @@
 
 namespace _04ToDoList.Editor.FrameWork.Layout
 {
-    public class VerticalLayout : Editor.FrameWork.Layout.Layout
+    public class VerticalLayout : Layout
     {
         public VerticalLayout(string style = null)
             : base(style)

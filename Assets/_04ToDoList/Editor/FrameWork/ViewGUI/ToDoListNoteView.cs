@@ -14,9 +14,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             new LabelView("欢迎来到笔记界面").AddTo(this);
             new ButtonView("创建笔记", () => { needAdd = true; }, true).AddTo(this);
+
+            //TODO:show note
         }
 
-        public void OnUpdate()
+        protected override void OnRefresh()
         {
             if (!needAdd)
             {
@@ -24,7 +26,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
 
             needAdd = false;
-            Clear();
             new ToDoListNoteEditorView().AddTo(this);
         }
     }

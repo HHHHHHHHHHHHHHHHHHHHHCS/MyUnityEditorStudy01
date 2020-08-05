@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using _04ToDoList.Editor.FrameWork.Layout.Interface;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace _04ToDoList.Editor.FrameWork.Layout
         public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
 
         public ILayout Parent { get; set; }
+
+        public Queue<Action> cmdQueue = new Queue<Action>();
 
         protected Layout(string style = null)
         {
@@ -44,15 +47,22 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         public void Refresh()
         {
-            OnRefresh();
-        }
+            while (cmdQueue.Count > 0)
+            {
+                cmdQueue.Dequeue()?.Invoke();
+            }
 
-        protected virtual void OnRefresh()
-        {
+            OnRefresh();
+
             for (int i = children.Count - 1; i >= 0; --i)
             {
                 children[i].Refresh();
             }
+        }
+
+        protected virtual void OnRefresh()
+        {
+
         }
 
         public void Add(IView view)
@@ -65,6 +75,16 @@ namespace _04ToDoList.Editor.FrameWork.Layout
         {
             view.Parent = null;
             children.Remove(view);
+        }
+
+        public void ParentRemoveThis()
+        {
+            Parent.Remove(this);
+        }
+
+        public void EnqueueCmd(Action act)
+        {
+            cmdQueue.Enqueue(act);
         }
 
         public void Clear()

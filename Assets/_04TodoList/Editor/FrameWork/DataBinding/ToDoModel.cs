@@ -127,7 +127,9 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
         public List<ToDoData> todoList = new List<ToDoData>();
 
-        public List<ToDoData.TodoCategory> categoryList = new List<ToDoData.TodoCategory>();
+        public List<ToDoNote> notes = new List<ToDoNote>();
+
+        public List<TodoCategory> categoryList = new List<TodoCategory>();
 
         public ToDoData this[int index]
         {
@@ -161,7 +163,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             ToDoListCls.Save(cls);
         }
 
-        public static void Add(this ToDoListCls cls, string content, bool finished, ToDoData.TodoCategory category)
+        public static void Add(this ToDoListCls cls, string content, bool finished, TodoCategory category)
         {
             var data = new ToDoData(content, finished, cls.Save, category);
             cls.todoList.Add(data);
@@ -170,42 +172,49 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
     }
 
     [System.Serializable]
+    public class ToDoNote
+    {
+        public string id = Guid.NewGuid().ToString();
+
+        public string title;
+
+        public string content;
+
+        public ToDoNote()
+        {
+        }
+
+        public ToDoNote(string _content)
+        {
+            content = _content;
+        }
+    }
+
+    [System.Serializable]
+    public class TodoCategory
+    {
+        public string id = Guid.NewGuid().ToString();
+
+        public string name;
+
+        //因为正常的Color 没有序列化  所以用了string
+        public string color;
+
+        public TodoCategory()
+        {
+        }
+
+        public TodoCategory(string name, string color)
+        {
+            this.name = name;
+            this.color = color;
+        }
+    }
+
+    [System.Serializable]
     public class ToDoData
     {
-        [Serializable]
-        public class TodoCategory
-        {
-            public string id = Guid.NewGuid().ToString();
 
-            public string name;
-
-            //因为正常的Color 没有序列化  所以用了string
-            public string color;
-
-            public TodoCategory()
-            {
-            }
-
-            public TodoCategory(string name, string color)
-            {
-                this.name = name;
-                this.color = color;
-            }
-        }
-
-        [Serializable]
-        public class ToDoNote
-        {
-            public string id = Guid.NewGuid().ToString();
-
-            public string title;
-
-            public string content;
-
-            public ToDoNote()
-            {
-            }
-        }
 
         [Serializable]
         public enum ToDoState

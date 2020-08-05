@@ -23,6 +23,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         public virtual void Draw()
         {
+            foreach (var item in views)
+            {
+                item.Refresh();
+            }
             OnUpdate();
             views.ForEach(x => x.DrawGUI());
         }

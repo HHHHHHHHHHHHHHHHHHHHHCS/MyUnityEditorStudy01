@@ -58,14 +58,14 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 .AddTo(verticalLayout);
         }
 
-        public void ShowWindow(ToDoData.TodoCategory item = null)
+        public void ShowWindow(TodoCategory item = null)
         {
             Focus();
             ResetWindow(item);
             Show();
         }
 
-        public void ResetWindow(ToDoData.TodoCategory item = null)
+        public void ResetWindow(TodoCategory item = null)
         {
             if (item == null)
             {
@@ -75,7 +75,9 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 changeButton.text = "添加";
                 changeButton.OnClickEvent = () =>
                 {
-                    ToDoListCls.ModelData.categoryList.Add(new ToDoData.TodoCategory(textAreaView.Content.Val,
+                    //TODO:已经存在不能添加
+
+                    ToDoListCls.ModelData.categoryList.Add(new TodoCategory(textAreaView.Content.Val,
                         colorView.colorProperty.Val.ToText()));
                     ToDoListCls.ModelData.Save();
                     listView.UpdateToDoItems();

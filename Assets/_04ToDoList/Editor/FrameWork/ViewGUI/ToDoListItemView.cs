@@ -20,8 +20,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private static readonly Texture2D editorIcon;
         private static readonly Texture2D deleteIcon;
 
-        private static Queue<Action> cmdQueue = new Queue<Action>();
-
         private HorizontalLayout container;
 
         public ToDoData data;
@@ -57,11 +55,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             {
                 needFresh = false;
                 changeProperty(this);
-            }
-
-            while (cmdQueue.Count > 0)
-            {
-                cmdQueue.Dequeue()?.Invoke();
             }
         }
 
@@ -213,7 +206,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private void OpenSubWindow()
         {
-            cmdQueue.Enqueue(() =>
+            EnqueueCmd(() =>
                 {
                     var window = ToDoListEditorSubWindow.Open(this, "ToDo 编辑器");
                     window.ShowWindow(this);

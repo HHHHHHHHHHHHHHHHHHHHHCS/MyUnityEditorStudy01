@@ -20,7 +20,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private VerticalLayout verticalLayout;
 
-        private Queue<Action> cmdQueue = new Queue<Action>();
         private bool isDirty;
 
         private ToDoListCategorySubWindow categorySubWindow
@@ -54,17 +53,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         }
 
 
-        public void OnUpdate()
+        protected override void OnRefresh()
         {
             if (isDirty)
             {
                 isDirty = false;
                 Rebuild();
-            }
-
-            while (cmdQueue.Count > 0)
-            {
-                cmdQueue.Dequeue()?.Invoke();
             }
         }
 
@@ -105,9 +99,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
         }
 
-        private void OpenSubWindow(ToDoData.TodoCategory item = null)
+        private void OpenSubWindow(TodoCategory item = null)
         {
-            cmdQueue.Enqueue(() => { categorySubWindow.ShowWindow(item); });
+            EnqueueCmd(() => { categorySubWindow.ShowWindow(item); });
         }
 
         protected override void OnShow()

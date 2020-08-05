@@ -33,9 +33,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             isDirty = true;
         }
 
-        public void OnUpdate()
+        protected override void OnRefresh()
         {
-            todoListItemsLayout.Refresh();
             if (isDirty)
             {
                 isDirty = false;
@@ -69,7 +68,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         private void AddAction(string _todoName)
         {
             var index = todoListInputView.PopupIndex;
-            ToDoData.TodoCategory category = null;
+            TodoCategory category = null;
             if (index >= 0)
             {
                 category = ToDoListCls.ModelData.categoryList[index];

@@ -103,10 +103,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         protected override void OnUpdate()
         {
-            todoListNoteView.OnUpdate();
-            todoListView.OnUpdate();
-            todoListCategoryListView.OnUpdate();
-            todoListFinishedView.OnUpdate();
+
         }
 
         public void OnDisable()
