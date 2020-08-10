@@ -14,12 +14,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListItemView : VerticalLayout
     {
-        private static readonly Texture2D playIcon;
-        private static readonly Texture2D finishIcon;
-        private static readonly Texture2D resetIcon;
-        private static readonly Texture2D editorIcon;
-        private static readonly Texture2D deleteIcon;
-
         private HorizontalLayout container;
 
         public ToDoData data;
@@ -27,15 +21,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         public bool showTime = false;
 
         private bool needFresh;
-
-        static ToDoListItemView()
-        {
-            playIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Play.png");
-            finishIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Finish.png");
-            resetIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Reset.png");
-            editorIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Editor.png");
-            deleteIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Delete.png");
-        }
 
         public ToDoListItemView(ToDoData _item, Action<ToDoListItemView> _changeProperty, bool _showTime = false)
             : base()
@@ -65,7 +50,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             if (data.state == ToDoData.ToDoState.NoStart)
             {
-                var startBtn = new ImageButtonView(playIcon, () =>
+                var startBtn = new ImageButtonView(ImageButtonIcon.playIcon, () =>
                 {
                     data.startTime = DateTime.Now;
                     data.state.Val = ToDoData.ToDoState.Started; //改变了state会自动储存
@@ -75,7 +60,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
             else if (data.state == ToDoData.ToDoState.Started)
             {
-                var finishedBtn = new ImageButtonView(finishIcon, () =>
+                var finishedBtn = new ImageButtonView(ImageButtonIcon.finishIcon, () =>
                 {
                     data.finishTime = DateTime.Now;
                     data.state.Val = ToDoData.ToDoState.Done;
@@ -85,7 +70,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
             else if (data.state == ToDoData.ToDoState.Done)
             {
-                var resetBtn = new ImageButtonView(resetIcon, () =>
+                var resetBtn = new ImageButtonView(ImageButtonIcon.resetIcon, () =>
                 {
                     data.createTime = DateTime.Now;
                     data.state.Val = ToDoData.ToDoState.NoStart;
@@ -182,10 +167,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 changeProperty(this);
             });
 
-            new ImageButtonView(editorIcon, () => { OpenSubWindow(); })
+            new ImageButtonView(ImageButtonIcon.editorIcon, () => { OpenSubWindow(); })
                 .Width(25).Height(25).BackgroundColor(Color.black).AddTo(container);
 
-            var deleteBtn = new ImageButtonView(deleteIcon, () =>
+            var deleteBtn = new ImageButtonView(ImageButtonIcon.deleteIcon, () =>
             {
                 data.finished.ClearValueChanged();
                 var todoListCls = ToDoListCls.ModelData;

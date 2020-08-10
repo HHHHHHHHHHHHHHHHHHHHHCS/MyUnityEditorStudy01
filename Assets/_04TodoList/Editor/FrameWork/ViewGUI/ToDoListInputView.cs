@@ -10,19 +10,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListInputView : HorizontalLayout
     {
-        private static Texture2D addIcon;
-
         private string todoName = string.Empty;
 
         private PopupView popupView;
 
         public int PopupIndex => popupView?.ValueProperty.Val ?? -1;
-
-
-        static ToDoListInputView()
-        {
-            addIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Add.png");
-        }
 
         public ToDoListInputView(Action<string> onInputClick)
             : base("box")
@@ -39,7 +31,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             inputTextArea.Content.Bind(x => todoName = x);
             Add(inputTextArea);
 
-            var addBtn = new ImageButtonView(addIcon, () =>
+            var addBtn = new ImageButtonView(ImageButtonIcon.addIcon, () =>
             {
                 if (!string.IsNullOrEmpty(todoName))
                 {

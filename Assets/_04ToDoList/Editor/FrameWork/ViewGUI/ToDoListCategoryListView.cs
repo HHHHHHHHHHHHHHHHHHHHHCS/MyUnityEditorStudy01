@@ -13,9 +13,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
     public class ToDoListCategoryListView : VerticalLayout
     {
-        private static readonly Texture2D editorIcon;
-        private static readonly Texture2D deleteIcon;
-
         private ToDoListCategorySubWindow _categorySubWindow;
 
         private VerticalLayout verticalLayout;
@@ -38,8 +35,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         static ToDoListCategoryListView()
         {
-            editorIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Editor.png");
-            deleteIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_04ToDoList/EditorIcons/Delete.png");
         }
 
         public ToDoListCategoryListView() : base("box")
@@ -86,10 +81,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
                 new FlexibleSpaceView().AddTo(layout);
 
-                new ImageButtonView(editorIcon, () => OpenSubWindow(item))
+                new ImageButtonView(ImageButtonIcon.editorIcon, () => OpenSubWindow(item))
                     .Width(25).Height(25).BackgroundColor(Color.black).AddTo(layout);
 
-                new ImageButtonView(deleteIcon, () =>
+                new ImageButtonView(ImageButtonIcon.deleteIcon, () =>
                     {
                         ToDoListCls.ModelData.categoryList.Remove(item);
                         ToDoListCls.ModelData.Save();

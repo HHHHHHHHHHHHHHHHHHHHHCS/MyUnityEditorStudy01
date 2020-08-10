@@ -10,6 +10,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private LabelView titleLabelView;
         private ButtonView createButtonView;
         private ToDoListNoteEditorView editorView;
+        private VerticalLayout noteListView;
 
 
         private bool isDirty;
@@ -22,8 +23,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 .TextMiddleCenter()
                 .TheFontStyle(FontStyle.Bold)
                 .FontSize(40).AddTo(this);
-            createButtonView = new ButtonView("创建笔记", CreateNewEditor, true).AddTo(this);
+            createButtonView = new ButtonView("创建笔记", () => CreateNewEditor(), true).AddTo(this);
             editorView = new ToDoListNoteEditorView(SaveAction).AddTo(this);
+            noteListView = new VerticalLayout("box").AddTo(this);
 
             editorView.Hide();
             isDirty = true;
@@ -37,24 +39,28 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
 
             isDirty = false;
-            var notes = ToDoListCls.ModelData.notes;
 
+            noteListView.Clear();
+
+            var notes = ToDoListCls.ModelData.notes;
 
             foreach (var item in notes)
             {
-                new LabelView(item.content).AddTo(this);
+                var hor = new HorizontalLayout().AddTo(noteListView);
+                var temp = item;
+                new ImageButtonView(ImageButtonIcon.editorIcon, () => { CreateNewEditor(temp); })
+                    .Width(25).Height(25).AddTo(hor);
+                new LabelView(item.content).FontSize(15).TheFontStyle(FontStyle.Bold)
+                    .TextMiddleLeft().Height(25).AddTo(hor);
             }
         }
 
-        public void CreateNewEditor()
+        public void CreateNewEditor(ToDoNote note = null)
         {
             titleLabelView.Hide();
             createButtonView.Hide();
+            editorView.ReInit(note);
             editorView.Show();
-            EnqueueCmd(() =>
-            {
-                
-            });
         }
 
         public void SaveAction()

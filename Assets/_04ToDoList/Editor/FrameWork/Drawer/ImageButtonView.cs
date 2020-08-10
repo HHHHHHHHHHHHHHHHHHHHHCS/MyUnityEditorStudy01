@@ -7,15 +7,39 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Drawer
 {
+    public static class ImageButtonIcon
+    {
+        public const string editorIcon = "Assets/_04ToDoList/EditorIcons/Editor.png";
+        public const string deleteIcon = "Assets/_04ToDoList/EditorIcons/Delete.png";
+        public const string addIcon = "Assets/_04ToDoList/EditorIcons/Add.png";
+        public const string playIcon = "Assets/_04ToDoList/EditorIcons/Play.png";
+        public const string finishIcon = "Assets/_04ToDoList/EditorIcons/Finish.png";
+        public const string resetIcon = "Assets/_04ToDoList/EditorIcons/Reset.png";
+    }
+
     public class ImageButtonView : View
     {
+        private static Dictionary<string, Texture2D> imagesDict = new Dictionary<string, Texture2D>();
+
+
         public Texture2D image { get; set; }
 
         public Action OnClickEvent { get; set; }
 
         public ImageButtonView(string imagePath, Action onClickEvent = null)
         {
-            image = AssetDatabase.LoadAssetAtPath<Texture2D>(imagePath);
+            if (imagesDict.TryGetValue(imagePath, out Texture2D img))
+            {
+                image = img;
+            }
+
+            if (image == null)
+            {
+                img = AssetDatabase.LoadAssetAtPath<Texture2D>(imagePath);
+                imagesDict.Add(imagePath, img);
+                image = img;
+            }
+
             OnClickEvent = onClickEvent;
         }
 
@@ -43,7 +67,6 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             {
                 OnClickEvent?.Invoke();
             }
-
         }
     }
 }
