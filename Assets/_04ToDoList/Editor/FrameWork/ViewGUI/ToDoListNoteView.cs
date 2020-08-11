@@ -10,7 +10,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private LabelView titleLabelView;
         private ButtonView createButtonView;
         private ToDoListNoteEditorView editorView;
-        private VerticalLayout noteListView;
+        private ScrollLayout noteListScrollLayout;
 
 
         private bool isDirty;
@@ -25,7 +25,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 .FontSize(40).AddTo(this);
             createButtonView = new ButtonView("创建笔记", () => CreateNewEditor(), true).AddTo(this);
             editorView = new ToDoListNoteEditorView(SaveAction).AddTo(this);
-            noteListView = new VerticalLayout("box").AddTo(this);
+            noteListScrollLayout = new ScrollLayout().AddTo(this);
 
             editorView.Hide();
             isDirty = true;
@@ -40,18 +40,18 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             isDirty = false;
 
-            noteListView.Clear();
+            noteListScrollLayout.Clear();
 
             var notes = ToDoListCls.ModelData.notes;
 
             foreach (var item in notes)
             {
-                var hor = new HorizontalLayout().AddTo(noteListView);
+                var hor = new HorizontalLayout().AddTo(noteListScrollLayout);
                 var temp = item;
                 new ImageButtonView(ImageButtonIcon.editorIcon, () => { CreateNewEditor(temp); })
                     .Width(25).Height(25).AddTo(hor);
                 new LabelView(item.content).FontSize(15).TheFontStyle(FontStyle.Bold)
-                    .TextMiddleLeft().Height(25).AddTo(hor);
+                    .TextMiddleLeft().AddTo(hor);
             }
         }
 
