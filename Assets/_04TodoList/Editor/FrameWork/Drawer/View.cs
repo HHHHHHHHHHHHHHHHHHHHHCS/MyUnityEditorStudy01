@@ -34,6 +34,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             OnHide();
         }
 
+
         protected virtual void OnHide()
         {
         }
@@ -44,6 +45,10 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         }
 
         protected virtual void OnRefresh()
+        {
+        }
+
+        public virtual void OnRemove()
         {
         }
 
@@ -70,7 +75,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
             }
         }
 
-        public void RemoveFromParent()
+        public void ParentRemoveThis()
         {
             Parent.Remove(this);
         }
@@ -79,6 +84,19 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         {
             parent.Add(this);
             return this as T;
+        }
+
+        public void Dispose()
+        {
+            OnDisposed();
+        }
+
+        protected virtual void OnDisposed()
+        {
+            if (Parent != null)
+            {
+                ParentRemoveThis();
+            }
         }
 
         protected abstract void OnGUI();

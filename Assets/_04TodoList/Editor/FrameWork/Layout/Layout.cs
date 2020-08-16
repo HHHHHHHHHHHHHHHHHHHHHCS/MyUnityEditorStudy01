@@ -65,6 +65,11 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         }
 
+        public virtual void OnRemove()
+        {
+
+        }
+
         public void Add(IView view)
         {
             view.Parent = this;
@@ -75,6 +80,7 @@ namespace _04ToDoList.Editor.FrameWork.Layout
         {
             view.Parent = null;
             children.Remove(view);
+            view.OnRemove();
         }
 
         public void ParentRemoveThis()
@@ -122,5 +128,18 @@ namespace _04ToDoList.Editor.FrameWork.Layout
         }
 
         protected abstract void OnGUIEnd();
+
+        public void Dispose()
+        {
+            OnDisposed();
+        }
+
+        protected virtual void OnDisposed()
+        {
+            if (Parent != null)
+            {
+                ParentRemoveThis();
+            }
+        }
     }
 }

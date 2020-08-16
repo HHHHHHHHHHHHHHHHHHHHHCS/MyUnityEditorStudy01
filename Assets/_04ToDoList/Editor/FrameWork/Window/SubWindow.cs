@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using _04ToDoList.Editor.FrameWork.Layout.Interface;
 using UnityEditor;
@@ -18,8 +19,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
         {
             var window = GetWindow<T>(true, name, true);
 
-            float width = 1920;//Screen.width
-            float height = 1080;//Screen.height
+            float width = 1920; //Screen.width
+            float height = 1080; //Screen.height
 
 
             window.position = new Rect(width / 2f - 150, height / 2f - 150, 300, 300);
@@ -28,6 +29,15 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         //隐式屏蔽接口 不能使用  约等于空方法
         void IView.Hide()
+        {
+        }
+
+        void IView.OnRemove()
+        {
+        }
+
+
+        void IDisposable.Dispose()
         {
         }
 

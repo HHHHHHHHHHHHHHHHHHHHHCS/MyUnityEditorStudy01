@@ -19,17 +19,13 @@ namespace Tests
         [Test]
         public void TestEvent01()
         {
-            EventDispatcher.Register(TestEvents.A, () =>
-            {
-                Debug.Log(1);
-            });
+            EventDispatcher.Register(TestEvents.A, (obj) => { Debug.Log(1); });
 
-            EventDispatcher.Send(TestEvents.A);
+            EventDispatcher.Send(TestEvents.A, this);
 
             EventDispatcher.RemoveAll(TestEvents.A);
 
-            EventDispatcher.Send(TestEvents.A);
-
+            EventDispatcher.Send(TestEvents.A, this);
         }
     }
 }
