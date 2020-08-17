@@ -47,6 +47,11 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         public void Refresh()
         {
+            if (!Visible)
+            {
+                return;
+            }
+
             while (cmdQueue.Count > 0)
             {
                 cmdQueue.Dequeue()?.Invoke();

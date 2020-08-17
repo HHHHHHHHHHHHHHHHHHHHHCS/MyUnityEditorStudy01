@@ -58,6 +58,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                     new LabelView(group.Key.ToString("yyyy年MM月dd日 (共" + ToDoData.UsedTimeToString(totalTime) + ")"))
                         .FontSize(20).TextLowCenter());
 
+                todosParent.Add(new SpaceView(4));
+
 
                 foreach (var item in group.OrderByDescending(val => val.finishTime))
                 {

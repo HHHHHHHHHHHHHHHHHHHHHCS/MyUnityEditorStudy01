@@ -90,10 +90,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             if (showTime)
             {
-                container.Add(new LabelView(data.finishTime.ToString("完成于 HH:mm:ss"))
-                    .Height(20).Width(80).TextLowRight());
-                container.Add(new LabelView(data.UsedTimeText)
-                    .Height(20).Width(100).TextLowRight());
+                new LabelView(data.finishTime.ToString("完成于 HH:mm:ss"))
+                    .Height(20).Width(80).TextMiddleLeft().TheFontStyle(FontStyle.Bold);
+                new LabelView(data.UsedTimeText)
+                    .Height(20).Width(100).TextMiddleLeft().AddTo(container);
             }
 
             var priorityVal = data.priority.Val;

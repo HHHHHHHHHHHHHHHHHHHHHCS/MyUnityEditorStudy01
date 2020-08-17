@@ -27,7 +27,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         {
             _toDoListCls = ToDoListCls.ModelData;
             todoListToolBarView = new ToolBarView {style = "box"}.FontSize(15);
-            todoListToolBarView
+            todoListToolBarView.Height(40)
                 .AddMenu("笔记", () => { ChangePage(0); })
                 .AddMenu("清单", () => { ChangePage(1); })
                 .AddMenu("分类管理", () => { ChangePage(2); })
@@ -98,12 +98,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                     break;
                 }
             }
-
         }
 
         protected override void OnUpdate()
         {
-
         }
 
         public void OnDisable()

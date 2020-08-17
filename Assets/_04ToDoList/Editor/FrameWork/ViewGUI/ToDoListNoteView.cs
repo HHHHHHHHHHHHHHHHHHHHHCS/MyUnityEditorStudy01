@@ -48,10 +48,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             {
                 var hor = new HorizontalLayout().AddTo(noteListScrollLayout);
                 var temp = item;
-                new ImageButtonView(ImageButtonIcon.editorIcon, () => { CreateNewEditor(temp); })
-                    .Width(25).Height(25).AddTo(hor);
+                new ImageButtonView(ImageButtonIcon.editorIcon, () => CreateNewEditor(temp))
+                    .Width(25).Height(25).BackgroundColor(Color.black).AddTo(hor);
                 new LabelView(item.content).FontSize(15).TheFontStyle(FontStyle.Bold)
                     .TextMiddleLeft().AddTo(hor);
+                var item1 = item;
+                new ImageButtonView(ImageButtonIcon.deleteIcon, () => DeleteItemNote(item1))
+                    .Width(25).Height(25).BackgroundColor(Color.red).AddTo(hor);
             }
         }
 
@@ -61,6 +64,16 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             createButtonView.Hide();
             editorView.ReInit(note);
             editorView.Show();
+        }
+
+        private void DeleteItemNote(ToDoNote note)
+        {
+            EnqueueCmd(() =>
+            {
+                ToDoListCls.ModelData.notes.Remove(note);
+                ToDoListCls.ModelData.Save();
+                isDirty = true;
+            });
         }
 
         public void SaveAction()
