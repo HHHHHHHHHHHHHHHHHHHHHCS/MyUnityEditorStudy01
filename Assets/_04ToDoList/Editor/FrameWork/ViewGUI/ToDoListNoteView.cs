@@ -29,7 +29,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             noteListScrollLayout = new ScrollLayout().AddTo(this);
 
             editorView.Hide();
-            isDirty = true;
+            UpdateList();
         }
 
         protected override void OnRefresh()
@@ -60,6 +60,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
         }
 
+        public void UpdateList()
+        {
+            isDirty = true;
+        }
+
         public void CreateNewEditor(ToDoNote note = null)
         {
             titleLabelView.Hide();
@@ -69,13 +74,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         }
 
 
-        public void OpenProcessWindow(ToDoNote note = null)
+        public void OpenProcessWindow(ToDoNote note)
         {
-            EnqueueCmd(() =>
-            {
-                var window = SubWindow.Open<SubWindow>("ToDoListProcessEditor");
-                window.Show();
-            });
+            var window = ToDoListNoteConvertWindow.Open(this, note);
+            window.Show();
         }
 
         private void DeleteItemNote(ToDoNote note)
@@ -84,7 +86,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             {
                 ToDoListCls.ModelData.notes.Remove(note);
                 ToDoListCls.ModelData.Save();
-                isDirty = true;
+                UpdateList();
             });
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
@@ -75,13 +76,14 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 changeButton.text = "添加";
                 changeButton.OnClickEvent = () =>
                 {
-                    //TODO:已经存在不能添加
-
-                    ToDoListCls.ModelData.categoryList.Add(new TodoCategory(textAreaView.Content.Val,
-                        colorView.colorProperty.Val.ToText()));
-                    ToDoListCls.ModelData.Save();
-                    listView.UpdateToDoItems();
-                    Close();
+                    if (ToDoListCls.ModelData.categoryList.All(x => x.name != textAreaView.Content.Val))
+                    {
+                        ToDoListCls.ModelData.categoryList.Add(new TodoCategory(textAreaView.Content.Val,
+                            colorView.colorProperty.Val.ToText()));
+                        ToDoListCls.ModelData.Save();
+                        listView.UpdateToDoItems();
+                        Close();
+                    }
                 };
             }
             else

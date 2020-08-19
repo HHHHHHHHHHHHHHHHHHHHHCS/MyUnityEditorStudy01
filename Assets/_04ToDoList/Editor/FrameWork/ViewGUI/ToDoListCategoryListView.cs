@@ -76,7 +76,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
                 //new BoxView(item.name).BackgroundColor(item.color.ToColor()).AddTo(layout);
 
-                var categoryComponent = new CategoryComponent(item).AddTo(layout);
+                new CategoryComponent(item).AddTo(layout);
 
 
                 new FlexibleSpaceView().AddTo(layout);

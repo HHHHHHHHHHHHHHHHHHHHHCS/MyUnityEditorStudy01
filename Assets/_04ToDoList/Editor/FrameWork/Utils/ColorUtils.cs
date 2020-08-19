@@ -12,6 +12,11 @@ namespace _04ToDoList.Editor.FrameWork.Utils
 
         public static Color ToColor(this string colorText)
         {
+            if (string.IsNullOrEmpty(colorText))
+            {
+                return Color.black;
+            }
+
             try
             {
                 int r0 = colorText.IndexOf(':', 0) + 1;

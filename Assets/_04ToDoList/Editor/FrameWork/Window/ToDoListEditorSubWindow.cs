@@ -16,7 +16,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
         private ButtonView saveButton;
 
 
-        public static ToDoListEditorSubWindow Open(ToDoListItemView itemView, string name = "ToDo Item Editor ")
+        public static ToDoListEditorSubWindow Open(ToDoListItemView itemView, string name = "ToDo Item Editor")
         {
             var window = Open<ToDoListEditorSubWindow>(name);
             window.itemView = itemView;
