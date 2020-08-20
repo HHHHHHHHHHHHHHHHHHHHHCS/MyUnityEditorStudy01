@@ -26,7 +26,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
             new ButtonView("转换", () =>
             {
-                var data = ToDoListCls.ModelData;
+                var data = ToDoDataManager.Data;
                 data.todoList.Add(new ToDoData(note.content, false));
                 data.notes.Remove(note);
                 data.Save();

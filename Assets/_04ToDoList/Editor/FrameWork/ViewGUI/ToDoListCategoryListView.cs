@@ -70,7 +70,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         {
             verticalLayout.Clear();
 
-            foreach (var item in ToDoListCls.ModelData.categoryList)
+            var data = ToDoDataManager.Data;
+
+            foreach (var item in data.categoryList)
             {
                 var layout = new HorizontalLayout("box").AddTo(verticalLayout);
 
@@ -86,8 +88,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
                 new ImageButtonView(ImageButtonIcon.deleteIcon, () =>
                     {
-                        ToDoListCls.ModelData.categoryList.Remove(item);
-                        ToDoListCls.ModelData.Save();
+                        data.categoryList.Remove(item);
+                        data.Save();
                         UpdateToDoItems();
                     })
                     .Width(25).Height(25).BackgroundColor(Color.red).AddTo(layout);

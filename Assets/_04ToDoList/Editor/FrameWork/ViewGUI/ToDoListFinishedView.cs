@@ -38,7 +38,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         public void ReBuildToDoItems()
         {
-            var dataList = ToDoListCls.ModelData.todoList;
+            var dataList = ToDoDataManager.Data.todoList;
 
             todosParent.children.Clear();
 

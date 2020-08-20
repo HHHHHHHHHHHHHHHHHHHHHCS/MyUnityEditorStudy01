@@ -32,7 +32,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 {
                     if (note == null)
                     {
-                        var model = ToDoListCls.ModelData;
+                        var model = ToDoDataManager.Data;
                         model.notes.Add(new ToDoNote(textEditor.Content.Val));
                         model.Save();
                     }

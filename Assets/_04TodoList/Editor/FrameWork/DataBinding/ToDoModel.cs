@@ -16,6 +16,17 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         [System.NonSerialized] public const int version = -1;
     }
 
+    public static class ToDoDataManager
+    {
+        public static ToDoListCls Data => ToDoListCls.ModelData;
+
+        public static void Save() => Data.Save();
+
+        //todo:修改接口  并且category 可以为null
+        public static void AddToDoItem(string content, bool finished = false, TodoCategory category = null) =>
+            Data.AddToDoItem(content, finished, category);
+    }
+
     [System.Serializable]
     public class ToDoListCls : ToDoListBaseCls
     {
@@ -163,7 +174,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             ToDoListCls.Save(cls);
         }
 
-        public static void Add(this ToDoListCls cls, string content, bool finished, TodoCategory category)
+        public static void AddToDoItem(this ToDoListCls cls, string content, bool finished, TodoCategory category)
         {
             var data = new ToDoData(content, finished, cls.Save, category);
             cls.todoList.Add(data);
@@ -214,8 +225,6 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
     [System.Serializable]
     public class ToDoData
     {
-
-
         [Serializable]
         public enum ToDoState
         {
@@ -296,7 +305,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             this.startTime = startTime ?? DateTime.Now;
             this.state = state ?? new Property<ToDoState>(ToDoState.NoStart);
             this.priority = priority ?? new Property<ToDoPriority>(ToDoPriority.None);
-            this.category = category ?? new TodoCategory();
+            this.category = category; //?? new TodoCategory();
             if (stateChangeAct != null)
             {
                 this.state.RegisterValueChanged(stateChangeAct);

@@ -76,11 +76,13 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 changeButton.text = "添加";
                 changeButton.OnClickEvent = () =>
                 {
-                    if (ToDoListCls.ModelData.categoryList.All(x => x.name != textAreaView.Content.Val))
+                    var data = ToDoDataManager.Data;
+
+                    if (data.categoryList.All(x => x.name != textAreaView.Content.Val))
                     {
-                        ToDoListCls.ModelData.categoryList.Add(new TodoCategory(textAreaView.Content.Val,
+                        data.categoryList.Add(new TodoCategory(textAreaView.Content.Val,
                             colorView.colorProperty.Val.ToText()));
-                        ToDoListCls.ModelData.Save();
+                        data.Save();
                         listView.UpdateToDoItems();
                         Close();
                     }
@@ -96,7 +98,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 {
                     item.name = textAreaView.Content.Val;
                     item.color = colorView.colorProperty.Val.ToText();
-                    ToDoListCls.ModelData.Save();
+                    ToDoDataManager.Data.Save();
                     listView.UpdateToDoItems();
                     Close();
                 };

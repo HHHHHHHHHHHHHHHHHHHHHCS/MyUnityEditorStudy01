@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using _04ToDoList.Editor.FrameWork.DataBinding;
+﻿using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
-using _04ToDoList.Editor.FrameWork.Drawer.Interface;
-using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.ViewGUI;
 using UnityEngine;
 
@@ -25,7 +21,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         protected override void SetUpView()
         {
-            _toDoListCls = ToDoListCls.ModelData;
+            _toDoListCls = ToDoDataManager.Data;
             todoListToolBarView = new ToolBarView {style = "box"}.FontSize(15);
             todoListToolBarView.Height(40)
                 .AddMenu("笔记", () => { ChangePage(0); })

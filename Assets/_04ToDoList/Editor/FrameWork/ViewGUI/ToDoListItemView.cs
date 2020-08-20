@@ -173,7 +173,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             var deleteBtn = new ImageButtonView(ImageButtonIcon.deleteIcon, () =>
             {
                 data.finished.ClearValueChanged();
-                var todoListCls = ToDoListCls.ModelData;
+                var todoListCls = ToDoDataManager.Data;
                 todoListCls.todoList.Remove(data);
                 todoListCls.Save();
                 needFresh = true;

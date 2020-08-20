@@ -46,7 +46,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         {
             todoListItemsLayout.Clear();
 
-            var dataList = ToDoListCls.ModelData.todoList
+            var dataList = ToDoDataManager.Data.todoList
                 .Where(item => (item.state.Val == ToDoData.ToDoState.Done) == false)
                 .OrderByDescending(item => item.state.Val)
                 .ThenBy(item => item.priority.Val);
@@ -69,11 +69,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         {
             var index = todoListInputView.PopupIndex;
             TodoCategory category = null;
+            var data = ToDoDataManager.Data;
             if (index >= 0)
             {
-                category = ToDoListCls.ModelData.categoryList[index];
+                category = data.categoryList[index];
             }
-            ToDoListCls.ModelData.Add(_todoName, false, category);
+
+            data.AddToDoItem(_todoName, false, category);
             UpdateToDoItems();
         }
 

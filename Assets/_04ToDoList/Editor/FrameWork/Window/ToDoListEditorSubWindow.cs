@@ -51,7 +51,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         public void ResetWindow(ToDoData item)
         {
-            var categoryList = ToDoListCls.ModelData.categoryList;
+            var categoryList = ToDoDataManager.Data.categoryList;
 
             contentTextArea.Content.Val = item.content;
 
@@ -74,7 +74,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 item.content = contentTextArea.Content.Val;
                 item.category = categoryList[enumPopupView.ValueProperty.Val];
 
-                ToDoListCls.ModelData.Save();
+                ToDoDataManager.Data.Save();
                 itemView.UpdateItem();
                 Close();
             };
