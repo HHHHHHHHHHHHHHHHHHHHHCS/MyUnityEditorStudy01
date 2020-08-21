@@ -57,12 +57,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
             if (categoryList.Count > 0)
             {
-                var index = 0;
-
-                if (item.category != null)
-                {
-                    index = categoryList.IndexOf(item.category);
-                }
+                var index =  ToDoDataManager.ToDoCategoryIndexOf(item.category);
 
                 enumPopupView.ValueProperty.Val = index < 0 ? 0 : index;
                 enumPopupView.MenuArray = categoryList.Select(category => category.name).ToArray();

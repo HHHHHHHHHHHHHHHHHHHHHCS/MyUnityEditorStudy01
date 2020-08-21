@@ -32,13 +32,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 {
                     if (note == null)
                     {
-                        var model = ToDoDataManager.Data;
-                        model.notes.Add(new ToDoNote(textEditor.Content.Val));
-                        model.Save();
+
+                        ToDoDataManager.AddToDoNote(textEditor.Content.Val);
                     }
                     else
                     {
                         note.content = textEditor.Content.Val;
+                        ToDoDataManager.Save();
                     }
                     
                     EditorGUI.FocusTextInControl(null);

@@ -43,7 +43,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             noteListScrollLayout.Clear();
 
-            var notes = ToDoDataManager.Data.notes;
+            var notes = ToDoDataManager.Data.noteList;
 
             foreach (var item in notes)
             {
@@ -84,9 +84,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         {
             EnqueueCmd(() =>
             {
-                var data = ToDoDataManager.Data;
-                data.notes.Remove(note);
-                data.Save();
+                ToDoDataManager.RemoveToDoNote(note);
                 UpdateList();
             });
         }

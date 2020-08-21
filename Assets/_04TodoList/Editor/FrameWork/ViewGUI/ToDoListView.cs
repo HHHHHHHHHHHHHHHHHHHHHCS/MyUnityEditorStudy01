@@ -68,14 +68,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         private void AddAction(string _todoName)
         {
             var index = todoListInputView.PopupIndex;
-            TodoCategory category = null;
-            var data = ToDoDataManager.Data;
-            if (index >= 0)
-            {
-                category = data.categoryList[index];
-            }
-
-            data.AddToDoItem(_todoName, false, category);
+            TodoCategory category = ToDoDataManager.ToDoCategoryAt(index);
+            ToDoDataManager.AddToDoItem(_todoName, false, category);
             UpdateToDoItems();
         }
 

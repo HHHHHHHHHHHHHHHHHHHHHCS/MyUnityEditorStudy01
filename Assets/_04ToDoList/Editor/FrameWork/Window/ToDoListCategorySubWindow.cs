@@ -80,9 +80,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
                     if (data.categoryList.All(x => x.name != textAreaView.Content.Val))
                     {
-                        data.categoryList.Add(new TodoCategory(textAreaView.Content.Val,
-                            colorView.colorProperty.Val.ToText()));
-                        data.Save();
+                        ToDoDataManager.AddToDoCategory(textAreaView.Content.Val,
+                            colorView.colorProperty.Val.ToText());
                         listView.UpdateToDoItems();
                         Close();
                     }

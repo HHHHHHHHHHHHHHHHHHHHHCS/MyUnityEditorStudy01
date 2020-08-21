@@ -88,8 +88,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
                 new ImageButtonView(ImageButtonIcon.deleteIcon, () =>
                     {
-                        data.categoryList.Remove(item);
-                        data.Save();
+
+                        ToDoDataManager.RemoveToDoCategory(item);
                         UpdateToDoItems();
                     })
                     .Width(25).Height(25).BackgroundColor(Color.red).AddTo(layout);
