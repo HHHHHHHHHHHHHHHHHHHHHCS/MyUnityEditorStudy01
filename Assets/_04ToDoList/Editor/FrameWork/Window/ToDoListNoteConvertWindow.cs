@@ -22,7 +22,14 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         private void Awake()
         {
-            var verticalLayout = new VerticalLayout("box").AddTo(this);
+            var verticalLayout = new VerticalLayout().AddTo(this);
+
+            new LabelView("现在是否可以执行").FontSize(25).TextMiddleCenter().AddTo(verticalLayout);
+
+            var horizontalLayout = new HorizontalLayout().AddTo(verticalLayout);
+
+            new ButtonView("是", () => { }, true).AddTo(horizontalLayout);
+            new ButtonView("否", () => { }, true).AddTo(horizontalLayout);
 
             new ButtonView("转换", () =>
             {
