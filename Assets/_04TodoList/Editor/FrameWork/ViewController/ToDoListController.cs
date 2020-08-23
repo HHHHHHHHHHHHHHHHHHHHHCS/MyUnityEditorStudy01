@@ -1,6 +1,8 @@
-﻿using _04ToDoList.Editor.FrameWork.DataBinding;
+﻿using System;
+using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.ViewGUI;
+using _04ToDoList.Util;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewController
@@ -9,7 +11,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
     {
         private bool isShow;
 
-        private ToDoListCls _toDoListCls;
 
         private ToolBarView todoListToolBarView;
 
@@ -21,19 +22,19 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         protected override void SetUpView()
         {
-            _toDoListCls = ToDoDataManager.Data;
+            eventKey = GetHashCode();
+
+            todoListNoteView = new ToDoListNoteView(this);
+            todoListView = new ToDoListView(this);
+            todoListCategoryListView = new ToDoListCategoryListView(this);
+            todoListFinishedView = new ToDoListFinishedView(this);
+
             todoListToolBarView = new ToolBarView {style = "box"}.FontSize(15);
             todoListToolBarView.Height(40)
-                .AddMenu("笔记", () => { ChangePage(0); })
-                .AddMenu("清单", () => { ChangePage(1); })
-                .AddMenu("分类管理", () => { ChangePage(2); })
-                .AddMenu("已完成", () => { ChangePage(3); });
-
-            todoListNoteView = new ToDoListNoteView();
-            todoListView = new ToDoListView();
-            todoListCategoryListView = new ToDoListCategoryListView();
-            todoListFinishedView = new ToDoListFinishedView();
-
+                .AddMenu("笔记", () => ChangePage(todoListNoteView.eventKey))
+                .AddMenu("清单", () => { ChangePage(todoListView.eventKey); })
+                .AddMenu("分类管理", () => { ChangePage(todoListCategoryListView.eventKey); })
+                .AddMenu("已完成", () => { ChangePage(todoListFinishedView.eventKey); });
 
             views.Add(todoListToolBarView);
             views.Add(todoListNoteView);
@@ -45,55 +46,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             todoListToolBarView.ForceClick(1);
         }
 
-        public void ChangePage(int i)
+        public void ChangePage(int clickPage)
         {
-            switch (i)
-            {
-                case 0:
-                {
-                    todoListNoteView.Show();
-                    todoListView.Hide();
-                    todoListCategoryListView.Hide();
-                    todoListFinishedView.Hide();
-                    todoListView.ReBuildToDoItems();
-                    break;
-                }
-
-                case 1:
-                {
-                    todoListNoteView.Hide();
-                    todoListView.Show();
-                    todoListCategoryListView.Hide();
-                    todoListFinishedView.Hide();
-                    todoListView.ReBuildToDoItems();
-                    break;
-                }
-
-                case 2:
-                {
-                    todoListNoteView.Hide();
-                    todoListView.Hide();
-                    todoListCategoryListView.Show();
-                    todoListFinishedView.Hide();
-                    break;
-                }
-
-                case 3:
-                {
-                    todoListNoteView.Hide();
-                    todoListView.Hide();
-                    todoListCategoryListView.Hide();
-                    todoListFinishedView.Show();
-                    todoListFinishedView.ReBuildToDoItems();
-                    break;
-                }
-
-                default:
-                {
-                    Debug.Log(i + " page index is no exits!");
-                    break;
-                }
-            }
+            EventDispatcher.Send(eventKey, clickPage);
         }
 
         protected override void OnUpdate()
@@ -102,7 +57,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         public void OnDisable()
         {
-            _toDoListCls.Save();
+            ToDoDataManager.Save();
         }
     }
 }

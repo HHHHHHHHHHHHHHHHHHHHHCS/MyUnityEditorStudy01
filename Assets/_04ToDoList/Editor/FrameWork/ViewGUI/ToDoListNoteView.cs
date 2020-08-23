@@ -1,25 +1,25 @@
 ﻿using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
+using _04ToDoList.Editor.FrameWork.ViewController;
 using _04ToDoList.Editor.FrameWork.Window;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-    public class ToDoListNoteView : VerticalLayout
+    public class ToDoListNoteView : ToDoListPage
     {
         private LabelView titleLabelView;
         private ButtonView createButtonView;
         private ToDoListNoteEditorView editorView;
         private ScrollLayout noteListScrollLayout;
 
+        private ToDoListNoteConvertWindow convertWindow;
 
         private bool isDirty;
 
-        public ToDoListNoteView()
+        public ToDoListNoteView(AbsViewController ctrl) : base(ctrl, "box")
         {
-            Style = "box";
-
             titleLabelView = new LabelView("欢迎来到笔记界面")
                 .TextMiddleCenter()
                 .TheFontStyle(FontStyle.Bold)
@@ -29,18 +29,31 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             noteListScrollLayout = new ScrollLayout().AddTo(this);
 
             editorView.Hide();
-            UpdateList();
         }
 
         protected override void OnRefresh()
         {
-            if (!isDirty)
+            if (isDirty)
             {
-                return;
+                isDirty = false;
+                ReBuildToDoItems();
             }
+        }
 
-            isDirty = false;
 
+        protected override void OnShow()
+        {
+            base.OnShow();
+            ReBuildToDoItems();
+        }
+
+        public void UpdateList()
+        {
+            isDirty = true;
+        }
+
+        public void ReBuildToDoItems()
+        {
             noteListScrollLayout.Clear();
 
             var notes = ToDoDataManager.Data.noteList;
@@ -60,11 +73,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
         }
 
-        public void UpdateList()
-        {
-            isDirty = true;
-        }
-
         public void CreateNewEditor(ToDoNote note = null)
         {
             titleLabelView.Hide();
@@ -76,8 +84,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         public void OpenProcessWindow(ToDoNote note)
         {
-            var window = ToDoListNoteConvertWindow.Open(this, note);
-            window.Show();
+            convertWindow = ToDoListNoteConvertWindow.Open(this, note);
+            convertWindow.Show();
         }
 
         private void DeleteItemNote(ToDoNote note)
@@ -95,6 +103,15 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             createButtonView.Show();
             editorView.Hide();
             isDirty = true;
+        }
+
+        protected override void OnHide()
+        {
+            base.OnHide();
+            if (convertWindow)
+            {
+                convertWindow.Close();
+            }
         }
     }
 }

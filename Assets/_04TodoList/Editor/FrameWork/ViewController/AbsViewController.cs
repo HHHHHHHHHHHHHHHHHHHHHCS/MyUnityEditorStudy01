@@ -6,6 +6,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 {
     public abstract class AbsViewController
     {
+        public int eventKey { get; protected set; }
+
         protected List<IView> views;
 
         protected AbsViewController()
@@ -27,6 +29,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             {
                 item.Refresh();
             }
+
             OnUpdate();
             views.ForEach(x => x.DrawGUI());
         }

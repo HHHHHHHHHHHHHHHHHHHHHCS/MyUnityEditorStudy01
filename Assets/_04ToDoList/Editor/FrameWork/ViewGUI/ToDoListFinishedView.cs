@@ -3,17 +3,17 @@ using System.Linq;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
-using UnityEngine;
+using _04ToDoList.Editor.FrameWork.ViewController;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-    public class ToDoListFinishedView : VerticalLayout
+    public class ToDoListFinishedView : ToDoListPage
     {
         private bool isDirty;
 
         private VerticalLayout todosParent;
 
-        public ToDoListFinishedView() : base(null)
+        public ToDoListFinishedView(AbsViewController ctrl) : base(ctrl)
         {
             Add(new SpaceView());
             var scrollLayout = new ScrollLayout();
@@ -34,6 +34,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 isDirty = false;
                 ReBuildToDoItems();
             }
+        }
+
+        protected override void OnShow()
+        {
+            base.OnShow();
+            ReBuildToDoItems();
         }
 
         public void ReBuildToDoItems()

@@ -13,10 +13,11 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
     {
         public string style;
 
-
         private readonly List<string> menus;
         private readonly List<Action> actions;
         private readonly Property<int> selectIndex;
+
+        public int count => menus.Count;
 
         public ToolBarView()
         {

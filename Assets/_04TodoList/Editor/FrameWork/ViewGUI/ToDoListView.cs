@@ -1,24 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+﻿using System.Linq;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
-using _04ToDoList.Editor.FrameWork.ViewGUI;
-using UnityEditor;
-using UnityEngine;
+using _04ToDoList.Editor.FrameWork.ViewController;
 
-namespace _04ToDoList.Editor.FrameWork.ViewController
+namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-    public class ToDoListView : VerticalLayout
+    public class ToDoListView : ToDoListPage
     {
         private bool isDirty;
 
         private ToDoListInputView todoListInputView;
         private VerticalLayout todoListItemsLayout;
 
-        public ToDoListView() : base()
+        public ToDoListView(AbsViewController ctrl) : base(ctrl)
         {
             todoListInputView = new ToDoListInputView(AddAction);
             todoListItemsLayout = new VerticalLayout();
@@ -40,6 +35,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
                 isDirty = false;
                 ReBuildToDoItems();
             }
+        }
+
+        protected override void OnShow()
+        {
+            base.OnShow();
+            ReBuildToDoItems();
         }
 
         public void ReBuildToDoItems()

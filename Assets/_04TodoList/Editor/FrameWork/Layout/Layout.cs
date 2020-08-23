@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using _04ToDoList.Editor.FrameWork.Layout.Interface;
+using _04ToDoList.Util;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Layout
@@ -19,6 +20,8 @@ namespace _04ToDoList.Editor.FrameWork.Layout
         public ILayout Parent { get; set; }
 
         public Queue<Action> cmdQueue = new Queue<Action>();
+
+        protected HashSet<EventRecord> eventRecords { get; } = new HashSet<EventRecord>();
 
         protected Layout(string style = null)
         {
@@ -136,6 +139,7 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         public void Dispose()
         {
+            UnRegisterAll();
             OnDisposed();
         }
 
@@ -144,6 +148,26 @@ namespace _04ToDoList.Editor.FrameWork.Layout
             if (Parent != null)
             {
                 ParentRemoveThis();
+            }
+        }
+
+
+        protected void RegisterEvent(int key, Action<object> onEvent) 
+        {
+            EventDispatcher.Register(key, onEvent);
+
+            eventRecords.Add(new EventRecord()
+            {
+                key = key,
+                onAction = onEvent
+            });
+        }
+
+        protected void UnRegisterAll()
+        {
+            foreach (var record in eventRecords)
+            {
+                EventDispatcher.Remove(record.key, record.onAction);
             }
         }
     }

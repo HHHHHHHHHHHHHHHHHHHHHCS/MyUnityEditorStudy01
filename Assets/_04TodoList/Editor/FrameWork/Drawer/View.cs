@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using _04ToDoList.Editor.FrameWork.Layout.Interface;
+using _04ToDoList.Util;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Drawer
@@ -13,10 +15,14 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
 
-        protected bool beforeDrawCalled = false;
-        protected GUILayoutOption[] guiLayoutOptions;
         public GUIStyle guiStyle { get; protected set; } = new GUIStyle();
         public Color backgroundColor { get; set; } = GUI.backgroundColor;
+
+
+        protected bool beforeDrawCalled = false;
+        protected GUILayoutOption[] guiLayoutOptions;
+
+        protected HashSet<EventRecord> eventRecords { get; } = new HashSet<EventRecord>();
 
         public void Show()
         {
@@ -88,6 +94,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         public void Dispose()
         {
+            UnRegisterAll();
             OnDisposed();
         }
 
@@ -100,5 +107,24 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         }
 
         protected abstract void OnGUI();
+
+        protected void RegisterEvent(int key, Action<object> onEvent)
+        {
+            EventDispatcher.Register(key, onEvent);
+
+            eventRecords.Add(new EventRecord()
+            {
+                key = key,
+                onAction = onEvent
+            });
+        }
+
+        protected void UnRegisterAll()
+        {
+            foreach (var record in eventRecords)
+            {
+                EventDispatcher.Remove(record.key, record.onAction);
+            }
+        }
     }
 }

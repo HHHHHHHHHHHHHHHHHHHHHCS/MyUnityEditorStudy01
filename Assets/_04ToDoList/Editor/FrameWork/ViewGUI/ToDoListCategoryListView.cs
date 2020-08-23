@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using _04ToDoList.Editor.Component;
+﻿using _04ToDoList.Editor.Component;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
-using _04ToDoList.Editor.FrameWork.Utils;
+using _04ToDoList.Editor.FrameWork.ViewController;
 using _04ToDoList.Editor.FrameWork.Window;
-using UnityEditor;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-    public class ToDoListCategoryListView : VerticalLayout
+    public class ToDoListCategoryListView : ToDoListPage
     {
         private ToDoListCategorySubWindow _categorySubWindow;
 
@@ -33,11 +30,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         }
 
 
-        static ToDoListCategoryListView()
-        {
-        }
-
-        public ToDoListCategoryListView() : base("box")
+        public ToDoListCategoryListView(AbsViewController ctrl) : base(ctrl, "box")
         {
             new ButtonView("+", () => OpenSubWindow(), true)
                 .BackgroundColor(Color.yellow).AddTo(this);
@@ -53,7 +46,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             if (isDirty)
             {
                 isDirty = false;
-                Rebuild();
+                ReBuildToDoItems();
             }
         }
 
@@ -65,8 +58,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             ToDoListMainWindow.instance.Focus();
         }
 
-
-        private void Rebuild()
+        private void ReBuildToDoItems()
         {
             verticalLayout.Clear();
 
@@ -88,7 +80,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
                 new ImageButtonView(ImageButtonIcon.deleteIcon, () =>
                     {
-
                         ToDoDataManager.RemoveToDoCategory(item);
                         UpdateToDoItems();
                     })
@@ -103,7 +94,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         protected override void OnShow()
         {
-            isDirty = true;
+            base.OnShow();
+            ReBuildToDoItems();
         }
 
         protected override void OnHide()

@@ -4,17 +4,25 @@ using UnityEngine;
 
 namespace _04ToDoList.Util
 {
+    public class EventRecord
+    {
+        public int key;
+
+        public Action<object> onAction;
+    }
+
     public class EventDispatcher
     {
-        private static Dictionary<int, Action<object>> registeredEvents = new Dictionary<int, Action<object>>();
+        private static readonly Dictionary<int, Action<object>>
+            registeredEvents = new Dictionary<int, Action<object>>();
 
-        public static void Register<T>(T key, Action<object> _onEvent) where T : IConvertible
+        public static void Register(int key, Action<object> _onEvent)
         {
             //delegate 只能这样写  因为可能是值类型
-            int intKey = key.ToInt32(null);
+            int intKey = key;
             if (!registeredEvents.ContainsKey(intKey))
             {
-                Action<object> act = _onEvent;//拷贝一份
+                Action<object> act = _onEvent; //拷贝一份
                 registeredEvents.Add(intKey, act);
             }
             else
@@ -23,12 +31,14 @@ namespace _04ToDoList.Util
             }
         }
 
-        public static void Remove<T>(T key, Action<object> _onEvent) where T : IConvertible
+        public static void Remove(int key, Action<object> _onEvent)
         {
-            int intKey = key.ToInt32(null);
-            if (registeredEvents.ContainsKey(intKey))
+            if (registeredEvents.ContainsKey(key))
             {
-                registeredEvents[intKey] -= _onEvent;
+                if (registeredEvents[key] != null)
+                {
+                    registeredEvents[key] -= _onEvent;
+                }
             }
         }
 
@@ -39,14 +49,13 @@ namespace _04ToDoList.Util
             {
                 //也可以这样获取全部的方法
                 //registeredEvents[intKey].GetInvocationList()
-                registeredEvents[intKey]-= acts;
+                registeredEvents[intKey] -= acts;
             }
         }
 
-        public static void Send<T>(T key,object obj) where T : IConvertible
+        public static void Send(int key, object obj = null)
         {
-            int intKey = key.ToInt32(null);
-            if (registeredEvents.TryGetValue(intKey, out var acts))
+            if (registeredEvents.TryGetValue(key, out var acts))
             {
                 acts?.Invoke(obj);
             }

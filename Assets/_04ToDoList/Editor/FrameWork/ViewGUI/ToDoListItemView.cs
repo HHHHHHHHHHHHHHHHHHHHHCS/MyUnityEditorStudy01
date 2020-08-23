@@ -21,6 +21,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         public bool showTime = false;
 
         private bool needFresh;
+        private ToDoListEditorSubWindow editorSubWindow;
+
 
         public ToDoListItemView(ToDoData _item, Action<ToDoListItemView> _changeProperty, bool _showTime = false)
             : base()
@@ -187,14 +189,25 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             ToDoListMainWindow.instance.Focus();
         }
 
+        protected override void OnHide()
+        {
+            base.OnHide();
+            if (editorSubWindow != null)
+            {
+                editorSubWindow.Close();
+            }
+        }
+
         private void OpenSubWindow()
         {
             EnqueueCmd(() =>
                 {
-                    var window = ToDoListEditorSubWindow.Open(this, "ToDo 编辑器");
-                    window.ShowWindow(this);
+                    editorSubWindow = ToDoListEditorSubWindow.Open(this, "ToDo 编辑器");
+                    editorSubWindow.ShowWindow(this);
                 }
             );
         }
+
+
     }
 }
