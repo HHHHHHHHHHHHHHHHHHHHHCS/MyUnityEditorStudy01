@@ -6,19 +6,15 @@ using _04ToDoList.Editor.FrameWork.ViewController;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-    public class ToDoListView : ToDoListPage
+    public class ToDoListHideView : ToDoListPage
     {
         private bool isDirty;
 
-        private ToDoListInputView todoListInputView;
         private VerticalLayout todoListItemsLayout;
 
-        public ToDoListView(AbsViewController ctrl) : base(ctrl)
+        public ToDoListHideView(AbsViewController ctrl) : base(ctrl)
         {
-            todoListInputView = new ToDoListInputView(AddAction);
             todoListItemsLayout = new VerticalLayout();
-            new SpaceView(4).AddTo(this);
-            todoListInputView.AddTo(this);
             new SpaceView(4).AddTo(this);
             todoListItemsLayout.AddTo(new ScrollLayout().AddTo(this));
         }
@@ -40,7 +36,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         protected override void OnShow()
         {
             base.OnShow();
-            todoListInputView.Show();
             ReBuildToDoItems();
         }
 
@@ -49,8 +44,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             todoListItemsLayout.Clear();
 
             var dataList = ToDoDataManager.Data.todoList
-                .Where(item => ((item.state.Val == ToDoData.ToDoState.Done) == false)
-                               && item.isHide == false)
+                .Where(item => (item.state.Val == ToDoData.ToDoState.Done) == false
+                               && item.isHide == true)
                 .OrderByDescending(item => item.state.Val)
                 .ThenBy(item => item.priority.Val);
 
@@ -68,13 +63,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             todoListItemsLayout.Style = todoListItemsLayout.children.Count > 0 ? "box" : null;
         }
 
-        private void AddAction(string _todoName)
-        {
-            var index = todoListInputView.PopupIndex;
-            TodoCategory category = ToDoDataManager.ToDoCategoryAt(index);
-            ToDoDataManager.AddToDoItem(_todoName, false, category);
-            UpdateToDoItems();
-        }
 
         private void ChangeProperty(ToDoListItemView item)
         {

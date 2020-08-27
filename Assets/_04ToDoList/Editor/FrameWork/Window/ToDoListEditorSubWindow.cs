@@ -11,6 +11,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
     {
         public ToDoListItemView itemView;
 
+        private ButtonView showHideButton;
         private TextAreaView contentTextArea;
         private PopupView enumPopupView;
         private ButtonView saveButton;
@@ -36,9 +37,11 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
             enumPopupView = new PopupView(-1, null).AddTo(verticalLayout);
 
+            showHideButton = new ButtonView("", _fullSize: true).AddTo(verticalLayout);
+
             saveButton = new ButtonView("保存", _fullSize: true).AddTo(verticalLayout);
 
-            new ButtonView("取消", () => { }, _fullSize: true).AddTo(verticalLayout);
+            new ButtonView("取消", Close, _fullSize: true).AddTo(verticalLayout);
         }
 
         public void ShowWindow(ToDoListItemView item)
@@ -51,23 +54,35 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         public void ResetWindow(ToDoData item)
         {
-            var categoryList = ToDoDataManager.Data.categoryList;
+            var data = ToDoDataManager.Data;
 
             contentTextArea.Content.Val = item.content;
 
-            if (categoryList.Count > 0)
+            bool isHide = item.isHide;
+
+            showHideButton.text = isHide ? "显示" : "隐藏";
+            showHideButton.OnClickEvent = () =>
+            {
+                isHide = !isHide;
+                showHideButton.text = isHide ? "显示" : "隐藏";
+                //itemView.UpdateItem();
+                //Close();
+            };
+
+            if (data.categoryList.Count > 0)
             {
                 var index =  ToDoDataManager.ToDoCategoryIndexOf(item.category);
 
                 enumPopupView.ValueProperty.Val = index < 0 ? 0 : index;
-                enumPopupView.MenuArray = categoryList.Select(category => category.name).ToArray();
+                enumPopupView.MenuArray = data.categoryList.Select(category => category.name).ToArray();
             }
 
 
             saveButton.OnClickEvent = () =>
             {
+                item.isHide = isHide;
                 item.content = contentTextArea.Content.Val;
-                item.category = categoryList[enumPopupView.ValueProperty.Val];
+                item.category = data.categoryList[enumPopupView.ValueProperty.Val];
 
                 ToDoDataManager.Data.Save();
                 itemView.UpdateItem();

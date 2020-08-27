@@ -16,6 +16,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
         private ToDoListNoteView todoListNoteView;
         private ToDoListView todoListView;
+        private ToDoListHideView todoListHideView;
         private ToDoListCategoryListView todoListCategoryListView;
         private ToDoListFinishedView todoListFinishedView;
 
@@ -26,6 +27,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
             todoListNoteView = new ToDoListNoteView(this);
             todoListView = new ToDoListView(this);
+            todoListHideView = new ToDoListHideView(this);
             todoListCategoryListView = new ToDoListCategoryListView(this);
             todoListFinishedView = new ToDoListFinishedView(this);
 
@@ -33,12 +35,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
             todoListToolBarView.Height(40)
                 .AddMenu("笔记", () => ChangePage(todoListNoteView.eventKey))
                 .AddMenu("清单", () => { ChangePage(todoListView.eventKey); })
+                .AddMenu("隐藏", () => { ChangePage(todoListHideView.eventKey); })
                 .AddMenu("分类管理", () => { ChangePage(todoListCategoryListView.eventKey); })
                 .AddMenu("已完成", () => { ChangePage(todoListFinishedView.eventKey); });
 
             views.Add(todoListToolBarView);
             views.Add(todoListNoteView);
             views.Add(todoListView);
+            views.Add(todoListHideView);
             views.Add(todoListCategoryListView);
             views.Add(todoListFinishedView);
 

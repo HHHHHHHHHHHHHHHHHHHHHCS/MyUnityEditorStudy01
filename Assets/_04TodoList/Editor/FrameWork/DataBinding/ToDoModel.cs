@@ -364,6 +364,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
         public TodoCategory category;
 
+        public bool isHide;
+
 
         public TimeSpan UsedTime => finishTime - startTime;
 
@@ -395,7 +397,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             , Property<bool> finished = null, Action<bool> finishedChangeAct = null
             , DateTime? createTime = null, DateTime? finishTime = null, DateTime? startTime = null
             , Property<ToDoState> state = null, Action<ToDoState> stateChangeAct = null
-            , Property<ToDoPriority> priority = null, TodoCategory category = null)
+            , Property<ToDoPriority> priority = null, TodoCategory category = null
+            , bool? isHide = null)
         {
             //this.id = Guid.NewGuid().ToString();
             this.content = content ?? string.Empty;
@@ -411,6 +414,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             this.state = state ?? new Property<ToDoState>(ToDoState.NoStart);
             this.priority = priority ?? new Property<ToDoPriority>(ToDoPriority.None);
             this.category = category; //?? new TodoCategory();
+            this.isHide = isHide ?? false;
+
             if (stateChangeAct != null)
             {
                 this.state.RegisterValueChanged(stateChangeAct);
@@ -421,6 +426,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             {
                 this.finished.RegisterValueChanged(_ => saveAct());
                 this.state.RegisterValueChanged(_ => saveAct());
+                this.priority.RegisterValueChanged(_ => saveAct());
                 this.priority.RegisterValueChanged(_ => saveAct());
             }
         }

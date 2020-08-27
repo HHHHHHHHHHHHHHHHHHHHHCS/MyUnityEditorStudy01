@@ -14,11 +14,21 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private PopupView popupView;
 
+        private Action<string> onInputClick;
+
         public int PopupIndex => popupView?.ValueProperty.Val ?? -1;
 
         public ToDoListInputView(Action<string> onInputClick)
             : base("box")
         {
+            this.onInputClick = onInputClick;
+        }
+
+        //因为外部更改了category 这个也要通过show 更新
+        protected override void OnShow()
+        {
+            Clear();
+
             var data = ToDoDataManager.Data;
 
             if (data.categoryList.Count > 0)
