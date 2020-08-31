@@ -51,7 +51,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
         public static void RemoveToDoNote(ToDoNote note) => Data.RemoveToDoNote(note);
 
-        public static void ConvertToDoNote(ToDoNote note) => Data.ConvertToDoNote(note);
+        public static void ConvertToDoNote(ToDoNote note, bool isHide) => Data.ConvertToDoNote(note, isHide);
     }
 
     [System.Serializable]
@@ -279,11 +279,12 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             cls.Save();
         }
 
-        public static void ConvertToDoNote(this ToDoListCls cls, ToDoNote note)
+        public static void ConvertToDoNote(this ToDoListCls cls, ToDoNote note, bool isHide)
         {
             cls.noteList.Remove(note);
-            //AddToDoItem 里面有save 了
-            cls.AddToDoItem(note.content, false, null);
+            //AddToDoItem  里面有save
+            var data = new ToDoData().Init(content: note.content, finished: new Property<bool>(false), isHide: isHide);
+            cls.AddToDoItem(data);
         }
     }
 
@@ -393,7 +394,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
             return $"花费 {usedTime.TotalDays / 7} 周";
         }
 
-        public void Init(string content = null, Action saveAct = null
+        public ToDoData Init(string content = null, Action saveAct = null
             , Property<bool> finished = null, Action<bool> finishedChangeAct = null
             , DateTime? createTime = null, DateTime? finishTime = null, DateTime? startTime = null
             , Property<ToDoState> state = null, Action<ToDoState> stateChangeAct = null
@@ -429,6 +430,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
                 this.priority.RegisterValueChanged(_ => saveAct());
                 this.priority.RegisterValueChanged(_ => saveAct());
             }
+
+            return this;
         }
 
         public ToDoData()

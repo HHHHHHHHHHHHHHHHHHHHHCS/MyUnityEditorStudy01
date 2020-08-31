@@ -2,7 +2,9 @@
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
+using _04ToDoList.Editor.FrameWork.SystemComponent;
 using _04ToDoList.Editor.FrameWork.ViewGUI;
+using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Window
 {
@@ -24,20 +26,24 @@ namespace _04ToDoList.Editor.FrameWork.Window
         {
             var verticalLayout = new VerticalLayout().AddTo(this);
 
-            new LabelView("现在是否可以执行").FontSize(25).TextMiddleCenter().AddTo(verticalLayout);
+            bool isHide = true;
 
-            var horizontalLayout = new HorizontalLayout().AddTo(verticalLayout);
 
-            new ButtonView("是", () => { }, true).AddTo(horizontalLayout);
-            new ButtonView("否", () => { }, true).AddTo(horizontalLayout);
+            QuestionView questionView =
+                new QuestionView("现在是否可以执行", onYes: () => { isHide = false; }, () => { isHide = true; }).AddTo(
+                    verticalLayout);
 
-            new ButtonView("转换", () =>
+            ButtonView finishedBtn = finishedBtn = new ButtonView("转换", () =>
             {
-                ToDoDataManager.ConvertToDoNote(note);
+                ToDoDataManager.ConvertToDoNote(note, isHide);
                 listView.UpdateList();
                 Close();
                 ToDoListMainWindow.instance.Focus();
             }, true).AddTo(verticalLayout);
+
+            finishedBtn.Hide();
+
+            questionView.AddNextAction(finishedBtn.Show);
         }
     }
 }
