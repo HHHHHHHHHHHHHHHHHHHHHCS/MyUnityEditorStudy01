@@ -29,10 +29,6 @@ namespace _04ToDoList.Editor.FrameWork.Window
             bool isHide = true;
 
 
-            QuestionView questionView =
-                new QuestionView("现在是否可以执行", onYes: () => { isHide = false; }, () => { isHide = true; }).AddTo(
-                    verticalLayout);
-
             ButtonView finishedBtn = finishedBtn = new ButtonView("转换", () =>
             {
                 ToDoDataManager.ConvertToDoNote(note, isHide);
@@ -43,7 +39,20 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
             finishedBtn.Hide();
 
-            questionView.AddNextAction(finishedBtn.Show);
+            QuestionQueue questionQueue = new QuestionQueue().AddTo(verticalLayout);
+            questionQueue.SetOnFinished(finishedBtn.Show);
+
+            //TODO:
+
+            new QuestionView("现在是否可以执行1", onYes: () => { isHide = false; }, () => { isHide = true; })
+                .Add(questionQueue);
+
+
+            new QuestionView("现在是否可以执行2", onYes: () => { isHide = false; }, () => { isHide = true; })
+                .Add(questionQueue);
+
+            questionQueue.Next();
+
         }
     }
 }

@@ -7,6 +7,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 {
     public class QuestionView : VerticalLayout
     {
+        private Action onProcessed = null;
         private ButtonView yesBtn;
         private ButtonView noBtn;
 
@@ -29,7 +30,23 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             noBtn.OnClickEvent += Hide;
         }
 
-        public void AddNextAction(Action nextAct)
+        public void Add(QuestionQueue queue)
+        {
+            queue.Add(this);
+        }
+
+        public QuestionView AddNextAction(Action nextAct)
+        {
+            if (nextAct != null)
+            {
+                yesBtn.OnClickEvent += nextAct;
+                noBtn.OnClickEvent += nextAct;
+            }
+
+            return this;
+        }
+
+        public void OnProcess(Action nextAct)
         {
             if (nextAct != null)
             {
