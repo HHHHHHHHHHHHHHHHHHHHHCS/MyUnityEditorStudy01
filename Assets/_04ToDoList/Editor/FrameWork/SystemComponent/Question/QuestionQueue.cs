@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Layout;
 
-namespace _04ToDoList.Editor.FrameWork.SystemComponent
+namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 {
     public class QuestionQueue : VerticalLayout
     {
-        private Queue<QuestionView> queueViews = new Queue<QuestionView>();
+        private Queue<IQuestion> queueViews = new Queue<IQuestion>();
+        private IQuestion current;
 
         private Action onFinished;
 
-        public void Add(QuestionView view)
+        public void Add(IQuestion view)
         {
             view.AddTo(this);
             view.Hide();
@@ -26,12 +26,17 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 
         public void Next()
         {
+            current?.Hide();
+
             if (queueViews.Count == 0)
             {
                 onFinished?.Invoke();
+                current = null;
                 return;
             }
-            queueViews.Dequeue().Show();
+
+            current = queueViews.Dequeue();
+            current.Show();
         }
 
         public void SetOnFinished(Action onAct)

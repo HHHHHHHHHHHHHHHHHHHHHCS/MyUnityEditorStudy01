@@ -9,7 +9,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
 {
     public class SubWindow : EditorWindow, ILayout
     {
-        //隐式屏蔽接口 无法访问
+        //显示屏蔽接口 不能被外部无法访问
         ILayout IView.Parent { get; set; }
         public List<GUILayoutOption> guiLayouts { get; }
 
@@ -27,7 +27,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
             return window;
         }
 
-        //隐式屏蔽接口 不能使用  约等于空方法
+        //显示屏蔽接口 不能被外部使用 
         void IView.Hide()
         {
         }

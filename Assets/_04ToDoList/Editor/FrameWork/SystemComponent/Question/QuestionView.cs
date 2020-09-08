@@ -1,11 +1,11 @@
 ﻿using System;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
-using UnityEngine;
+using _04ToDoList.Editor.FrameWork.SystemComponent.Question;
 
 namespace _04ToDoList.Editor.FrameWork.SystemComponent
 {
-    public class QuestionView : VerticalLayout
+    public class QuestionView : VerticalLayout, IQuestion
     {
         private Action onProcessed = null;
         private ButtonView yesBtn;
@@ -26,8 +26,8 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             }
 
 
-            yesBtn.OnClickEvent += Hide;
-            noBtn.OnClickEvent += Hide;
+//            yesBtn.OnClickEvent += Hide;
+//            noBtn.OnClickEvent += Hide;
         }
 
         public void Add(QuestionQueue queue)
@@ -46,7 +46,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             return this;
         }
 
-        public void OnProcess(Action nextAct)
+        void IQuestion.OnProcess(Action nextAct)
         {
             if (nextAct != null)
             {
