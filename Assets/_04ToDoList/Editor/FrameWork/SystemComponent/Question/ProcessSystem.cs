@@ -1,4 +1,5 @@
 ﻿using System;
+using _04ToDoList.Editor.FrameWork.Layout.Interface;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
@@ -14,9 +15,20 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 
         public ProcessSystem Add(string question, Action onYes = null, Action onNo = null)
         {
-            //TODO:http://www.sikiedu.com/course/474/task/37227/show
             queue.Add(new QuestionView(question, onYes, onNo));
             return this;
+        }
+
+        public ProcessSystem AddTo(ILayout layout)
+        {
+            queue.AddTo(layout);
+            return this;
+        }
+
+        public void StartProcess(Action onFinish)
+        {
+            queue.Process();
+            queue.SetOnFinished(onFinish);
         }
     }
 }
