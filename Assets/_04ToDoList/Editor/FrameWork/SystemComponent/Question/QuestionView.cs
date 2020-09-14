@@ -7,13 +7,19 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 {
     public class QuestionView : VerticalLayout, IQuestion
     {
-        private Action onProcessed = null;
+        private LabelView titleLabel;
         private ButtonView yesBtn;
         private ButtonView noBtn;
 
-        public QuestionView(string questionText, Action onYes, Action onNo, Action nextAct = null)
+        private Action onProcessed = null;
+
+        public QuestionQueue Queue { get; set; }
+        public ProcessSystem System { private get; set; }
+
+
+        public QuestionView(string questionText = null, Action onYes = null, Action onNo = null, Action nextAct = null)
         {
-            new LabelView(questionText).FontSize(25).TextMiddleCenter().AddTo(this);
+            titleLabel = new LabelView(questionText).FontSize(25).TextMiddleCenter().AddTo(this);
             var horizontalLayout = new HorizontalLayout().AddTo(this);
 
             yesBtn = new ButtonView("是", onYes, true).AddTo(horizontalLayout);
@@ -30,6 +36,12 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 //            noBtn.OnClickEvent += Hide;
         }
 
+        public QuestionView SetTitle(string text)
+        {
+            titleLabel.SetText(text);
+            return this;
+        }
+
         public void Add(QuestionQueue queue)
         {
             queue.Add(this);
@@ -44,6 +56,12 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             }
 
             return this;
+        }
+
+
+        public ProcessSystem EndQuestion()
+        {
+            return System;
         }
 
         void IQuestion.OnProcess(Action nextAct)

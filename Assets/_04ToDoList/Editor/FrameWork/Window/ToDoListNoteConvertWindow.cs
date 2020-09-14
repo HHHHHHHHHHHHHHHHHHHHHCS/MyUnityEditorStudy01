@@ -39,8 +39,12 @@ namespace _04ToDoList.Editor.FrameWork.Window
             finishedBtn.Hide();
 
             ProcessSystem.CreateQuestions()
-                .Add("现在是否可以执行1", onYes: () => isHide = false, () => isHide = true)
-                .Add("现在是否可以执行2", onYes: () => isHide = false, () => isHide = true)
+                .BeginQuestion(onYes: () => isHide = false, onNo: () => isHide = true)
+                .SetTitle("现在是否可以执行1")
+                .EndQuestion()
+                .BeginQuestion(onYes: () => isHide = false, onNo: () => isHide = true)
+                .SetTitle("现在是否可以执行2")
+                .EndQuestion()
                 .AddTo(verticalLayout)
                 .StartProcess(finishedBtn.Show);
         }

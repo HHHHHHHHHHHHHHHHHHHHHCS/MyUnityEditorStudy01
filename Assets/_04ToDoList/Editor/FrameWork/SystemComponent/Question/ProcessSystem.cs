@@ -13,7 +13,15 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             return new ProcessSystem();
         }
 
-        public ProcessSystem Add(string question, Action onYes = null, Action onNo = null)
+        public QuestionView BeginQuestion(string question = null, Action onYes = null, Action onNo = null)
+        {
+            var view = new QuestionView(question, onYes, onNo);
+            queue.Add(view);
+            view.System = this;
+            return view;
+        }
+
+        private ProcessSystem Add(string question = null, Action onYes = null, Action onNo = null)
         {
             queue.Add(new QuestionView(question, onYes, onNo));
             return this;
