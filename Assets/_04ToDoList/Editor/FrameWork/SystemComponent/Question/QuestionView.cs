@@ -11,7 +11,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         private ButtonView yesBtn;
         private ButtonView noBtn;
 
-        private Action onProcessed = null;
+        private Action onNext = null;
 
         public QuestionQueue Queue { get; set; }
         public ProcessSystem System { private get; set; }
@@ -25,12 +25,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             yesBtn = new ButtonView("是", onYes, true).AddTo(horizontalLayout);
             noBtn = new ButtonView("否", onNo, true).AddTo(horizontalLayout);
 
-            if (nextAct != null)
-            {
-                yesBtn.OnClickEvent += nextAct;
-                noBtn.OnClickEvent += nextAct;
-            }
-
+            AddNextAction(nextAct);
 
 //            yesBtn.OnClickEvent += Hide;
 //            noBtn.OnClickEvent += Hide;
@@ -42,6 +37,40 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             return this;
         }
 
+        public QuestionView SetYesBtn(string text)
+        {
+            yesBtn.text = text;
+            return this;
+        }
+
+        public QuestionView SetYesBtn(string text, Action act)
+        {
+            yesBtn.text = text;
+            yesBtn.OnClickEvent = act;
+            if (onNext != null)
+            {
+                yesBtn.OnClickEvent += onNext;
+            }
+            return this;
+        }
+
+        public QuestionView SetNoBtn(string text)
+        {
+            noBtn.text = text;
+            return this;
+        }
+
+        public QuestionView SetNoBtn(string text, Action act)
+        {
+            noBtn.text = text;
+            noBtn.OnClickEvent = act;
+            if (onNext != null)
+            {
+                noBtn.OnClickEvent += onNext;
+            }
+            return this;
+        }
+
         public void Add(QuestionQueue queue)
         {
             queue.Add(this);
@@ -49,6 +78,19 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 
         public QuestionView AddNextAction(Action nextAct)
         {
+            if (nextAct != null)
+            {
+                if (yesBtn.OnClickEvent != null)
+                {
+                    yesBtn.OnClickEvent -= nextAct;
+                }
+                if (noBtn.OnClickEvent != null)
+                {
+                    noBtn.OnClickEvent -= nextAct;
+                }
+            }
+
+            onNext = nextAct;
             if (nextAct != null)
             {
                 yesBtn.OnClickEvent += nextAct;
@@ -66,11 +108,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 
         void IQuestion.OnProcess(Action nextAct)
         {
-            if (nextAct != null)
-            {
-                yesBtn.OnClickEvent += nextAct;
-                noBtn.OnClickEvent += nextAct;
-            }
+            AddNextAction(nextAct);
         }
     }
 }
