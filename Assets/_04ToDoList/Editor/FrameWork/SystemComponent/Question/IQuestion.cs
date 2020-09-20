@@ -5,12 +5,13 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 {
     public interface IQuestion : IView
     {
-        QuestionQueue Queue { get; set; }
-
-        ProcessSystem System {  set; }
-
-        ProcessSystem EndQuestion();
-
         void OnProcess(Action onProcess);
+    }
+
+    public interface IQuestion<T> : IQuestion where T : IQuestionContainer
+    {
+        T Container { set; }
+
+        T EndQuestion();
     }
 }

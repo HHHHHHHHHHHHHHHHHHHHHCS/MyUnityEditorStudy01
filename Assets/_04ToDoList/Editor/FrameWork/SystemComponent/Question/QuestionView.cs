@@ -5,7 +5,7 @@ using _04ToDoList.Editor.FrameWork.SystemComponent.Question;
 
 namespace _04ToDoList.Editor.FrameWork.SystemComponent
 {
-    public class QuestionView : VerticalLayout, IQuestion
+    public class QuestionView<T> : VerticalLayout, IQuestion<T> where T : IQuestionContainer
     {
         private LabelView titleLabel;
         private ButtonView yesBtn;
@@ -14,7 +14,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         private Action onNext = null;
 
         public QuestionQueue Queue { get; set; }
-        public ProcessSystem System { private get; set; }
+        public T Container { private get; set; }
 
 
         public QuestionView(string questionText = null, Action onYes = null, Action onNo = null, Action nextAct = null)
@@ -31,19 +31,21 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 //            noBtn.OnClickEvent += Hide;
         }
 
-        public QuestionView SetTitle(string text)
+        //TODO:much button
+
+        public QuestionView<T> SetTitle(string text)
         {
             titleLabel.SetText(text);
             return this;
         }
 
-        public QuestionView SetYesBtn(string text)
+        public QuestionView<T> SetYesBtn(string text)
         {
             yesBtn.text = text;
             return this;
         }
 
-        public QuestionView SetYesBtn(string text, Action act)
+        public QuestionView<T> SetYesBtn(string text, Action act)
         {
             yesBtn.text = text;
             yesBtn.OnClickEvent = act;
@@ -51,16 +53,17 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             {
                 yesBtn.OnClickEvent += onNext;
             }
+
             return this;
         }
 
-        public QuestionView SetNoBtn(string text)
+        public QuestionView<T> SetNoBtn(string text)
         {
             noBtn.text = text;
             return this;
         }
 
-        public QuestionView SetNoBtn(string text, Action act)
+        public QuestionView<T> SetNoBtn(string text, Action act)
         {
             noBtn.text = text;
             noBtn.OnClickEvent = act;
@@ -68,6 +71,16 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             {
                 noBtn.OnClickEvent += onNext;
             }
+
+            return this;
+        }
+
+        public QuestionView<T> CreateChoice(string name, string dstMenuName)
+        {
+            new ButtonView(name, () =>
+            {
+                onNext?.Invoke();
+            }).AddTo(this);
             return this;
         }
 
@@ -76,7 +89,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             queue.Add(this);
         }
 
-        public QuestionView AddNextAction(Action nextAct)
+        public QuestionView<T> AddNextAction(Action nextAct)
         {
             if (nextAct != null)
             {
@@ -84,6 +97,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
                 {
                     yesBtn.OnClickEvent -= nextAct;
                 }
+
                 if (noBtn.OnClickEvent != null)
                 {
                     noBtn.OnClickEvent -= nextAct;
@@ -101,14 +115,14 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         }
 
 
-        public ProcessSystem EndQuestion()
+        public T EndQuestion()
         {
-            return System;
+            return Container;
         }
 
-        void IQuestion.OnProcess(Action nextAct)
+        void IQuestion.OnProcess(Action action)
         {
-            AddNextAction(nextAct);
+            AddNextAction(action);
         }
     }
 }
