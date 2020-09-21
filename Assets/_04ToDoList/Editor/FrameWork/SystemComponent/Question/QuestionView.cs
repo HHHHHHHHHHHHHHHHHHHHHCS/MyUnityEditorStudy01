@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.SystemComponent.Question;
+using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.SystemComponent
 {
     public class QuestionView<T> : VerticalLayout, IQuestion<T> where T : IQuestionContainer
     {
         private LabelView titleLabel;
-        private ButtonView yesBtn;
-        private ButtonView noBtn;
+        private List<ButtonView> btnViews;
 
         private Action onNext = null;
 
@@ -17,21 +18,27 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         public T Container { private get; set; }
 
 
-        public QuestionView(string questionText = null, Action onYes = null, Action onNo = null, Action nextAct = null)
+        public QuestionView(Action nextAct = null)
+        {
+            titleLabel = new LabelView(string.Empty).FontSize(25).TextMiddleCenter().AddTo(this);
+            btnViews = new List<ButtonView>();
+            AddNextAction(nextAct);
+        }
+
+
+        public QuestionView(string questionText, Action onYes, Action onNo, Action nextAct = null)
         {
             titleLabel = new LabelView(questionText).FontSize(25).TextMiddleCenter().AddTo(this);
             var horizontalLayout = new HorizontalLayout().AddTo(this);
 
-            yesBtn = new ButtonView("是", onYes, true).AddTo(horizontalLayout);
-            noBtn = new ButtonView("否", onNo, true).AddTo(horizontalLayout);
+            //0 yes  1 no
+            btnViews = new List<ButtonView>();
+            btnViews.Add(new ButtonView("是", onYes, true).AddTo(horizontalLayout));
+            btnViews.Add(new ButtonView("否", onNo, true).AddTo(horizontalLayout));
 
             AddNextAction(nextAct);
-
-//            yesBtn.OnClickEvent += Hide;
-//            noBtn.OnClickEvent += Hide;
         }
 
-        //TODO:much button
 
         public QuestionView<T> SetTitle(string text)
         {
@@ -39,48 +46,52 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             return this;
         }
 
-        public QuestionView<T> SetYesBtn(string text)
+        public QuestionView<T> NewBtn(int index, string text, Action act = null)
         {
-            yesBtn.text = text;
-            return this;
-        }
-
-        public QuestionView<T> SetYesBtn(string text, Action act)
-        {
-            yesBtn.text = text;
-            yesBtn.OnClickEvent = act;
+            var btn = new ButtonView(text, act, true).FontSize(25).TextMiddleCenter().AddTo(this);
             if (onNext != null)
             {
-                yesBtn.OnClickEvent += onNext;
+                btn.OnClickEvent += onNext;
             }
 
             return this;
         }
 
-        public QuestionView<T> SetNoBtn(string text)
+        public QuestionView<T> SetBtnText(int index, string text)
         {
-            noBtn.text = text;
+            btnViews[index].text = text;
             return this;
         }
 
-        public QuestionView<T> SetNoBtn(string text, Action act)
+        public QuestionView<T> SetBtnAct(int index, Action act)
         {
-            noBtn.text = text;
-            noBtn.OnClickEvent = act;
+            var btn = btnViews[index];
+            btn.OnClickEvent = act;
             if (onNext != null)
             {
-                noBtn.OnClickEvent += onNext;
+                btn.OnClickEvent += onNext;
             }
 
             return this;
         }
+
+        public QuestionView<T> SetBtn(int index, string text, Action act)
+        {
+            var btn = btnViews[index];
+            btn.text = text;
+            btn.OnClickEvent = act;
+            if (onNext != null)
+            {
+                btn.OnClickEvent += onNext;
+            }
+
+            return this;
+        }
+
 
         public QuestionView<T> CreateChoice(string name, string dstMenuName)
         {
-            new ButtonView(name, () =>
-            {
-                onNext?.Invoke();
-            }).AddTo(this);
+            new ButtonView(name, () => { onNext?.Invoke(); }).AddTo(this);
             return this;
         }
 
@@ -93,22 +104,27 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         {
             if (nextAct != null)
             {
-                if (yesBtn.OnClickEvent != null)
+                for (int i = 0; i < btnViews.Count; ++i)
                 {
-                    yesBtn.OnClickEvent -= nextAct;
-                }
-
-                if (noBtn.OnClickEvent != null)
-                {
-                    noBtn.OnClickEvent -= nextAct;
+                    var btn = btnViews[i];
+                    if (btn.OnClickEvent != null)
+                    {
+                        btn.OnClickEvent -= onNext;
+                    }
                 }
             }
 
             onNext = nextAct;
             if (nextAct != null)
             {
-                yesBtn.OnClickEvent += nextAct;
-                noBtn.OnClickEvent += nextAct;
+                for (int i = 0; i < btnViews.Count; ++i)
+                {
+                    var btn = btnViews[i];
+                    if (btn.OnClickEvent != null)
+                    {
+                        btn.OnClickEvent += onNext;
+                    }
+                }
             }
 
             return this;

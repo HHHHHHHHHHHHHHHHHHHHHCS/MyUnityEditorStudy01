@@ -16,8 +16,16 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             return new ProcessSystem();
         }
 
-        public QuestionView<ProcessSystem> BeginQuestion(string question = null, Action onYes = null,
-            Action onNo = null)
+        public QuestionView<ProcessSystem> BeginQuestion()
+        {
+            var view = new QuestionView<ProcessSystem>();
+            queue.Add(view);
+            view.Container = this;
+            return view;
+        }
+
+        public QuestionView<ProcessSystem> BeginQuestion(string question, Action onYes,
+            Action onNo)
         {
             var view = new QuestionView<ProcessSystem>(question, onYes, onNo);
             queue.Add(view);
