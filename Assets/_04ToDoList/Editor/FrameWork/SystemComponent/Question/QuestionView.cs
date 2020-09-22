@@ -13,6 +13,8 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         private List<ButtonView> btnViews;
 
         private Action onNext = null;
+        private Action<string> onChoice = null;
+
 
         public QuestionQueue Queue { get; set; }
         public T Container { private get; set; }
@@ -49,6 +51,18 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         public QuestionView<T> NewBtn(int index, string text, Action act = null)
         {
             var btn = new ButtonView(text, act, true).FontSize(25).TextMiddleCenter().AddTo(this);
+            if (onNext != null)
+            {
+                btn.OnClickEvent += onNext;
+            }
+
+            return this;
+        }
+
+        public QuestionView<T> NewChoice(int index, string text, string dest)
+        {
+            var btn = new ButtonView(text, () => { onChoice?.Invoke(text); }, true).FontSize(25).TextMiddleCenter()
+                .AddTo(this);
             if (onNext != null)
             {
                 btn.OnClickEvent += onNext;
@@ -139,6 +153,11 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         void IQuestion.OnProcess(Action action)
         {
             AddNextAction(action);
+        }
+
+        void IQuestion.OnChoice(Action<string> choice)
+        {
+            this.onChoice = choice;
         }
     }
 }

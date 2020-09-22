@@ -6,6 +6,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 {
     public class QuestionQueue : VerticalLayout
     {
+        private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
         private Queue<IQuestion> queueViews = new Queue<IQuestion>();
         private IQuestion current;
 
@@ -16,6 +17,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             view.AddTo(this);
             view.Hide();
             view.OnProcess(Next);
+            //TODO;
             queueViews.Enqueue(view);
         }
 
@@ -42,6 +44,15 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
         public void SetOnFinished(Action onAct)
         {
             onFinished = onAct;
+        }
+
+        public Choice GetChoice(string key) => choices[key];
+
+        public Choice AddChoice(string key)
+        {
+            var choice = new Choice(key);
+            choices.Add(key, choice);
+            return choice;
         }
     }
 }

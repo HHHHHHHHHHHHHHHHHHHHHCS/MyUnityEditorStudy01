@@ -8,7 +8,6 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
     public class ProcessSystem : IQuestionContainer<ProcessSystem>
     {
         private QuestionQueue queue = new QuestionQueue();
-        private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
 
 
         public static ProcessSystem CreateQuestions()
@@ -36,8 +35,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 
         public Choice BeginChoice(string choiceName)
         {
-            var ch = new Choice(choiceName);
-            choices.Add(choiceName, ch);
+            var ch = queue.AddChoice(choiceName);
             ch.System = this;
             return ch;
         }
