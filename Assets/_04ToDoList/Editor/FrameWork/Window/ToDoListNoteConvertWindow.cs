@@ -46,7 +46,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 .NewChoice(2, "事项", "事项")
                 .EndQuestion()
                 .BeginChoice("事项")
-                .BeginQuestion(onYes: () => isHide = false, onNo: () => isHide = true)
+                .BeginQuestion()
                 .SetTitle("现在是否可以执行!")
                 .NewBtn(0, "是", () => isHide = false)
                 .NewBtn(1, "否", () => isHide = true)

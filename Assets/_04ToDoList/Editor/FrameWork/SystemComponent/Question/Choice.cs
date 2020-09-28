@@ -20,10 +20,19 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             Queue = new QuestionQueue();
         }
 
-        public QuestionView<Choice> BeginQuestion(string question = null, Action onYes = null, Action onNo = null)
+        public QuestionView<Choice> BeginQuestion()
         {
             Queue = new QuestionQueue();
-            View = new QuestionView<Choice>(question, onYes, onNo);
+            View = new QuestionView<Choice>().AddTo(this);
+            View.Container = this;
+            Queue.Add(View);
+            return View;
+        }
+
+        public QuestionView<Choice> BeginQuestion(string question, Action onYes, Action onNo)
+        {
+            Queue = new QuestionQueue();
+            View = new QuestionView<Choice>(question, onYes, onNo).AddTo(this);
             View.Container = this;
             Queue.Add(View);
             return View;
@@ -36,6 +45,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 
         public void OnProcess(Action onProcess)
         {
+            Queue.Process(); //Show
             Queue.SetOnFinished(onProcess);
         }
     }

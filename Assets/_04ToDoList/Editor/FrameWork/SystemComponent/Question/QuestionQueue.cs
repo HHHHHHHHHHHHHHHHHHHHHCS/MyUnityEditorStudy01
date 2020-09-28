@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Layout;
+using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 {
@@ -17,7 +18,13 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             view.AddTo(this);
             view.Hide();
             view.OnProcess(Next);
-            //TODO;
+            view.OnChoice(key =>
+            {
+                var choice = GetChoice(key);
+                choice.OnProcess(Next);
+                current?.Hide();
+                choice.Show();
+            });
             queueViews.Enqueue(view);
         }
 
@@ -50,7 +57,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 
         public Choice AddChoice(string key)
         {
-            var choice = new Choice(key);
+            var choice = new Choice(key).AddTo(this);
             choices.Add(key, choice);
             return choice;
         }

@@ -51,6 +51,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         public QuestionView<T> NewBtn(int index, string text, Action act = null)
         {
             var btn = new ButtonView(text, act, true).FontSize(25).TextMiddleCenter().AddTo(this);
+            btnViews.Add(btn);
             if (onNext != null)
             {
                 btn.OnClickEvent += onNext;
@@ -63,10 +64,10 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         {
             var btn = new ButtonView(text, () => { onChoice?.Invoke(text); }, true).FontSize(25).TextMiddleCenter()
                 .AddTo(this);
-            if (onNext != null)
-            {
-                btn.OnClickEvent += onNext;
-            }
+            // if (onNext != null)
+            // {
+            //     btn.OnClickEvent += onNext;
+            // }
 
             return this;
         }
@@ -103,9 +104,9 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         }
 
 
-        public QuestionView<T> CreateChoice(string name, string dstMenuName)
+        public QuestionView<T> CreateChoice(string name, string destMenuName)
         {
-            new ButtonView(name, () => { onNext?.Invoke(); }).AddTo(this);
+            new ButtonView(name, () => { onChoice?.Invoke(destMenuName); }).AddTo(this);
             return this;
         }
 
@@ -157,7 +158,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 
         void IQuestion.OnChoice(Action<string> choice)
         {
-            this.onChoice = choice;
+            onChoice = choice;
         }
     }
 }
