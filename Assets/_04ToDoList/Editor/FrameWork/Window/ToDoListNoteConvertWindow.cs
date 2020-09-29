@@ -4,6 +4,7 @@ using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.SystemComponent;
 using _04ToDoList.Editor.FrameWork.SystemComponent.Question;
 using _04ToDoList.Editor.FrameWork.ViewGUI;
+using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Window
 {
@@ -18,42 +19,46 @@ namespace _04ToDoList.Editor.FrameWork.Window
             var window = Open<ToDoListNoteConvertWindow>(name);
             window.listView = _todoListNoteView;
             window.note = _note;
+            window.Init();
             return window;
         }
 
-        private void Awake()
+        private void Init()
         {
+            //避免重复打开
+            Clear();
+
+
             var verticalLayout = new VerticalLayout().AddTo(this);
 
-            bool isHide = true;
 
-
-            ButtonView finishedBtn = new ButtonView("转换", () =>
-            {
-                ToDoDataManager.ConvertToDoNote(note, isHide);
-                listView.UpdateList();
-                Close();
-                ToDoListMainWindow.instance.Focus();
-            }, true).AddTo(verticalLayout);
-
-            finishedBtn.Hide();
+            // ButtonView finishedBtn = new ButtonView("转换", () =>
+            // {
+            //     listView.UpdateList();
+            //     Close();
+            //     ToDoListMainWindow.instance.Focus();
+            // }, true).AddTo(verticalLayout);
+            //
+            // finishedBtn.Hide();
 
             ProcessSystem.CreateQuestions()
                 .BeginQuestion()
                 .SetTitle("这个是什么?")
-                .NewBtn(0, "资料")
-                .NewBtn(1, "想法")
-                .NewChoice(2, "事项", "事项")
+                .SetContext(note.content)
+                .NewBtn("目标")
+                .NewBtn("参考/阅读资料")
+                .NewBtn("想法/Idea")
+                .NewChoice("事项/事件", "事项")
                 .EndQuestion()
                 .BeginChoice("事项")
                 .BeginQuestion()
                 .SetTitle("现在是否可以执行!")
-                .NewBtn(0, "是", () => isHide = false)
-                .NewBtn(1, "否", () => isHide = true)
+                .NewBtn(0, "是", () => { ToDoDataManager.ConvertToDoNote(note, false); })
+                .NewBtn(1, "否", () => { ToDoDataManager.ConvertToDoNote(note, true); })
                 .EndQuestion()
                 .EndQuestion()
                 .AddTo(verticalLayout)
-                .StartProcess(finishedBtn.Show);
+                .StartProcess(Close);
         }
     }
 }

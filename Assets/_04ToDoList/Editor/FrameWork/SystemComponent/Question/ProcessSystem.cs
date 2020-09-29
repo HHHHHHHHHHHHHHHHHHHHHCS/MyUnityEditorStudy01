@@ -23,10 +23,10 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             return view;
         }
 
-        public QuestionView<ProcessSystem> BeginQuestion(string question, Action onYes,
+        public QuestionView<ProcessSystem> BeginQuestion(string title, string context, Action onYes,
             Action onNo)
         {
-            var view = new QuestionView<ProcessSystem>(question, onYes, onNo);
+            var view = new QuestionView<ProcessSystem>(title, context, onYes, onNo);
             queue.Add(view);
             view.Container = this;
             return view;
@@ -47,10 +47,11 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             return this;
         }
 
-        public void StartProcess(Action onFinish)
+        public ProcessSystem StartProcess(Action onFinish)
         {
             queue.Process();
             queue.SetOnFinished(onFinish);
+            return this;
         }
     }
 }

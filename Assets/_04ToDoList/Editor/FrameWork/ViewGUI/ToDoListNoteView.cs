@@ -67,7 +67,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 new LabelView(item.content).FontSize(15).TheFontStyle(FontStyle.Bold)
                     .TextMiddleLeft().AddTo(hor);
                 new ButtonView("处理", () => OpenProcessWindow(item))
-                    .Width(40).Height(20).AddTo(hor);
+                    .Width(100).Height(25).TheFontStyle(FontStyle.Bold).AddTo(hor);
                 new ImageButtonView(ImageButtonIcon.deleteIcon, () => DeleteItemNote(item))
                     .Width(25).Height(25).BackgroundColor(Color.red).AddTo(hor);
             }

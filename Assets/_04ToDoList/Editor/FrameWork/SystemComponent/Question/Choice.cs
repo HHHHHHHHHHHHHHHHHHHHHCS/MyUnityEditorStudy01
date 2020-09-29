@@ -29,10 +29,10 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             return View;
         }
 
-        public QuestionView<Choice> BeginQuestion(string question, Action onYes, Action onNo)
+        public QuestionView<Choice> BeginQuestion(string title, string context, Action onYes, Action onNo)
         {
             Queue = new QuestionQueue();
-            View = new QuestionView<Choice>(question, onYes, onNo).AddTo(this);
+            View = new QuestionView<Choice>(title, context, onYes, onNo).AddTo(this);
             View.Container = this;
             Queue.Add(View);
             return View;
