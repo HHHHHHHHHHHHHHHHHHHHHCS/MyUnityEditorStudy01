@@ -43,8 +43,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
             ProcessSystem.CreateQuestions()
                 .BeginQuestion()
-                .SetTitle("这个是什么?")
-                .SetContext(note.content)
+                .SetTitle(note.content)
+                .SetContext("这是什么?")
                 .NewBtn("目标")
                 .NewBtn("参考/阅读资料")
                 .NewBtn("想法/Idea")
@@ -53,12 +53,18 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 .BeginChoice("事项")
                 .BeginQuestion()
                 .SetTitle("现在是否可以执行!")
-                .NewBtn(0, "是", () => { ToDoDataManager.ConvertToDoNote(note, false); })
-                .NewBtn(1, "否", () => { ToDoDataManager.ConvertToDoNote(note, true); })
+                .NewBtn(0, "是", () => ConvertToDoNote(note, false))
+                .NewBtn(1, "否", () => ConvertToDoNote(note, true))
                 .EndQuestion()
                 .EndQuestion()
                 .AddTo(verticalLayout)
                 .StartProcess(Close);
+        }
+
+        private void ConvertToDoNote(ToDoNote note, bool isHide)
+        {
+            listView.UpdateList();
+            ToDoDataManager.ConvertToDoNote(note, isHide);
         }
     }
 }

@@ -26,9 +26,10 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         public QuestionView(Action nextAct = null)
         {
             titleLabel = new LabelView(string.Empty).FontSize(25).TextMiddleCenter().AddTo(this);
-            new SpaceView(30f).AddTo(this);
-            contextLabel = new LabelView(string.Empty).FontSize(15).TextMiddleCenter().AddTo(this);
+            new SpaceView(10f).AddTo(this);
+            contextLabel = new LabelView(string.Empty).FontSize(20).TextMiddleCenter().AddTo(this);
             new FlexibleSpaceView().AddTo(this);
+            //new SpaceView(15f).AddTo(this);
             btnViews = new List<ButtonView>();
             choiceViews = new List<ButtonView>();
             AddNextAction(nextAct);
@@ -83,7 +84,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 
         public QuestionView<T> NewChoice(int index, string text, string dest)
         {
-            var btn = new ButtonView(text, () => { onChoice?.Invoke(text); }, true).FontSize(25).TextMiddleCenter()
+            var btn = new ButtonView(text, () => { onChoice?.Invoke(dest); }, true).FontSize(25).TextMiddleCenter()
                 .AddTo(this);
             choiceViews.Add(btn);
             // if (onNext != null)
