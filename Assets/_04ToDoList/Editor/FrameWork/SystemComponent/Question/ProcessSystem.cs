@@ -53,5 +53,10 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             queue.SetOnFinished(onFinish);
             return this;
         }
+
+        public Choice GetChoice(string key)
+        {
+            return queue.GetChoice(key);
+        }
     }
 }

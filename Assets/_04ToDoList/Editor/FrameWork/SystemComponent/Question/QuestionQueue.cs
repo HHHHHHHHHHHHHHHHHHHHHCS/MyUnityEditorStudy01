@@ -5,8 +5,10 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 {
-    public class QuestionQueue : VerticalLayout
+    public class QuestionQueue : VerticalLayout, IQuestionContainer
     {
+        public ProcessSystem System { private get; set; }
+
         private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
         private Queue<IQuestion> queueViews = new Queue<IQuestion>();
         private IQuestion current;
@@ -57,6 +59,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 
         public Choice AddChoice(string key)
         {
+            //TODO:
             var choice = new Choice(key).AddTo(this);
             choices.Add(key, choice);
             return choice;

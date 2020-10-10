@@ -42,6 +42,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
             // finishedBtn.Hide();
 
             ProcessSystem.CreateQuestions()
+                //------------------------
                 .BeginQuestion()
                 .SetTitle(note.content)
                 .SetContext("这是什么?")
@@ -49,12 +50,25 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 .NewBtn("参考/阅读资料")
                 .NewBtn("想法/Idea")
                 .NewChoice("事项/事件", "事项")
+                //------------------------
                 .EndQuestion()
+                .BeginQuestion()
+                .SetTitle("是否可以拆解为多步")
+                .NewChoice("是", "拆解多步")
+                .NewBtn("否", () => { })
+                .EndQuestion()
+                //------------------------
                 .BeginChoice("事项")
                 .BeginQuestion()
                 .SetTitle("现在是否可以执行!")
                 .NewBtn(0, "是", () => ConvertToDoNote(note, false))
                 .NewBtn(1, "否", () => ConvertToDoNote(note, true))
+                .EndQuestion()
+                .EndQuestion()
+                //------------------------
+                .BeginChoice("拆解多步")
+                .BeginQuestion()
+                .SetTitle("先做什么?")
                 .EndQuestion()
                 .EndQuestion()
                 .AddTo(verticalLayout)
