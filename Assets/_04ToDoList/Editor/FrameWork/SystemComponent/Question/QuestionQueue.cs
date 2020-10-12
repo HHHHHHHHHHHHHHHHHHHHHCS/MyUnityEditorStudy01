@@ -9,7 +9,6 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
     {
         public ProcessSystem System { private get; set; }
 
-        private Dictionary<string, Choice> choices = new Dictionary<string, Choice>();
         private Queue<IQuestion> queueViews = new Queue<IQuestion>();
         private IQuestion current;
 
@@ -55,13 +54,12 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             onFinished = onAct;
         }
 
-        public Choice GetChoice(string key) => choices[key];
+        public Choice GetChoice(string key) => System.GetChoice(key);
 
         public Choice AddChoice(string key)
         {
-            //TODO:
             var choice = new Choice(key).AddTo(this);
-            choices.Add(key, choice);
+            System.AddChoice(key, choice);
             return choice;
         }
     }
