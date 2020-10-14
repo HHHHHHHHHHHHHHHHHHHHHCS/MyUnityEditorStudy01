@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<XMLTestCls xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <list>
+    <string>1</string>
+    <string>2</string>
+    <string>3</string>
+  </list>
+</XMLTestCls>
