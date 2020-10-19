@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Tests
 {
@@ -17,14 +15,22 @@ namespace Tests
             [SerializeField] public List<string> list = new List<string>() {"1", "2", "3"};
         }
 
-        private const string addPath = "/_04ToDoList/Editor/Resources/QuestionConfig/test.xml";
+        private const string xmlPath = "/_04ToDoList/Editor/Resources/Config/test.xml";
+
+
+        private string GetPath()
+        {
+            string filePath = Application.dataPath + xmlPath;
+
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+            return filePath;
+        }
 
         [Test]
         public void CreateXML()
         {
-            string filePath = Application.dataPath + addPath;
-
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            string filePath = GetPath();
 
             using (var fs = File.OpenWrite(filePath))
             {
@@ -37,10 +43,7 @@ namespace Tests
         [Test]
         public void LoadXML()
         {
-            string filePath = Application.dataPath + addPath;
-
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
+            string filePath = GetPath();
 
             var doc = new XmlDocument();
             doc.Load(filePath);
@@ -52,7 +55,35 @@ namespace Tests
             var element = doc.DocumentElement;
 
             Debug.Log(element.Name);
+        }
 
+        [Test]
+        public void ReadXML()
+        {
+            string filePath = GetPath();
+
+            var doc = new XmlDocument();
+            doc.Load(filePath);
+
+            var element = doc.DocumentElement;
+
+            foreach (XmlElement nodeElement in element.ChildNodes)
+            {
+                if (nodeElement.Name == "Question")
+                {
+                    foreach (XmlElement child in nodeElement.ChildNodes)
+                    {
+                        Debug.Log(child.Name);
+                    }
+                }
+                else if (nodeElement.Name == "Choice")
+                {
+                    foreach (XmlElement child in nodeElement.ChildNodes)
+                    {
+                        Debug.Log(child.Name);
+                    }
+                }
+            }
         }
     }
 }

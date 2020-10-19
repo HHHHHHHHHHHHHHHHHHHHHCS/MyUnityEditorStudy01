@@ -1,0 +1,24 @@
+<ProcessSystem>
+  <Question>
+    <Title>@Content</Title>
+    <Content>是什么</Content>
+    <Menu event="goal">目标</Menu>
+    <Menu event="stuff">参考/阅读资料</Menu>
+    <Menu event="idea">想法/Idea</Menu>
+    <Choice name="todo">想事项/事件</Choice>
+  </Question>
+
+  <Choice name="todo">
+    <Question>
+      <Title>是否可以拆解为多步?</Title>
+      <Choice name="split_todo">是</Choice>
+      <Choice name="none">否</Choice>
+    </Question>
+  </Choice>
+
+  <Choice name="split_todo">
+    <Question>
+      <Title>先做什么?</Title>
+    </Question>
+  </Choice>
+</ProcessSystem>
