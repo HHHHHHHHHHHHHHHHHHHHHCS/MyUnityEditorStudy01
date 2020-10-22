@@ -22,7 +22,6 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 
         public QuestionView<Choice> BeginQuestion()
         {
-            Queue = new QuestionQueue();
             View = new QuestionView<Choice>().AddTo(this);
             View.Container = this;
             Queue.Add(View);
@@ -31,7 +30,6 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 
         public QuestionView<Choice> BeginQuestion(string title, string context, Action onYes, Action onNo)
         {
-            Queue = new QuestionQueue();
             View = new QuestionView<Choice>(title, context, onYes, onNo).AddTo(this);
             View.Container = this;
             Queue.Add(View);

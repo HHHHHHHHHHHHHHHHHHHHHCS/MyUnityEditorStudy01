@@ -11,6 +11,8 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
     {
         private LabelView titleLabel;
         private LabelView contextLabel;
+        private TextAreaView contextAreaView;
+        private FlexibleSpaceView spaceView;
         private List<ButtonView> btnViews;
         private List<ButtonView> choiceViews;
 
@@ -28,11 +30,15 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             titleLabel = new LabelView(string.Empty).FontSize(25).TextMiddleCenter().AddTo(this);
             new SpaceView(10f).AddTo(this);
             contextLabel = new LabelView(string.Empty).FontSize(20).TextMiddleCenter().AddTo(this);
-            new FlexibleSpaceView().AddTo(this);
+            contextAreaView = new TextAreaView(string.Empty).ExpandHeight(true).FontSize(15).AddTo(this);
+            spaceView = new FlexibleSpaceView().AddTo(this);
             //new SpaceView(15f).AddTo(this);
             btnViews = new List<ButtonView>();
             choiceViews = new List<ButtonView>();
             AddNextAction(nextAct);
+
+            contextLabel.Hide();
+            contextAreaView.Hide();
         }
 
 
@@ -57,6 +63,15 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         public QuestionView<T> SetContext(string text)
         {
             contextLabel.SetText(text);
+            contextLabel.Show();
+            return this;
+        }
+
+        public QuestionView<T> SetContextTextArea(string text)
+        {
+            spaceView.Hide();
+            contextAreaView.Content.Val = text;
+            contextAreaView.Show();
             return this;
         }
 
