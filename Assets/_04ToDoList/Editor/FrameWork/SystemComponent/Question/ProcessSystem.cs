@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Layout.Interface;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
         private QuestionQueue queue;
         private Dictionary<string, Choice> choices;
 
+        private ToDoNote Note { get; }
+
         public static ProcessSystem CreateQuestions()
         {
             return new ProcessSystem();
@@ -19,6 +22,12 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
         {
             choices = new Dictionary<string, Choice>();
             queue = new QuestionQueue {System = this};
+        }
+
+        public ProcessSystem(ToDoNote note)
+        {
+            queue.System = this;
+            Note = note;
         }
 
         public QuestionView<ProcessSystem> BeginQuestion()

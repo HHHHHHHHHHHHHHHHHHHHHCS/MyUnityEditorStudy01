@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.SystemComponent.Question;
-using UnityEngine;
+using _04ToDoList.Editor.FrameWork.Window;
+using UnityEditor;
 
 namespace _04ToDoList.Editor.FrameWork.SystemComponent
 {
@@ -67,10 +68,11 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
             return this;
         }
 
-        public QuestionView<T> SetContextTextArea(string text)
+        public QuestionView<T> SetContextTextArea(string text, Action<string> act = null)
         {
             spaceView.Hide();
             contextAreaView.Content.Val = text;
+            contextAreaView.Content.SetValueChanged(act);
             contextAreaView.Show();
             return this;
         }

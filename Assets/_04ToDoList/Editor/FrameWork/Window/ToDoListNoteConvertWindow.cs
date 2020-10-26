@@ -2,6 +2,7 @@
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.SystemComponent;
+using _04ToDoList.Editor.FrameWork.SystemComponent.Logic;
 using _04ToDoList.Editor.FrameWork.SystemComponent.Question;
 using _04ToDoList.Editor.FrameWork.ViewGUI;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 {
     public class ToDoListNoteConvertWindow : SubWindow
     {
+        public static ToDoListNoteConvertWindow instance;
+
         private ToDoListNoteView listView;
         private ToDoNote note;
 
@@ -20,6 +23,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
             window.listView = _todoListNoteView;
             window.note = _note;
             window.Init();
+            instance = window;
             return window;
         }
 
@@ -66,20 +70,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 .EndQuestion()
                 .EndQuestion()
                 //------------------------
-                .BeginChoice("拆解多步")
-                .BeginQuestion()
-                .SetTitle("先做什么?")
-                .SetContextTextArea("什么")
-                .NewBtn("保存", () => { })
-                .EndQuestion()
-                //=================
-                .BeginQuestion()
-                .SetTitle("再做什么?")
-                .SetContextTextArea("什么")
-                .NewBtn("保存", () => { })
-                .NewBtn("保存并结束", () => { })
-                .EndQuestion()
-                .EndQuestion()
+                .ToDoSplitChoice()
                 .AddTo(verticalLayout)
                 .StartProcess(Close);
         }
