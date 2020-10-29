@@ -79,11 +79,6 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
 
         public QuestionView<T> NewBtn(string text, Action act = null)
         {
-            return NewBtn(btnViews.Count, text, act);
-        }
-
-        public QuestionView<T> NewBtn(int index, string text, Action act = null)
-        {
             var btn = new ButtonView(text, act, true).FontSize(25).TextMiddleCenter().AddTo(this);
             btnViews.Add(btn);
             if (onNext != null)
@@ -95,11 +90,6 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent
         }
 
         public QuestionView<T> NewChoice(string text, string dest)
-        {
-            return NewChoice(btnViews.Count, text, dest);
-        }
-
-        public QuestionView<T> NewChoice(int index, string text, string dest)
         {
             var btn = new ButtonView(text, () => { onChoice?.Invoke(dest); }, true).FontSize(25).TextMiddleCenter()
                 .AddTo(this);

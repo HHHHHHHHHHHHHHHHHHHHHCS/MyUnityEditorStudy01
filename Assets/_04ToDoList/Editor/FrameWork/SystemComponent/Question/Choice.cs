@@ -36,7 +36,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             return View;
         }
 
-        public ProcessSystem EndQuestion()
+        public ProcessSystem EndChoice()
         {
             Queue.System = System;
             return System;

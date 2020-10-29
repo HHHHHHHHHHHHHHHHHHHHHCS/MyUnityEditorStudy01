@@ -37,7 +37,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Logic
                 })
                 .NewBtn("保存并结束", () => { })
                 .EndQuestion()
-                .EndQuestion();
+                .EndChoice();
         }
     }
 }
