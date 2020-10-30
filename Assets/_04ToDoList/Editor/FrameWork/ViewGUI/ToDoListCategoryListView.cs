@@ -87,7 +87,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
         }
 
-        private void OpenSubWindow(TodoCategory item = null)
+        private void OpenSubWindow(ToDoCategory item = null)
         {
             EnqueueCmd(() => { categorySubWindow.ShowWindow(item); });
         }

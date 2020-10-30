@@ -10,7 +10,7 @@ namespace _04ToDoList.Editor.Component
     {
         private BoxView boxView { get; }
 
-        public CategoryComponent(TodoCategory category)
+        public CategoryComponent(ToDoCategory category)
         {
             if (category != null)
             {

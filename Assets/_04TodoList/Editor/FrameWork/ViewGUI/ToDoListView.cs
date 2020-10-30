@@ -71,7 +71,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         private void AddAction(string _todoName)
         {
             var index = todoListInputView.PopupIndex;
-            TodoCategory category = ToDoDataManager.ToDoCategoryAt(index);
+            ToDoCategory category = ToDoDataManager.ToDoCategoryAt(index);
             ToDoDataManager.AddToDoItem(_todoName, false, category);
             UpdateToDoItems();
         }

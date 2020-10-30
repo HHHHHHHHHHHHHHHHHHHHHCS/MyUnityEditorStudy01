@@ -11,7 +11,7 @@ public static class ToDoListCls_Ex
     }
 
 
-    public static void AddToDoItem(this ToDoListCls cls, string content, bool finished, TodoCategory category)
+    public static void AddToDoItem(this ToDoListCls cls, string content, bool finished, ToDoCategory category)
     {
         var data = new ToDoData(content, finished, cls.Save, category);
         cls.AddToDoItem(data);
@@ -37,16 +37,16 @@ public static class ToDoListCls_Ex
 
     public static void AddToDoCategory(this ToDoListCls cls, string name, string color)
     {
-        cls.AddToDoCategory(new TodoCategory(name, color));
+        cls.AddToDoCategory(new ToDoCategory(name, color));
     }
 
-    public static void AddToDoCategory(this ToDoListCls cls, TodoCategory category)
+    public static void AddToDoCategory(this ToDoListCls cls, ToDoCategory category)
     {
         cls.categoryList.Add(category);
         cls.Save();
     }
 
-    public static TodoCategory ToDoCategoryAt(this ToDoListCls cls, int index)
+    public static ToDoCategory ToDoCategoryAt(this ToDoListCls cls, int index)
     {
         if (index >= 0 && index < cls.categoryList.Count)
         {
@@ -58,14 +58,14 @@ public static class ToDoListCls_Ex
         }
     }
 
-    public static int ToDoCategoryIndexOf(this ToDoListCls cls, TodoCategory category)
+    public static int ToDoCategoryIndexOf(this ToDoListCls cls, ToDoCategory category)
     {
         if (category == null)
             return -1;
         return cls.categoryList.IndexOf(category);
     }
 
-    public static void RemoveToDoCategory(this ToDoListCls cls, TodoCategory category)
+    public static void RemoveToDoCategory(this ToDoListCls cls, ToDoCategory category)
     {
         cls.categoryList.Remove(category);
         cls.Save();

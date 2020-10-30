@@ -59,14 +59,14 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 .AddTo(verticalLayout);
         }
 
-        public void ShowWindow(TodoCategory item = null)
+        public void ShowWindow(ToDoCategory item = null)
         {
             Focus();
             ResetWindow(item);
             Show();
         }
 
-        public void ResetWindow(TodoCategory item = null)
+        public void ResetWindow(ToDoCategory item = null)
         {
             if (item == null)
             {
