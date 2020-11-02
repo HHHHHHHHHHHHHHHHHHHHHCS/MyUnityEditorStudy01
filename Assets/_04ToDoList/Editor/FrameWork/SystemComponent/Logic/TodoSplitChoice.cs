@@ -39,5 +39,11 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Logic
                 .EndQuestion()
                 .EndChoice();
         }
+
+        public static ProcessSystem RepeatThen(this ProcessSystem processSystem)
+        {
+            //TODO:
+            return processSystem;
+        }
     }
 }

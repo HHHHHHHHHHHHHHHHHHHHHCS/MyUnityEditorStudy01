@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.DataBinding
@@ -29,5 +30,23 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
         public string name;
 
         public ToDoVersion version;
+        
+        public List<ToDoNote> notes = new List<ToDoNote>();
+        
+        public List<ToDoData> todos = new List<ToDoData>();
+    }
+
+    public class Feature
+    {
+        public string name;
+        
+        public List<ToDoNote> notes = new List<ToDoNote>();
+    }
+
+    public class Product
+    {
+        public List<Feature> features =new List<Feature>();
+        
+        public List<ToDoProductVersion> versions = new List<ToDoProductVersion>();
     }
 }
