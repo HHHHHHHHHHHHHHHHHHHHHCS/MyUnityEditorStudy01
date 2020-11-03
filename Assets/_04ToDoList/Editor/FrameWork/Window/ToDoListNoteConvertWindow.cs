@@ -73,6 +73,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 .EndChoice()
                 //------------------------
                 .ToDoSplitChoice()
+                .RepeatThen()
                 .AddTo(verticalLayout)
                 .StartProcess(Close);
         }

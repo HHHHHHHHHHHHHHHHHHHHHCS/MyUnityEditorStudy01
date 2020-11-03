@@ -35,6 +35,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
             var view = new QuestionView<ProcessSystem>();
             queue.Add(view);
             view.Container = this;
+            view.Queue = queue;
             return view;
         }
 
@@ -71,7 +72,8 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 
         public Choice GetChoice(string key)
         {
-            return choices[key];
+            choices.TryGetValue(key, out var val);
+            return val;
         }
 
         public Choice AddChoice(string key,Choice choice)

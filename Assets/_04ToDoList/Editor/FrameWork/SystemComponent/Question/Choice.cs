@@ -24,6 +24,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
         {
             View = new QuestionView<Choice>().AddTo(this);
             View.Container = this;
+            View.Queue = Queue;
             Queue.Add(View);
             return View;
         }
