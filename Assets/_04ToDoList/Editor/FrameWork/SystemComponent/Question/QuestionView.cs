@@ -103,6 +103,18 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 			return this;
 		}
 
+		public QuestionView<T> RepeatSelfMenu(string name, Action act)
+		{
+			new ButtonView(name, () =>
+			{
+				Hide();
+				act?.Invoke();
+				contextAreaView.Content.Val = string.Empty;
+				EnqueueCmd(Show);
+			}, true).FontSize(25).TextMiddleCenter().AddTo(this);
+			return this;
+		}
+
 		public QuestionView<T> SetBtnText(int index, string text, bool isChoice = false)
 		{
 			var views = isChoice ? choiceViews : btnViews;

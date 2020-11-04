@@ -41,6 +41,11 @@ namespace _04ToDoList.Editor.FrameWork.Window
         {
         }
 
+        private void Update()
+        {
+            Refresh();
+        }
+
         public void Refresh()
         {
             OnRefresh();
