@@ -25,7 +25,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 .TheFontStyle(FontStyle.Bold)
                 .FontSize(40).AddTo(this);
             createButtonView = new ButtonView("创建笔记", () => CreateNewEditor(), true).AddTo(this);
-            editorView = new ToDoListNoteEditorView(SaveAction).AddTo(this);
+            //closeButtonView = new ButtonView("关闭", () => CreateNewEditor(), true).AddTo(this);
+            editorView = new ToDoListNoteEditorView(SaveAction,CloseAction).AddTo(this);
             noteListScrollLayout = new ScrollLayout().AddTo(this);
 
             editorView.Hide();
@@ -98,6 +99,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         }
 
         public void SaveAction()
+        {
+            titleLabelView.Show();
+            createButtonView.Show();
+            editorView.Hide();
+            isDirty = true;
+        }
+        
+        public void CloseAction()
         {
             titleLabelView.Show();
             createButtonView.Show();

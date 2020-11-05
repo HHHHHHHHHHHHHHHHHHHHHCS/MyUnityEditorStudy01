@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Drawer.Interface;
 using UnityEngine;
 
@@ -22,6 +23,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
         {
         }
 
+        public void AddView(IView view)
+        {
+            views.Add(view);
+        }
 
         public virtual void Draw()
         {

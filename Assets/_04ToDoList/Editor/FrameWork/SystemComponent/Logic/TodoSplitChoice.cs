@@ -1,8 +1,5 @@
-﻿using _04ToDoList.Editor.FrameWork.DataBinding;
-using _04ToDoList.Editor.FrameWork.SystemComponent.Question;
-using _04ToDoList.Editor.FrameWork.Window;
+﻿using _04ToDoList.Editor.FrameWork.SystemComponent.Question;
 using UnityEditor;
-using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.SystemComponent.Logic
 {
