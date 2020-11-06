@@ -7,7 +7,7 @@ using _04ToDoList.Editor.FrameWork.ViewGUI;
 
 namespace _04ToDoList.Editor.FrameWork.Window
 {
-    public class ToDoListEditorSubWindow : SubWindow
+    public class ToDoListItemEditorSubWindow : SubWindow
     {
         public ToDoListItemView itemView;
 
@@ -17,9 +17,9 @@ namespace _04ToDoList.Editor.FrameWork.Window
         private ButtonView saveButton;
 
 
-        public static ToDoListEditorSubWindow Open(ToDoListItemView itemView, string name = "ToDo Item Editor")
+        public static ToDoListItemEditorSubWindow Open(ToDoListItemView itemView, string name = "ToDo Item Editor")
         {
-            var window = Open<ToDoListEditorSubWindow>(name);
+            var window = Open<ToDoListItemEditorSubWindow>(name);
             window.itemView = itemView;
             return window;
         }
