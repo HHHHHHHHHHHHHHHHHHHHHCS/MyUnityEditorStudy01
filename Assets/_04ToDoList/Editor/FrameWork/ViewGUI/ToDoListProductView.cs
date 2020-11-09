@@ -1,4 +1,5 @@
-﻿using _04ToDoList.Editor.FrameWork.Drawer;
+﻿using _04ToDoList.Editor.FrameWork.DataBinding;
+using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.ViewController;
 using _04ToDoList.Editor.FrameWork.Window;
@@ -10,22 +11,42 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 	{
 		public ToDoListProductView(AbsViewController _ctrl) : base(_ctrl, "box")
 		{
-			new ButtonView("创建产品", OpenProductEditorWindow, true).AddTo(this);
-			new LabelView("这个是产品页面").AddTo(this).TheFontStyle(FontStyle.Bold).FontSize(30);
+			Rebuild();
+		}
 
-			foreach (var product in ToDoDataManager.Data.productList)
+		public void Rebuild()
+		{
+			Clear();
+			
+			//new LabelView("这个是产品页面").AddTo(this).TextMiddleCenter().TheFontStyle(FontStyle.Bold).FontSize(30);
+			
+			new ButtonView("创建产品", OpenProductEditorWindow, true).Height(40).AddTo(this);
+
+			var data = ToDoDataManager.Data.productList;
+			for (int i = data.Count - 1; i >= 0; i--)
 			{
-				var hor =  new HorizontalLayout().AddTo(this);
-				
+				var product = data[i];
+
+				var hor = new HorizontalLayout().AddTo(this);
+
 				new LabelView(product.name).FontSize(20).TheFontStyle(FontStyle.Bold).Height(20).Width(60).AddTo(hor);
-				
+
 				new LabelView(product.description).FontSize(12).TheFontStyle(FontStyle.Bold).Height(20).AddTo(hor);
+
+				new ImageButtonView(ImageButtonIcon.deleteIcon, () => RemoveProduct(product)).Width(25).Height(25)
+					.BackgroundColor(Color.red).AddTo(hor);
 			}
 		}
 
 		public void OpenProductEditorWindow()
 		{
 			ToDoListEditorProductSubWindow.Open(this);
+		}
+
+		public void RemoveProduct(Product product)
+		{
+			ToDoDataManager.Data.RemoveProduct(product);
+			EnqueueCmd(Rebuild);
 		}
 	}
 }

@@ -177,7 +177,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 data.finished.ClearValueChanged();
                 ToDoDataManager.RemoveToDoItem(data);
                 needFresh = true;
-            }).Height(20).Width(30).BackgroundColor(Color.red);
+            }).Height(25).Width(25).BackgroundColor(Color.red);
             container.Add(deleteBtn);
         }
 

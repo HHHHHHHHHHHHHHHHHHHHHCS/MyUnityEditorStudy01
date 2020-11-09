@@ -35,6 +35,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 		private void AddProduct(string productName, string productDescription)
 		{
 			ToDoDataManager.AddProduct(productName, productDescription);
+			productView.Rebuild();
+			Close();
 		}
 	}
 }

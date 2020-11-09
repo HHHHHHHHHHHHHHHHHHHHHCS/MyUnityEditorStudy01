@@ -101,4 +101,10 @@ public static class ToDoListCls_Ex
 		cls.productList.Add(new Product(name,desc));
 		cls.Save();
 	}
+	
+	public static void RemoveProduct(this ToDoListCls cls, Product product)
+	{
+		cls.productList.Remove(product);
+		cls.Save();
+	}
 }
