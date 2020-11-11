@@ -17,10 +17,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		public void Rebuild()
 		{
 			Clear();
-			
+
 			//new LabelView("这个是产品页面").AddTo(this).TextMiddleCenter().TheFontStyle(FontStyle.Bold).FontSize(30);
-			
-			new ButtonView("创建产品", OpenProductEditorWindow, true).Height(40).AddTo(this);
+
+			new ButtonView("创建产品", () => OpenProductEditorWindow(null), true).Height(40).AddTo(this);
 
 			var data = ToDoDataManager.Data.productList;
 			for (int i = data.Count - 1; i >= 0; i--)
@@ -28,6 +28,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				var product = data[i];
 
 				var hor = new HorizontalLayout().AddTo(this);
+
+				new ImageButtonView(ImageButtonIcon.editorIcon, () => OpenProductEditorWindow(product))
+					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
 
 				new LabelView(product.name).FontSize(20).TheFontStyle(FontStyle.Bold).Height(20).Width(60).AddTo(hor);
 
@@ -38,9 +41,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			}
 		}
 
-		public void OpenProductEditorWindow()
+		public void OpenProductEditorWindow(Product product = null)
 		{
-			ToDoListEditorProductSubWindow.Open(this);
+			EnqueueCmd(() =>
+			{
+				ToDoListEditorProductSubWindow.Open(this, product);
+			});
 		}
 
 		public void RemoveProduct(Product product)

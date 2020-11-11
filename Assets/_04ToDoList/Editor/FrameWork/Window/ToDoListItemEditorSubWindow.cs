@@ -84,7 +84,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                 item.content = contentTextArea.Content.Val;
                 item.category = data.categoryList[enumPopupView.ValueProperty.Val];
 
-                ToDoDataManager.Data.Save();
+                ToDoDataManager.Save();
                 itemView.UpdateItem();
                 Close();
             };
