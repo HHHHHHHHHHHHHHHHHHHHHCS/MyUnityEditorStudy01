@@ -9,6 +9,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 {
     public static class ImageButtonIcon
     {
+        public const string openIcon = "Assets/_04ToDoList/EditorIcons/Open.png";
         public const string editorIcon = "Assets/_04ToDoList/EditorIcons/Editor.png";
         public const string deleteIcon = "Assets/_04ToDoList/EditorIcons/Delete.png";
         public const string addIcon = "Assets/_04ToDoList/EditorIcons/Add.png";

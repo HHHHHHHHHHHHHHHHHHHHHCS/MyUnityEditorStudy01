@@ -29,12 +29,15 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 				var hor = new HorizontalLayout().AddTo(this);
 
-				new ImageButtonView(ImageButtonIcon.editorIcon, () => OpenProductEditorWindow(product))
+				new ImageButtonView(ImageButtonIcon.openIcon, () => OpenProductEditorWindow(product))
 					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
 
 				new LabelView(product.name).FontSize(20).TheFontStyle(FontStyle.Bold).Height(20).Width(60).AddTo(hor);
 
 				new LabelView(product.description).FontSize(12).TheFontStyle(FontStyle.Bold).Height(20).AddTo(hor);
+
+				new ImageButtonView(ImageButtonIcon.editorIcon, () => OpenProductEditorWindow(product))
+					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
 
 				new ImageButtonView(ImageButtonIcon.deleteIcon, () => RemoveProduct(product)).Width(25).Height(25)
 					.BackgroundColor(Color.red).AddTo(hor);
