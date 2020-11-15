@@ -198,11 +198,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             }
         }
 
+        
         private void OpenSubWindow()
         {
             EnqueueCmd(() =>
                 {
-                    itemEditorSubWindow = ToDoListItemEditorSubWindow.Open(this, "ToDo 编辑器");
+                    itemEditorSubWindow = ToDoListItemEditorSubWindow.Open(this, "ToDo Editor");
                     itemEditorSubWindow.ShowWindow(this);
                 }
             );

@@ -9,27 +9,77 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
 	public class ToDoListProductView : ToDoListPage
 	{
+		private bool isDirty;
+
+		private VerticalLayout productViews;
+		private VerticalLayout detailViews;
+
+
+		private ToDoListVersionCreateSubWindow versionCreate;
+		private ToDoListEditorProductSubWindow productSubWindow;
+
+		private Product product;
+
+
 		public ToDoListProductView(AbsViewController _ctrl) : base(_ctrl, "box")
 		{
+			productViews = new VerticalLayout("box").AddTo(this);
+			detailViews = new VerticalLayout("box").AddTo(this);
+
+
 			Rebuild();
 		}
 
+		protected override void OnRefresh()
+		{
+			if (isDirty)
+			{
+				isDirty = false;
+				Rebuild();
+			}
+		}
+
+		public void UpdateToDoItems()
+		{
+			isDirty = true;
+
+			//如果不focus 则会不刷新
+			ToDoListMainWindow.instance.Focus();
+		}
+
+
 		public void Rebuild()
 		{
-			Clear();
+			if (productViews.Visible)
+			{
+				RebuildProductViews();
+			}
+			else
+			{
+				RebuildDetailViews(product);
+			}
+		}
 
-			//new LabelView("这个是产品页面").AddTo(this).TextMiddleCenter().TheFontStyle(FontStyle.Bold).FontSize(30);
+		public void RebuildProductViews()
+		{
+			productViews.Clear();
 
-			new ButtonView("创建产品", () => OpenProductEditorWindow(null), true).Height(40).AddTo(this);
+			productViews.Show();
+			detailViews.Hide();
+			product = null;
+
+			//new LabelView("这个是产品页面").AddTo(productViews).TextMiddleCenter().TheFontStyle(FontStyle.Bold).FontSize(30);
+
+			new ButtonView("创建产品", () => OpenProductEditorWindow(null), true).Height(40).AddTo(productViews);
 
 			var data = ToDoDataManager.Data.productList;
 			for (int i = data.Count - 1; i >= 0; i--)
 			{
 				var product = data[i];
 
-				var hor = new HorizontalLayout().AddTo(this);
+				var hor = new HorizontalLayout().AddTo(productViews);
 
-				new ImageButtonView(ImageButtonIcon.openIcon, () => OpenProductEditorWindow(product))
+				new ImageButtonView(ImageButtonIcon.openIcon, () => EnqueueCmd(() => RebuildDetailViews(product)))
 					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
 
 				new LabelView(product.name).FontSize(20).TheFontStyle(FontStyle.Bold).Height(20).Width(60).AddTo(hor);
@@ -44,11 +94,40 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			}
 		}
 
+
+		public void RebuildDetailViews(Product _product)
+		{
+			product = _product;
+
+			detailViews.Clear();
+
+			productViews.Hide();
+			detailViews.Show();
+
+			new LabelView(product.name).TheFontStyle(FontStyle.Bold).FontSize(30).TextMiddleCenter().AddTo(detailViews);
+			new LabelView(product.description).FontSize(20).TextMiddleCenter().AddTo(detailViews);
+			new ButtonView("创建产品版本", () => { OpenProductDetailWindow(product); }, true).FontSize(25).TextMiddleCenter()
+				.AddTo(detailViews);
+			new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(25).TextMiddleCenter()
+				.AddTo(detailViews);
+		}
+
+
+		public void OpenProductDetailWindow(Product _product)
+		{
+			EnqueueCmd(() =>
+			{
+				versionCreate = ToDoListVersionCreateSubWindow.Open(this, _product);
+				versionCreate.Show();
+			});
+		}
+
 		public void OpenProductEditorWindow(Product product = null)
 		{
 			EnqueueCmd(() =>
 			{
-				ToDoListEditorProductSubWindow.Open(this, product);
+				productSubWindow = ToDoListEditorProductSubWindow.Open(this, product);
+				productSubWindow.Show();
 			});
 		}
 
@@ -56,6 +135,27 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		{
 			ToDoDataManager.Data.RemoveProduct(product);
 			EnqueueCmd(Rebuild);
+		}
+
+
+		protected override void OnShow()
+		{
+			RebuildProductViews();
+		}
+
+		protected override void OnHide()
+		{
+			if (versionCreate != null)
+			{
+				versionCreate.Close();
+				versionCreate = null;
+			}
+
+			if (productSubWindow != null)
+			{
+				productSubWindow.Close();
+				productSubWindow = null;
+			}
 		}
 	}
 }

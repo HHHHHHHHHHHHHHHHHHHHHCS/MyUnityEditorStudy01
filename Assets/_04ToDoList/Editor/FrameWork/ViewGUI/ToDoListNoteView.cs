@@ -85,8 +85,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         public void OpenProcessWindow(ToDoNote note)
         {
-            convertWindow = ToDoListNoteConvertWindow.Open(this, note);
-            convertWindow.Show();
+            EnqueueCmd(() =>
+            {
+                convertWindow = ToDoListNoteConvertWindow.Open(this, note);
+                convertWindow.Show();
+            });
         }
 
         private void DeleteItemNote(ToDoNote note)
@@ -120,6 +123,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             if (convertWindow)
             {
                 convertWindow.Close();
+                convertWindow = null;
             }
         }
     }

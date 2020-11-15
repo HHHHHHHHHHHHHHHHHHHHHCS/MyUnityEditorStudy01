@@ -87,5 +87,12 @@ namespace _04ToDoList.Editor.FrameWork
 
             return view;
         }
+        
+        public static ButtonView IsFill<T>(this ButtonView button, bool isFill) 
+        {
+            button.fullSize = isFill;
+
+            return button;
+        }
     }
 }
