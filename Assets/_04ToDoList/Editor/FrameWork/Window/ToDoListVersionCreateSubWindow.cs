@@ -30,17 +30,30 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
 			new LabelView("版本号:").TheFontStyle(FontStyle.Bold).FontSize(20).AddTo(verticalLayout);
 
-			new CustomView(() =>
-			{
-				GUILayout.BeginHorizontal();
-				GUILayout.Label("v", GUILayout.Width(10));
-				GUILayout.TextField("0", 2, GUILayout.Width(15));
-				GUILayout.Label(".", GUILayout.Width(7));
-				GUILayout.TextField("0", 2, GUILayout.Width(15));
-				GUILayout.Label(".", GUILayout.Width(7));
-				GUILayout.TextField("0", 2, GUILayout.Width(15));
-				GUILayout.EndHorizontal();
-			}).AddTo(verticalLayout);
+			var addHor = new HorizontalLayout().AddTo(verticalLayout);
+			new SpaceView(18).AddTo(addHor);
+			new ButtonView("+", () => { }).Height(20).Width(20).FontSize(10).AddTo(addHor);
+			new SpaceView(14).AddTo(addHor);
+			new ButtonView("+", () => { }).Height(20).Width(20).FontSize(10).AddTo(addHor);
+			new SpaceView(14).AddTo(addHor);
+			new ButtonView("+", () => { }).Height(20).Width(20).FontSize(10).AddTo(addHor);
+
+			var versionHor = new HorizontalLayout().AddTo(verticalLayout);
+			new LabelView("V").FontSize(10).Height(20).Width(11).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
+			new LabelView("0").FontSize(12).Height(20).Width(20).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
+			new LabelView(".").FontSize(10).Height(20).Width(11).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
+			new LabelView("0").FontSize(12).Height(20).Width(20).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
+			new LabelView(".").FontSize(10).Height(20).Width(11).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
+			new LabelView("0").FontSize(12).Height(20).Width(20).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
+
+			var reduceHor = new HorizontalLayout().AddTo(verticalLayout);
+			new SpaceView(18).AddTo(reduceHor);
+			new ButtonView("-", () => { }).TextMiddleCenter().Height(20).Width(20).FontSize(10).AddTo(reduceHor);
+			new SpaceView(14).AddTo(reduceHor);
+			new ButtonView("-", () => { }).TextMiddleCenter().Height(20).Width(20).FontSize(10).AddTo(reduceHor);
+			new SpaceView(14).AddTo(reduceHor);
+			new ButtonView("-", () => { }).TextMiddleCenter().Height(20).Width(20).FontSize(10).AddTo(reduceHor);
+			
 
 			new LabelView("版本名:").TheFontStyle(FontStyle.Bold).FontSize(20).AddTo(verticalLayout);
 
