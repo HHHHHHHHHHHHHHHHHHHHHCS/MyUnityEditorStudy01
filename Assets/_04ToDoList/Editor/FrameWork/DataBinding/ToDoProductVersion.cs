@@ -4,13 +4,37 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.DataBinding
 {
+	[Serializable]
 	public class ToDoVersion
 	{
-		public readonly int major;
-		public readonly int middle;
-		public readonly int small;
+		public int Major
+		{
+			get => major;
+			set => major = value > 0 ? value : 0;
+		}
+
+		public int Middle
+		{
+			get => middle;
+			set => middle = value > 0 ? value : 0;
+		}
+
+		public int Small
+		{
+			get => small;
+			set => small = value > 0 ? value : 0;
+		}
+
+		private int major;
+		private int middle;
+		private int small;
 
 		public ToDoVersion(int _major, int _middle, int _small)
+		{
+			SetVersion(_major, _middle, _small);
+		}
+
+		public void SetVersion(int _major, int _middle, int _small)
 		{
 			major = _major;
 			middle = _middle;
@@ -23,6 +47,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 		}
 	}
 
+	[Serializable]
 	public class ToDoProductVersion
 	{
 		public string Id = Guid.NewGuid().ToString();
@@ -36,6 +61,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 		public List<ToDoData> todos = new List<ToDoData>();
 	}
 
+	[Serializable]
 	public class Feature
 	{
 		public string name;
@@ -43,6 +69,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 		public List<ToDoNote> notes = new List<ToDoNote>();
 	}
 
+
+	[Serializable]
 	public class Product
 	{
 		public string name;
@@ -52,7 +80,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 		public List<Feature> features = new List<Feature>();
 
 		public List<ToDoProductVersion> versions = new List<ToDoProductVersion>();
-		
+
 		public Product(string _name, string _description)
 		{
 			this.name = _name;
