@@ -22,7 +22,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
         {
             titleLabelView = new LabelView("欢迎来到笔记界面")
                 .TextMiddleCenter()
-                .TheFontStyle(FontStyle.Bold)
+                .FontBold()
                 .FontSize(40).AddTo(this);
             createButtonView = new ButtonView("创建笔记", () => CreateNewEditor(), true).AddTo(this);
             //closeButtonView = new ButtonView("关闭", () => CreateNewEditor(), true).AddTo(this);
@@ -65,10 +65,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
                 var temp = item;
                 new ImageButtonView(ImageButtonIcon.editorIcon, () => CreateNewEditor(temp))
                     .Width(25).Height(25).BackgroundColor(Color.black).AddTo(hor);
-                new LabelView(item.content).FontSize(15).TheFontStyle(FontStyle.Bold)
+                new LabelView(item.content).FontSize(15).FontBold()
                     .TextMiddleLeft().AddTo(hor);
                 new ButtonView("处理", () => OpenProcessWindow(item))
-                    .Width(100).Height(25).TheFontStyle(FontStyle.Bold).AddTo(hor);
+                    .Width(100).Height(25).FontBold().AddTo(hor);
                 new ImageButtonView(ImageButtonIcon.deleteIcon, () => DeleteItemNote(item))
                     .Width(25).Height(25).BackgroundColor(Color.red).AddTo(hor);
             }

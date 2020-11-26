@@ -71,9 +71,9 @@ namespace _04ToDoList.Editor.FrameWork.Window
             if (item == null)
             {
                 textAreaView.Content.Val = string.Empty;
-                colorView.colorProperty.Val = Color.black;
+                colorView.ColorProperty.Val = Color.black;
 
-                changeButton.text = "添加";
+                changeButton.Text = "添加";
                 changeButton.OnClickEvent = () =>
                 {
                     var data = ToDoDataManager.Data;
@@ -81,7 +81,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
                     if (data.categoryList.All(x => x.name != textAreaView.Content.Val))
                     {
                         ToDoDataManager.AddToDoCategory(textAreaView.Content.Val,
-                            colorView.colorProperty.Val.ToText());
+                            colorView.ColorProperty.Val.ToText());
                         listView.UpdateToDoItems();
                         Close();
                     }
@@ -90,13 +90,13 @@ namespace _04ToDoList.Editor.FrameWork.Window
             else
             {
                 textAreaView.Content.Val = item.name;
-                colorView.colorProperty.Val = item.color.ToColor();
+                colorView.ColorProperty.Val = item.color.ToColor();
 
-                changeButton.text = "修改";
+                changeButton.Text = "修改";
                 changeButton.OnClickEvent = () =>
                 {
                     item.name = textAreaView.Content.Val;
-                    item.color = colorView.colorProperty.Val.ToText();
+                    item.color = colorView.ColorProperty.Val.ToText();
                     ToDoDataManager.Data.Save();
                     listView.UpdateToDoItems();
                     Close();

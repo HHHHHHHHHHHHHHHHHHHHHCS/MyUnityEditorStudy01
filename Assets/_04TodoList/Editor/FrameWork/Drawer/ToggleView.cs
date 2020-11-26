@@ -5,18 +5,18 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 {
     public class ToggleView : View
     {
-        public string text { get; set; }
-        public Property<bool> IsToggle { get; private set; }
+        public string Text { get; set; }
+        public Property<bool> IsToggle { get; }
 
         public ToggleView(string _text = null, bool isToggle = false)
         {
-            this.text = _text;
+            Text = _text;
             IsToggle = new Property<bool>(isToggle);
         }
 
         protected override void OnGUI()
         {
-            IsToggle.Val = GUILayout.Toggle(IsToggle.Val, text);
+            IsToggle.Val = GUILayout.Toggle(IsToggle.Val, Text);
         }
     }
 }

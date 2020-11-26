@@ -118,7 +118,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 		public QuestionView<T> SetBtnText(int index, string text, bool isChoice = false)
 		{
 			var views = isChoice ? choiceViews : btnViews;
-			views[index].text = text;
+			views[index].Text = text;
 			return this;
 		}
 
@@ -139,7 +139,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Question
 		{
 			var views = isChoice ? choiceViews : btnViews;
 			var btn = views[index];
-			btn.text = text;
+			btn.Text = text;
 			btn.OnClickEvent = act;
 			if (onNext != null)
 			{

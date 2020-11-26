@@ -19,7 +19,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 			new LabelView("笔记编辑器")
 				.TextMiddleCenter()
-				.TheFontStyle(FontStyle.Bold)
+				.FontBold()
 				.FontSize(40)
 				.AddTo(this);
 

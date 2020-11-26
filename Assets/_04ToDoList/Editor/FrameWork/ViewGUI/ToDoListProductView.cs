@@ -68,7 +68,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			detailViews.Hide();
 			product = null;
 
-			//new LabelView("这个是产品页面").AddTo(productViews).TextMiddleCenter().TheFontStyle(FontStyle.Bold).FontSize(30);
+
+			//new LabelView("这个是产品页面").AddTo(productViews).TextMiddleCenter().FontBold().FontSize(30);
 
 			new ButtonView("创建产品", () => OpenProductEditorWindow(null), true).Height(40).AddTo(productViews);
 
@@ -82,9 +83,9 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				new ImageButtonView(ImageButtonIcon.openIcon, () => EnqueueCmd(() => RebuildDetailViews(product)))
 					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
 
-				new LabelView(product.name).FontSize(20).TheFontStyle(FontStyle.Bold).Height(20).Width(60).AddTo(hor);
+				new LabelView(product.name).FontSize(20).FontBold().Height(20).Width(80).AddTo(hor);
 
-				new LabelView(product.description).FontSize(12).TheFontStyle(FontStyle.Bold).Height(20).AddTo(hor);
+				new LabelView(product.description).FontSize(12).FontBold().Height(20).AddTo(hor);
 
 				new ImageButtonView(ImageButtonIcon.editorIcon, () => OpenProductEditorWindow(product))
 					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
@@ -104,12 +105,26 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			productViews.Hide();
 			detailViews.Show();
 
-			new LabelView(product.name).TheFontStyle(FontStyle.Bold).FontSize(30).TextMiddleCenter().AddTo(detailViews);
+			new LabelView(product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(detailViews);
+			new SpaceView(5).AddTo(detailViews);
 			new LabelView(product.description).FontSize(20).TextMiddleCenter().AddTo(detailViews);
-			new ButtonView("创建产品版本", () => { OpenProductDetailWindow(product); }, true).FontSize(25).TextMiddleCenter()
+			new ButtonView("创建版本", () => { OpenProductDetailWindow(product); }, true).FontBold()
+				.FontSize(25).TextMiddleCenter().AddTo(detailViews);
+			new SpaceView(5).AddTo(detailViews);
+			new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
 				.AddTo(detailViews);
-			new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(25).TextMiddleCenter()
-				.AddTo(detailViews);
+
+
+			foreach (var item in product.versions)
+			{
+				var hor = new HorizontalLayout().AddTo(detailViews);
+
+				new LabelView(item.name).FontBold().FontSize(15).Width(80).TextMiddleLeft()
+					.AddTo(hor);
+
+				new LabelView(item.version.ToString()).FontSize(15).TextMiddleLeft()
+					.AddTo(hor);
+			}
 		}
 
 

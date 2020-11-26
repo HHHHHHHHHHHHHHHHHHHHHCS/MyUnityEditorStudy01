@@ -83,7 +83,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
             var boxView = new BoxView("无").AddTo(container)
                 .TextMiddleCenter().Width(20).FontSize(12)
-                .FontColor(Color.white).TheFontStyle(FontStyle.Bold);
+                .FontColor(Color.white).FontBold();
 
             new CategoryComponent(data.category).AddTo(container);
 
@@ -93,7 +93,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
             if (showTime)
             {
                 new LabelView(data.finishTime.ToString("完成于 HH:mm:ss"))
-                    .Height(20).Width(80).TextMiddleLeft().TheFontStyle(FontStyle.Bold);
+                    .Height(20).Width(80).TextMiddleLeft().FontBold();
                 new LabelView(data.UsedTimeText)
                     .Height(20).Width(100).TextMiddleLeft().AddTo(container);
             }

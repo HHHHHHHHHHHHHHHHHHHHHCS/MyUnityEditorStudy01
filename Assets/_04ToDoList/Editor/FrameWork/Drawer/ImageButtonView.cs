@@ -23,7 +23,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         private static Dictionary<string, Texture2D> imagesDict = new Dictionary<string, Texture2D>();
 
 
-        public Texture2D image { get; set; }
+        public Texture2D Image { get; }
 
         public Action OnClickEvent { get; set; }
 
@@ -31,14 +31,14 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
         {
             if (imagesDict.TryGetValue(imagePath, out Texture2D img))
             {
-                image = img;
+                Image = img;
             }
 
-            if (image == null)
+            if (Image == null)
             {
                 img = AssetDatabase.LoadAssetAtPath<Texture2D>(imagePath);
                 imagesDict.Add(imagePath, img);
-                image = img;
+                Image = img;
             }
 
             OnClickEvent = onClickEvent;
@@ -46,7 +46,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         public ImageButtonView(Texture2D _image, Action onClickEvent = null)
         {
-            image = _image;
+            Image = _image;
             OnClickEvent = onClickEvent;
         }
 
@@ -56,11 +56,11 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
             if (guiLayoutOptions != null && guiLayoutOptions.Length > 0)
             {
-                isClick = GUILayout.Button(image ? image : Texture2D.whiteTexture, guiLayoutOptions);
+                isClick = GUILayout.Button(Image ? Image : Texture2D.whiteTexture, guiLayoutOptions);
             }
             else
             {
-                isClick = GUILayout.Button(image ? image : Texture2D.whiteTexture, GUILayout.Width(40));
+                isClick = GUILayout.Button(Image ? Image : Texture2D.whiteTexture, GUILayout.Width(40));
             }
 
 

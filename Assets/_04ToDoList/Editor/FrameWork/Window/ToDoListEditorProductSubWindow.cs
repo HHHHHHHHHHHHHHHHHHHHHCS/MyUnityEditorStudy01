@@ -33,10 +33,10 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			var productName = product == null ? string.Empty : product.name;
 			var productDescription = product == null ? string.Empty : product.description;
 
-			new LabelView("名称:").TextMiddleCenter().TheFontStyle(FontStyle.Bold).FontSize(20).AddTo(verticalLayout);
+			new LabelView("名称:").TextMiddleCenter().FontBold().FontSize(20).AddTo(verticalLayout);
 			new TextAreaView(productName, pName => productName = pName).Height(30)
 				.AddTo(verticalLayout);
-			new LabelView("描述:").TextMiddleCenter().TheFontStyle(FontStyle.Bold).FontSize(20).AddTo(verticalLayout);
+			new LabelView("描述:").TextMiddleCenter().FontBold().FontSize(20).AddTo(verticalLayout);
 			new TextAreaView(productDescription, pDesc => productDescription = pDesc)
 				.Height(60).AddTo(verticalLayout);
 			new ButtonView("保存", () => { SaveProduct(productName, productDescription); }, true).Height(20)

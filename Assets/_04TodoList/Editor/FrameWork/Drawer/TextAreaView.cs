@@ -7,7 +7,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 {
     public class TextAreaView : View
     {
-        public Property<string> Content { get; set; }
+        public Property<string> Content { get;  }
 
         public TextAreaView(string content, Action<string> _act = null)
         {

@@ -5,7 +5,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 {
     public class ButtonView : View
     {
-        public string text { get; set; }
+        public string Text { get; set; }
 
         public Action OnClickEvent { get; set; }
 
@@ -13,7 +13,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         public ButtonView(string _text, Action onClickEvent = null, bool _fullSize = false)
         {
-            text = _text;
+            Text = _text;
             OnClickEvent = onClickEvent;
             fullSize = _fullSize;
             guiStyle = new GUIStyle(GUI.skin.button);
@@ -25,15 +25,15 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
             if (guiLayouts != null && guiLayouts.Count > 0)
             {
-                isClick = GUILayout.Button(text ?? string.Empty, guiStyle, guiLayouts.ToArray());
+                isClick = GUILayout.Button(Text ?? string.Empty, guiStyle, guiLayouts.ToArray());
             }
             else if (fullSize)
             {
-                isClick = GUILayout.Button(text ?? string.Empty, guiStyle);
+                isClick = GUILayout.Button(Text ?? string.Empty, guiStyle);
             }
             else
             {
-                isClick = GUILayout.Button(text ?? string.Empty, guiStyle, GUILayout.Width(40));
+                isClick = GUILayout.Button(Text ?? string.Empty, guiStyle, GUILayout.Width(40));
             }
 
 

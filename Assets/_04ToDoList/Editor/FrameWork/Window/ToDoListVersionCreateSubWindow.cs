@@ -11,8 +11,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 	{
 		private ToDoListProductView productView;
 		private Product product;
-		private ToDoVersion version;
-
+		private ToDoVersion productVersion;
+		private string productName;
 
 		private LabelView majorView, middleView, smallView;
 
@@ -27,7 +27,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
 		private void Awake()
 		{
-			version = new ToDoVersion(0, 0, 0);
+			productVersion = new ToDoVersion(0, 0, 0);
 
 			var verticalLayout = new VerticalLayout("box").AddTo(this);
 
@@ -40,16 +40,16 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			new ButtonView("+", () => UpdateSmall(true)).Height(20).Width(20).FontSize(10).AddTo(addHor);
 
 			var versionHor = new HorizontalLayout().AddTo(verticalLayout);
-			
-			new LabelView("版本号:").Width(80).TheFontStyle(FontStyle.Bold).FontSize(20).AddTo(versionHor);
-			new LabelView("V").FontSize(10).Height(20).Width(11).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
-			majorView = new LabelView("0").FontSize(12).Height(20).Width(20).TheFontStyle(FontStyle.Bold)
+
+			new LabelView("版本号:").Width(80).FontBold().FontSize(20).AddTo(versionHor);
+			new LabelView("V").FontSize(10).Height(20).Width(11).FontBold().AddTo(versionHor);
+			majorView = new LabelView("0").FontSize(20).Height(20).Width(20).FontBold()
 				.AddTo(versionHor);
-			new LabelView(".").FontSize(10).Height(20).Width(11).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
-			middleView = new LabelView("0").FontSize(12).Height(20).Width(20).TheFontStyle(FontStyle.Bold)
+			new LabelView(".").FontSize(20).Height(20).Width(11).FontBold().AddTo(versionHor);
+			middleView = new LabelView("0").FontSize(20).Height(20).Width(20).FontBold()
 				.AddTo(versionHor);
-			new LabelView(".").FontSize(10).Height(20).Width(11).TheFontStyle(FontStyle.Bold).AddTo(versionHor);
-			smallView = new LabelView("0").FontSize(12).Height(20).Width(20).TheFontStyle(FontStyle.Bold)
+			new LabelView(".").FontSize(20).Height(20).Width(11).FontBold().AddTo(versionHor);
+			smallView = new LabelView("0").FontSize(20).Height(20).Width(20).FontBold()
 				.AddTo(versionHor);
 
 			var reduceHor = new HorizontalLayout().AddTo(verticalLayout);
@@ -63,8 +63,16 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			new ButtonView("-", () => UpdateSmall(false)).TextMiddleCenter().Height(20).Width(20).FontSize(10)
 				.AddTo(reduceHor);
 
+			new SpaceView().AddTo(verticalLayout);
 
-			new LabelView("版本名:").TheFontStyle(FontStyle.Bold).FontSize(20).AddTo(verticalLayout);
+			var nameHor = new HorizontalLayout().AddTo(verticalLayout);
+
+			new LabelView("版本名:").FontBold().Width(80).FontSize(20).AddTo(nameHor);
+			new TextFieldView(productName, str => productName = str).FontSize(20).AddTo(nameHor);
+
+			new SpaceView().AddTo(verticalLayout);
+
+			new ButtonView("保存", SaveProduct, true).AddTo(verticalLayout);
 		}
 
 		private ToDoListVersionCreateSubWindow Init(ToDoListProductView _productView, Product _product)
@@ -72,7 +80,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			productView = _productView;
 			product = _product;
 
-			version.SetVersion(0, 0, 0);
+			productVersion.SetVersion(0, 0, 0);
+			productName = string.Empty;
 
 			UpdateMajor();
 			UpdateMiddle();
@@ -87,15 +96,15 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			{
 				if (isAdd.Value)
 				{
-					++version.Major;
+					++productVersion.Major;
 				}
 				else
 				{
-					--version.Major;
+					--productVersion.Major;
 				}
 			}
 
-			majorView.SetText(version.Major.ToString());
+			majorView.SetText(productVersion.Major.ToString());
 		}
 
 		public void UpdateMiddle(bool? isAdd = null)
@@ -104,15 +113,15 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			{
 				if (isAdd.Value)
 				{
-					++version.Middle;
+					++productVersion.Middle;
 				}
 				else
 				{
-					--version.Middle;
+					--productVersion.Middle;
 				}
 			}
 
-			middleView.SetText(version.Middle.ToString());
+			middleView.SetText(productVersion.Middle.ToString());
 		}
 
 		public void UpdateSmall(bool? isAdd = null)
@@ -121,15 +130,31 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			{
 				if (isAdd.Value)
 				{
-					++version.Small;
+					++productVersion.Small;
 				}
 				else
 				{
-					--version.Small;
+					--productVersion.Small;
 				}
 			}
 
-			smallView.SetText(version.Small.ToString());
+			smallView.SetText(productVersion.Small.ToString());
+		}
+
+		public void SaveProduct()
+		{
+			product.versions.Add(new ToDoProductVersion()
+			{
+				name = productName,
+				version = productVersion
+			});
+
+			ToDoDataManager.Save();
+
+			Close();
+
+			ToDoListMainWindow.instance.Focus();
+			productView.Rebuild();
 		}
 	}
 }

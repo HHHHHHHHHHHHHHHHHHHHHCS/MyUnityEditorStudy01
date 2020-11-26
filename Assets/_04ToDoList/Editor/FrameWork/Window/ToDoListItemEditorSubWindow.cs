@@ -60,11 +60,11 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
             bool isHide = item.isHide;
 
-            showHideButton.text = isHide ? "显示" : "隐藏";
+            showHideButton.Text = isHide ? "显示" : "隐藏";
             showHideButton.OnClickEvent = () =>
             {
                 isHide = !isHide;
-                showHideButton.text = isHide ? "显示" : "隐藏";
+                showHideButton.Text = isHide ? "显示" : "隐藏";
                 //itemView.UpdateItem();
                 //Close();
             };

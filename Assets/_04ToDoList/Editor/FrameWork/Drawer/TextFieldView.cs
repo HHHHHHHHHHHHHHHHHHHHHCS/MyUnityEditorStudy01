@@ -7,7 +7,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 {
     public class TextFieldView : View
     {
-        public Property<string> Content { get; set; }
+        public Property<string> Content { get; }
 
         public TextFieldView(string content, Action<string> _act = null)
         {

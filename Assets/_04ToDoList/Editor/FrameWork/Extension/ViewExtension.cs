@@ -4,95 +4,100 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork
 {
-    public static class ViewExtension
-    {
-        public static T Width<T>(this T view, float width) where T : IView
-        {
-            view.guiLayouts.Add(GUILayout.Width(width));
-            return view;
-        }
+	public static class ViewExtension
+	{
+		public static T Width<T>(this T view, float width) where T : IView
+		{
+			view.guiLayouts.Add(GUILayout.Width(width));
+			return view;
+		}
 
-        public static T Height<T>(this T view, float height) where T : IView
-        {
-            view.guiLayouts.Add(GUILayout.Height(height));
-            return view;
-        }
+		public static T Height<T>(this T view, float height) where T : IView
+		{
+			view.guiLayouts.Add(GUILayout.Height(height));
+			return view;
+		}
 
-        public static T MaxHeight<T>(this T view, float maxHeight) where T : IView
-        {
-            view.guiLayouts.Add(GUILayout.MaxHeight(maxHeight));
-            return view;
-        }
+		public static T MaxHeight<T>(this T view, float maxHeight) where T : IView
+		{
+			view.guiLayouts.Add(GUILayout.MaxHeight(maxHeight));
+			return view;
+		}
 
-        public static T ExpandHeight<T>(this T view, bool expandHeight) where T : IView
-        {
-            view.guiLayouts.Add(GUILayout.ExpandHeight(expandHeight));
-            return view;
-        }
+		public static T ExpandHeight<T>(this T view, bool expandHeight) where T : IView
+		{
+			view.guiLayouts.Add(GUILayout.ExpandHeight(expandHeight));
+			return view;
+		}
 
 
-        public static T FontSize<T>(this T view, int fontSize) where T : View
-        {
-            view.guiStyle.fontSize = fontSize;
-            return view;
-        }
+		public static T FontSize<T>(this T view, int fontSize) where T : View
+		{
+			view.guiStyle.fontSize = fontSize;
+			return view;
+		}
 
-        public static T TextPosition<T>(this T view, TextAnchor textAnchor) where T : View
-        {
-            view.guiStyle.alignment = textAnchor;
-            return view;
-        }
+		public static T TextPosition<T>(this T view, TextAnchor textAnchor) where T : View
+		{
+			view.guiStyle.alignment = textAnchor;
+			return view;
+		}
 
-        public static T TextMiddleCenter<T>(this T view) where T : View
-        {
-            return TextPosition(view, TextAnchor.MiddleCenter);
-        }
+		public static T TextMiddleCenter<T>(this T view) where T : View
+		{
+			return TextPosition(view, TextAnchor.MiddleCenter);
+		}
 
-        public static T TextMiddleLeft<T>(this T view) where T : View
-        {
-            return TextPosition(view, TextAnchor.MiddleLeft);
-        }
+		public static T TextMiddleLeft<T>(this T view) where T : View
+		{
+			return TextPosition(view, TextAnchor.MiddleLeft);
+		}
 
-        public static T TextMiddleRight<T>(this T view) where T : View
-        {
-            return TextPosition(view, TextAnchor.MiddleRight);
-        }
+		public static T TextMiddleRight<T>(this T view) where T : View
+		{
+			return TextPosition(view, TextAnchor.MiddleRight);
+		}
 
-        public static T TextLowCenter<T>(this T view) where T : View
-        {
-            return TextPosition(view, TextAnchor.LowerCenter);
-        }
+		public static T TextLowCenter<T>(this T view) where T : View
+		{
+			return TextPosition(view, TextAnchor.LowerCenter);
+		}
 
-        public static T TextLowRight<T>(this T view) where T : View
-        {
-            return TextPosition(view, TextAnchor.LowerRight);
-        }
+		public static T TextLowRight<T>(this T view) where T : View
+		{
+			return TextPosition(view, TextAnchor.LowerRight);
+		}
 
-        public static T BackgroundColor<T>(this T view, Color color) where T : View
-        {
-            view.backgroundColor = color;
-            return view;
-        }
+		public static T BackgroundColor<T>(this T view, Color color) where T : View
+		{
+			view.backgroundColor = color;
+			return view;
+		}
 
-        public static T FontColor<T>(this T view, Color color) where T : View
-        {
-            view.guiStyle.normal.textColor = color;
+		public static T FontColor<T>(this T view, Color color) where T : View
+		{
+			view.guiStyle.normal.textColor = color;
 
-            return view;
-        }
+			return view;
+		}
 
-        public static T TheFontStyle<T>(this T view, FontStyle fontStyle) where T : View
-        {
-            view.guiStyle.fontStyle = fontStyle;
+		public static T TheFontStyle<T>(this T view, FontStyle fontStyle) where T : View
+		{
+			view.guiStyle.fontStyle = fontStyle;
 
-            return view;
-        }
-        
-        public static ButtonView IsFill<T>(this ButtonView button, bool isFill) 
-        {
-            button.fullSize = isFill;
+			return view;
+		}
 
-            return button;
-        }
-    }
+		public static T FontBold<T>(this T view) where T : View
+		{
+			return TheFontStyle(view, FontStyle.Bold);
+		}
+
+		public static ButtonView IsFill(this ButtonView button, bool isFill)
+		{
+			button.fullSize = isFill;
+
+			return button;
+		}
+	}
 }
