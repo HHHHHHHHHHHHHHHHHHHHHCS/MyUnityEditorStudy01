@@ -11,10 +11,11 @@ public static class ToDoListCls_Ex
 	}
 
 
-	public static void AddToDoItem(this ToDoListCls cls, string content, bool finished, ToDoCategory category)
+	public static ToDoData AddToDoItem(this ToDoListCls cls, string content, bool finished, ToDoCategory category)
 	{
 		var data = new ToDoData(content, finished, cls.Save, category);
 		cls.AddToDoItem(data);
+		return data;
 	}
 
 	public static void AddToDoItem(this ToDoListCls cls, ToDoData data)
@@ -35,9 +36,11 @@ public static class ToDoListCls_Ex
 		cls.Save();
 	}
 
-	public static void AddToDoCategory(this ToDoListCls cls, string name, string color)
+	public static ToDoCategory AddToDoCategory(this ToDoListCls cls, string name, string color)
 	{
-		cls.AddToDoCategory(new ToDoCategory(name, color));
+		var val = new ToDoCategory(name, color);
+		cls.AddToDoCategory(val);
+		return val;
 	}
 
 	public static void AddToDoCategory(this ToDoListCls cls, ToDoCategory category)
@@ -71,9 +74,11 @@ public static class ToDoListCls_Ex
 		cls.Save();
 	}
 
-	public static void AddToDoNote(this ToDoListCls cls, string note)
+	public static ToDoNote AddToDoNote(this ToDoListCls cls, string note)
 	{
-		cls.AddToDoNote(new ToDoNote(note));
+		var val = new ToDoNote(note);
+		cls.AddToDoNote(val);
+		return val;
 	}
 
 	public static void AddToDoNote(this ToDoListCls cls, ToDoNote note)
@@ -88,18 +93,21 @@ public static class ToDoListCls_Ex
 		cls.Save();
 	}
 
-	public static void ConvertToDoNote(this ToDoListCls cls, ToDoNote note, bool isHide)
+	public static ToDoData ConvertToDoNote(this ToDoListCls cls, ToDoNote note, bool isHide)
 	{
 		cls.noteList.Remove(note);
 		//AddToDoItem  里面有save
 		var data = new ToDoData().Init(content: note.content, finished: new Property<bool>(false), isHide: isHide);
 		cls.AddToDoItem(data);
+		return data;
 	}
 
-	public static void AddProduct(this ToDoListCls cls, string name, string desc)
+	public static Product AddProduct(this ToDoListCls cls, string name, string desc)
 	{
-		cls.productList.Add(new Product(name,desc));
+		var val = new Product(name, desc);
+		cls.productList.Add(val);
 		cls.Save();
+		return val;
 	}
 	
 	public static void RemoveProduct(this ToDoListCls cls, Product product)

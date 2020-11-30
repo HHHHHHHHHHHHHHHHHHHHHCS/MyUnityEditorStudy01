@@ -117,13 +117,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 			foreach (var item in product.versions)
 			{
-				var hor = new HorizontalLayout().AddTo(detailViews);
+				var fold = new FoldoutView(false, item.name + "	" + item.version).FontBold().FontSize(15)
+					.TextMiddleLeft().AddTo(detailViews);
 
-				new LabelView(item.name).FontBold().FontSize(15).Width(80).TextMiddleLeft()
-					.AddTo(hor);
+				var input = new ToDoListInputView(AddAction);
+				input.Show();
 
-				new LabelView(item.version.ToString()).FontSize(15).TextMiddleLeft()
-					.AddTo(hor);
+				fold.AddFoldoutView(input);
 			}
 		}
 
@@ -171,6 +171,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				productSubWindow.Close();
 				productSubWindow = null;
 			}
+		}
+
+		private void AddAction(ToDoCategory category, string _todoName)
+		{
+			var item =  ToDoDataManager.AddToDoItem(_todoName, false, category);
+			//TODO:
+			//Rebuild();
 		}
 	}
 }

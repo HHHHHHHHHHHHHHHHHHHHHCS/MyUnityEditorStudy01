@@ -28,7 +28,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
 		protected override void OnGUI()
 		{
-			Spread.Val = EditorGUILayout.Foldout(Spread.Val, Content);
+			Spread.Val = EditorGUILayout.Foldout(Spread.Val, Content, true, guiStyle);
 
 			foreach (var view in visibleViews)
 			{

@@ -50,7 +50,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 	[Serializable]
 	public class ToDoProductVersion
 	{
-		public string Id = Guid.NewGuid().ToString();
+		public string id = Guid.NewGuid().ToString();
 
 		public string name;
 

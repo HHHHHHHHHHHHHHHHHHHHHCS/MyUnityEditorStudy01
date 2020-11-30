@@ -7,7 +7,7 @@ public static class ToDoDataManager
 
 	public static void Save() => Data.Save();
 
-	public static void AddToDoItem(string content, bool finished = false, ToDoCategory category = null) =>
+	public static ToDoData AddToDoItem(string content, bool finished = false, ToDoCategory category = null) =>
 		Data.AddToDoItem(content, finished, category);
 
 	public static void AddToDoItem(ToDoData data) =>
@@ -19,7 +19,7 @@ public static class ToDoDataManager
 	public static void RemoveToDoItem(ToDoData data) =>
 		Data.RemoveToDoItem(data);
 
-	public static void AddToDoCategory(string name, string color) => Data.AddToDoCategory(name, color);
+	public static ToDoCategory AddToDoCategory(string name, string color) => Data.AddToDoCategory(name, color);
 
 	public static void AddToDoCategory(ToDoCategory category) => Data.AddToDoCategory(category);
 
@@ -29,13 +29,13 @@ public static class ToDoDataManager
 
 	public static void RemoveToDoCategory(ToDoCategory category) => Data.RemoveToDoCategory(category);
 
-	public static void AddToDoNote(string note) => Data.AddToDoNote(note);
+	public static ToDoNote AddToDoNote(string note) => Data.AddToDoNote(note);
 
 	public static void AddToDoNote(ToDoNote note) => Data.AddToDoNote(note);
 
 	public static void RemoveToDoNote(ToDoNote note) => Data.RemoveToDoNote(note);
 
-	public static void ConvertToDoNote(ToDoNote note, bool isHide) => Data.ConvertToDoNote(note, isHide);
+	public static ToDoData ConvertToDoNote(ToDoNote note, bool isHide) => Data.ConvertToDoNote(note, isHide);
 
 	public static void AddProduct(string name, string desc) => Data.AddProduct(name, desc);
 }
