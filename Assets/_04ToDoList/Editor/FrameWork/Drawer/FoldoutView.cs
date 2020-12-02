@@ -44,6 +44,23 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 			}
 		}
 
+		protected override void OnRefresh()
+		{
+			base.OnRefresh();
+			foreach (var view in visibleViews)
+			{
+				view.Refresh();
+			}
+
+			if (Spread.Val)
+			{
+				foreach (var view in foldoutViews)
+				{
+					view.Refresh();
+				}
+			}
+		}
+
 		public FoldoutView AddVisibleView(IView view)
 		{
 			visibleViews.Add(view);

@@ -120,10 +120,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				var fold = new FoldoutView(false, item.name + "	" + item.version).FontBold().FontSize(15)
 					.TextMiddleLeft().AddTo(detailViews);
 
-				var input = new ToDoListInputView(AddAction);
+				var input = new ToDoListInputView((cate, name) => AddFoldoutItem(fold, item, cate, name));
 				input.Show();
 
 				fold.AddFoldoutView(input);
+				foreach (var todoItem in item.todos)
+				{
+					AddTodoToFoldout(fold, item, todoItem);
+				}
 			}
 		}
 
@@ -173,11 +177,34 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			}
 		}
 
-		private void AddAction(ToDoCategory category, string _todoName)
+		private void AddTodoToFoldout(FoldoutView foldoutView, ToDoProductVersion productVersion, ToDoData todoItem)
 		{
-			var item =  ToDoDataManager.AddToDoItem(_todoName, false, category);
-			//TODO:
-			//Rebuild();
+			var itemToDoView = new ToDoListItemView(todoItem, (_) => { });
+
+			itemToDoView.deleteAct = (_) =>
+			{
+				EnqueueCmd(() =>
+				{
+					productVersion.todos.Remove(todoItem);				
+					ToDoDataManager.Data.Save();
+					foldoutView.RemoveFoldoutView(itemToDoView);
+				});
+			};
+
+			foldoutView.AddFoldoutView(itemToDoView);
+		}
+
+		private void AddFoldoutItem(FoldoutView foldoutView, ToDoProductVersion version, ToDoCategory category,
+			string todoName)
+		{
+			EnqueueCmd(() =>
+			{
+				var item = ToDoDataManager.AddToDoItem(todoName, false, category);
+				version.todos.Add(item);
+				ToDoDataManager.Data.Save();
+
+				AddTodoToFoldout(foldoutView, version, item);
+			});
 		}
 	}
 }

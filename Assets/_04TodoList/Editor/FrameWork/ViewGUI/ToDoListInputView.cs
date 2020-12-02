@@ -14,7 +14,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		private PopupView popupView;
 
-		private Action<ToDoCategory, string> onInputClick;
+		public Action<ToDoCategory, string> onInputClick;
 
 		public int PopupIndex => popupView?.ValueProperty.Val ?? -1;
 
@@ -48,7 +48,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			{
 				if (!string.IsNullOrEmpty(todoName))
 				{
-					onInputClick(ToDoDataManager.ToDoCategoryAt(PopupIndex),todoName);
+					onInputClick?.Invoke(ToDoDataManager.ToDoCategoryAt(PopupIndex), todoName);
 					inputTextArea.Content.Val = string.Empty;
 					GUI.FocusControl(null);
 				}

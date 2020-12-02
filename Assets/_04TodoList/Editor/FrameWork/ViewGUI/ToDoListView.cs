@@ -76,7 +76,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		private void ChangeProperty(ToDoListItemView item)
 		{
-			isDirty = true;
+			//isDirty = true;
+			ReBuildToDoItems();
 		}
 	}
 }
