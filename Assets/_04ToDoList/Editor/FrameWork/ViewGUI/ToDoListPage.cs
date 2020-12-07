@@ -10,7 +10,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         public int eventKey { get; protected set; }
 
-        public ToDoListPage(AbsViewController _ctrl, string style = null) : base(style)
+        public ToDoListPage(AbsViewController _ctrl, GUIStyle style = null) : base(style)
         {
             eventKey = GetHashCode();
             ctrl = _ctrl;

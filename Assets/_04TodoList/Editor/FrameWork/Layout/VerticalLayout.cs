@@ -4,14 +4,14 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 {
     public class VerticalLayout : Layout
     {
-        public VerticalLayout(string style = null)
+        public VerticalLayout(GUIStyle style = null)
             : base(style)
         {
         }
 
         protected override void OnGUIBegin()
         {
-            if (string.IsNullOrEmpty(Style))
+            if (Style == null)
             {
                 GUILayout.BeginVertical();
             }

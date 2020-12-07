@@ -4,14 +4,14 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 {
     public class HorizontalLayout : Layout
     {
-        public HorizontalLayout(string style = null)
+        public HorizontalLayout(GUIStyle style = null)
             : base(style)
         {
         }
 
         protected override void OnGUIBegin()
         {
-            if (string.IsNullOrEmpty(Style))
+            if (Style == null)
             {
                 GUILayout.BeginHorizontal();
             }

@@ -15,7 +15,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
         public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
 
-        public GUIStyle guiStyle { get; protected set; } = new GUIStyle();
+        public GUIStyle guiStyle { get; protected set; } //= new GUIStyle();
         public Color backgroundColor { get; set; } = GUI.backgroundColor;
 
 

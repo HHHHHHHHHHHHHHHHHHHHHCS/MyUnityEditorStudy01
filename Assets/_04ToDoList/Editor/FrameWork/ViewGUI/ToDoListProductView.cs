@@ -78,7 +78,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			{
 				var product = data[i];
 
-				var hor = new HorizontalLayout().AddTo(productViews);
+				var foldout = new FoldoutView(false, string.Empty).AddTo(productViews);
+
+				var hor = new HorizontalLayout();
+				foldout.AddVisibleView(hor);
 
 				new ImageButtonView(ImageButtonIcon.openIcon, () => EnqueueCmd(() => RebuildDetailViews(product)))
 					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
@@ -92,6 +95,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 				new ImageButtonView(ImageButtonIcon.deleteIcon, () => RemoveProduct(product)).Width(25).Height(25)
 					.BackgroundColor(Color.red).AddTo(hor);
+
+
+				var ver = new VerticalLayout();
+				CreateDetailView(product, ver);
+				foldout.AddFoldoutView(ver);
 			}
 		}
 
@@ -105,20 +113,25 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			productViews.Hide();
 			detailViews.Show();
 
-			new LabelView(product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(detailViews);
-			new SpaceView(5).AddTo(detailViews);
-			new LabelView(product.description).FontSize(20).TextMiddleCenter().AddTo(detailViews);
-			new ButtonView("创建版本", () => { OpenProductDetailWindow(product); }, true).FontBold()
-				.FontSize(25).TextMiddleCenter().AddTo(detailViews);
-			new SpaceView(5).AddTo(detailViews);
+			CreateDetailView(_product, detailViews);
+		}
+
+		private void CreateDetailView(Product _product, VerticalLayout views)
+		{
+			new LabelView(_product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(views);
+			new SpaceView(5).AddTo(views);
+			new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
+			new ButtonView("创建版本", () => { OpenProductDetailWindow(_product); }, true).FontBold()
+				.FontSize(25).TextMiddleCenter().AddTo(views);
+			new SpaceView(5).AddTo(views);
 			new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
-				.AddTo(detailViews);
+				.AddTo(views);
 
 
-			foreach (var item in product.versions)
+			foreach (var item in _product.versions)
 			{
 				var fold = new FoldoutView(false, item.name + "	" + item.version).FontBold().FontSize(15)
-					.TextMiddleLeft().AddTo(detailViews);
+					.TextMiddleLeft().AddTo(views);
 
 				var input = new ToDoListInputView((cate, name) => AddFoldoutItem(fold, item, cate, name));
 				input.Show();
@@ -185,7 +198,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			{
 				EnqueueCmd(() =>
 				{
-					productVersion.todos.Remove(todoItem);				
+					productVersion.todos.Remove(todoItem);
 					ToDoDataManager.Data.Save();
 					foldoutView.RemoveFoldoutView(itemToDoView);
 				});

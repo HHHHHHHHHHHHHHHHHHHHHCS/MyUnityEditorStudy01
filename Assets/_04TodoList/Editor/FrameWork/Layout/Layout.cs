@@ -11,7 +11,7 @@ namespace _04ToDoList.Editor.FrameWork.Layout
     {
         public bool Visible { get; set; } = true;
 
-        public string Style { get; set; }
+        public GUIStyle Style { get; set; }
 
         public readonly List<IView> children = new List<IView>();
 
@@ -23,7 +23,7 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
         protected HashSet<EventRecord> eventRecords { get; } = new HashSet<EventRecord>();
 
-        protected Layout(string style = null)
+        protected Layout(GUIStyle style = null)
         {
             Style = style;
         }
