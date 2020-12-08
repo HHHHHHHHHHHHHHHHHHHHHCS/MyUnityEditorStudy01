@@ -73,33 +73,40 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 			new ButtonView("创建产品", () => OpenProductEditorWindow(null), true).Height(40).AddTo(productViews);
 
+			new SpaceView(10f).AddTo(productViews);
+
 			var data = ToDoDataManager.Data.productList;
 			for (int i = data.Count - 1; i >= 0; i--)
 			{
 				var product = data[i];
 
-				var foldout = new FoldoutView(false, string.Empty).AddTo(productViews);
+				var title = new HorizontalLayout();
 
-				var hor = new HorizontalLayout();
-				foldout.AddVisibleView(hor);
+				new LabelView("描述: " + product.description)
+					.FontSize(15).FontBold().PaddingLeft(80).Height(20).TextMiddleLeft().AddTo(title);
+
+				new FlexibleSpaceView().AddTo(title);
 
 				new ImageButtonView(ImageButtonIcon.openIcon, () => EnqueueCmd(() => RebuildDetailViews(product)))
-					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
-
-				new LabelView(product.name).FontSize(20).FontBold().Height(20).Width(80).AddTo(hor);
-
-				new LabelView(product.description).FontSize(12).FontBold().Height(20).AddTo(hor);
+					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(title);
 
 				new ImageButtonView(ImageButtonIcon.editorIcon, () => OpenProductEditorWindow(product))
-					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(hor);
+					.Width(40).Height(25).BackgroundColor(Color.black).AddTo(title);
 
 				new ImageButtonView(ImageButtonIcon.deleteIcon, () => RemoveProduct(product)).Width(25).Height(25)
-					.BackgroundColor(Color.red).AddTo(hor);
+					.BackgroundColor(Color.red).AddTo(title);
 
 
-				var ver = new VerticalLayout();
-				CreateDetailView(product, ver);
+				var foldout = new FoldoutView(false, product.name, title).FontSize(25)
+					.FontBold().AddTo(productViews);
+
+				new SpaceView(10f).AddTo(productViews);
+
+				var ver = new VerticalLayout("box");
+				CreateDetailView(product, ver, false);
 				foldout.AddFoldoutView(ver);
+
+				foldout.AddFoldoutView(new SpaceView(20f));
 			}
 		}
 
@@ -113,19 +120,28 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			productViews.Hide();
 			detailViews.Show();
 
-			CreateDetailView(_product, detailViews);
+			CreateDetailView(_product, detailViews, true);
 		}
 
-		private void CreateDetailView(Product _product, VerticalLayout views)
+		private void CreateDetailView(Product _product, VerticalLayout views, bool isNewPage)
 		{
-			new LabelView(_product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(views);
-			new SpaceView(5).AddTo(views);
-			new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
-			new ButtonView("创建版本", () => { OpenProductDetailWindow(_product); }, true).FontBold()
-				.FontSize(25).TextMiddleCenter().AddTo(views);
-			new SpaceView(5).AddTo(views);
-			new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
-				.AddTo(views);
+			if (isNewPage)
+			{
+				new LabelView(_product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(views);
+				new SpaceView(5).AddTo(views);
+				new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
+				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product); }, true).FontBold()
+					.FontSize(25).TextMiddleCenter().AddTo(views);
+				new SpaceView(5).AddTo(views);
+				new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
+					.AddTo(views);
+			}
+			else
+			{
+				//new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
+				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product); }, true).FontBold()
+					.FontSize(15).TextMiddleCenter().AddTo(views);
+			}
 
 
 			foreach (var item in _product.versions)

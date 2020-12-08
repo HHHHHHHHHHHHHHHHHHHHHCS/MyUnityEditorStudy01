@@ -60,7 +60,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private void RefreshVisible()
         {
-            todoListItemsLayout.Style = todoListItemsLayout.children.Count > 0 ? "box" : null;
+            if (todoListItemsLayout.children.Count > 0)
+            {
+                todoListItemsLayout.Style =  "box";
+            }
+            else
+            {
+                todoListItemsLayout.Style =  null;
+            }
         }
 
 

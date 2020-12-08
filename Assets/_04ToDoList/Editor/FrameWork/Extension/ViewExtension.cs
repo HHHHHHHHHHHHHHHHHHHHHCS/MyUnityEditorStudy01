@@ -92,6 +92,13 @@ namespace _04ToDoList.Editor.FrameWork
 		{
 			return TheFontStyle(view, FontStyle.Bold);
 		}
+		
+		public static T PaddingLeft<T>(this T view,int val) where T : View
+		{			
+			view.guiStyle.padding.left = val;
+
+			return view;
+		}	
 
 		public static ButtonView IsFill(this ButtonView button, bool isFill)
 		{

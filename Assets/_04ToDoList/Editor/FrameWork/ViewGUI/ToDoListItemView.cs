@@ -33,7 +33,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			this.changeProperty = _changeProperty;
 			this.showTime = _showTime;
 			this.deleteAct = _deleteAct;
-			container = new HorizontalLayout();
+			container = new HorizontalLayout("box");
 			Add(container);
 			Add(new SpaceView(4));
 			BuildItem();

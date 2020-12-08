@@ -15,14 +15,17 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
 		public string Content { get; set; }
 
+		private IView titleView;
+
 		private List<IView> visibleViews;
 
 		private List<IView> foldoutViews;
 
-		public FoldoutView(bool _spread, string _content, Action<bool> changeAct = null)
+		public FoldoutView(bool _spread, string _content, IView _titleView = null, Action<bool> changeAct = null)
 		{
 			Spread = new Property<bool>(_spread, changeAct);
 			Content = _content;
+			titleView = _titleView;
 			guiStyle = new GUIStyle(EditorStyles.foldout);
 			visibleViews = new List<IView>();
 			foldoutViews = new List<IView>();
@@ -30,7 +33,25 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 
 		protected override void OnGUI()
 		{
-			Spread.Val = EditorGUILayout.Foldout(Spread.Val, Content, true, guiStyle);
+			if (titleView == null)
+			{
+				Spread.Val = EditorGUILayout.Foldout(Spread.Val, Content, true, guiStyle);
+			}
+			else
+			{
+				GUILayout.BeginHorizontal();
+
+				Spread.Val = EditorGUILayout.Foldout(Spread.Val, Content, true, guiStyle);
+
+				titleView.DrawGUI();
+
+				GUILayout.EndHorizontal();
+			}
+
+			// test code
+			// EditorGUILayout.BeginFoldoutHeaderGroup(true,"asdasd");
+			// EditorGUILayout.EndFoldoutHeaderGroup();
+
 
 			foreach (var view in visibleViews)
 			{
