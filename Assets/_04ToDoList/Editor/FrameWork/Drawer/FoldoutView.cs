@@ -39,7 +39,7 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 			}
 			else
 			{
-				GUILayout.BeginHorizontal();
+				GUILayout.BeginHorizontal("box");
 
 				Spread.Val = EditorGUILayout.Foldout(Spread.Val, Content, true, guiStyle);
 
