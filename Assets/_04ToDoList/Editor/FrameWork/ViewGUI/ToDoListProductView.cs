@@ -1,4 +1,5 @@
-﻿using _04ToDoList.Editor.FrameWork.DataBinding;
+﻿using System.Linq;
+using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.ViewController;
@@ -144,7 +145,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			}
 
 
-			foreach (var item in _product.versions)
+			foreach (var item in _product.versions.OrderByDescending(x =>
+				x.version))
 			{
 				var fold = new FoldoutView(false, item.name + "	" + item.version).FontBold().FontSize(15)
 					.TextMiddleLeft().AddTo(views);

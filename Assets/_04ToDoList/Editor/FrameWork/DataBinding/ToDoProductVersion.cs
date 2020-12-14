@@ -5,7 +5,7 @@ using UnityEngine;
 namespace _04ToDoList.Editor.FrameWork.DataBinding
 {
 	[Serializable]
-	public class ToDoVersion
+	public class ToDoVersion: IComparable<ToDoVersion>
 	{
 		public int Major
 		{
@@ -41,10 +41,44 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			small = _small;
 		}
 
+		public int CompareTo(ToDoVersion other)
+		{
+			if (this.major > other.major)
+			{
+				return 1;
+			}
+			else if (this.major < other.major)
+			{
+				return -1;
+			}
+			
+			if (this.middle > other.middle)
+			{
+				return 1;
+			}
+			else if (this.middle < other.middle)
+			{
+				return -1;
+			}
+			
+						
+			if (this.small > other.small)
+			{
+				return 1;
+			}
+			else if (this.small < other.small)
+			{
+				return -1;
+			}
+			
+			return 0;
+		}
+
 		public override string ToString()
 		{
 			return $"v{major}.{middle}.{small}";
 		}
+
 	}
 
 	[Serializable]
