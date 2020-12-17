@@ -143,18 +143,19 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
 		public void SaveProduct()
 		{
-			product.versions.Add(new ToDoProductVersion()
+			var version = new ToDoProductVersion()
 			{
 				name = productName,
 				version = productVersion
-			});
+			};
+			product.versions.Add(version);
 
 			ToDoDataManager.Save();
 
 			Close();
 
 			ToDoListMainWindow.instance.Focus();
-			productView.Rebuild();
+			productView.CreateAndInsert(product,version);
 		}
 	}
 }

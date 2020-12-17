@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
@@ -14,6 +15,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		private VerticalLayout productViews;
 		private VerticalLayout detailViews;
+		private VerticalLayout clickCreateBtnViews;
 
 
 		private ToDoListVersionCreateSubWindow versionCreate;
@@ -58,6 +60,34 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			else
 			{
 				RebuildDetailViews(product);
+			}
+		}
+
+		public void CreateAndInsert(Product product, ToDoProductVersion version)
+		{
+			//TODO: ADD inser in iview
+			if (productViews.Visible)
+			{
+				//RebuildProductViews();
+				foreach (var item in product.versions.OrderByDescending(x =>
+					x.version))
+				{
+					if (item == version)
+					{
+						AddFoldoutToDetailView(item, clickCreateBtnViews);
+					}
+				}
+			}
+			else
+			{
+				foreach (var item in product.versions.OrderByDescending(x =>
+					x.version))
+				{
+					if (item == version)
+					{
+						AddFoldoutToDetailView(item, clickCreateBtnViews);
+					}
+				}
 			}
 		}
 
@@ -131,7 +161,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				new LabelView(_product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(views);
 				new SpaceView(5).AddTo(views);
 				new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
-				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product); }, true).FontBold()
+				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product, views); }, true).FontBold()
 					.FontSize(25).TextMiddleCenter().AddTo(views);
 				new SpaceView(5).AddTo(views);
 				new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
@@ -140,7 +170,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			else
 			{
 				//new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
-				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product); }, true).FontBold()
+				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product, views); }, true).FontBold()
 					.FontSize(15).TextMiddleCenter().AddTo(views);
 			}
 
@@ -148,25 +178,31 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			foreach (var item in _product.versions.OrderByDescending(x =>
 				x.version))
 			{
-				var fold = new FoldoutView(false, item.name + "	" + item.version).FontBold().FontSize(15)
-					.TextMiddleLeft().AddTo(views);
+				AddFoldoutToDetailView(item, views);
+			}
+		}
 
-				var input = new ToDoListInputView((cate, name) => AddFoldoutItem(fold, item, cate, name));
-				input.Show();
+		public void AddFoldoutToDetailView(ToDoProductVersion version, VerticalLayout views)
+		{
+			var fold = new FoldoutView(false, version.name + "	" + version.version).FontBold().FontSize(15)
+				.TextMiddleLeft().AddTo(views);
 
-				fold.AddFoldoutView(input);
-				foreach (var todoItem in item.todos)
-				{
-					AddTodoToFoldout(fold, item, todoItem);
-				}
+			var input = new ToDoListInputView((cate, name) => AddFoldoutItem(fold, version, cate, name));
+			input.Show();
+
+			fold.AddFoldoutView(input);
+			foreach (var todoItem in version.todos)
+			{
+				AddTodoToFoldout(fold, version, todoItem);
 			}
 		}
 
 
-		public void OpenProductDetailWindow(Product _product)
+		public void OpenProductDetailWindow(Product _product, VerticalLayout views)
 		{
 			EnqueueCmd(() =>
 			{
+				clickCreateBtnViews = views;
 				versionCreate = ToDoListVersionCreateSubWindow.Open(this, _product);
 				versionCreate.Show();
 			});
