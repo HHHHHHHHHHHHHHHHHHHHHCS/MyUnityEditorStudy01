@@ -7,168 +7,172 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Layout
 {
-    public abstract class Layout : ILayout
-    {
-        public bool Visible { get; set; } = true;
+	public abstract class Layout : ILayout
+	{
+		public bool Visible { get; set; } = true;
 
-        public GUIStyle Style { get; set; }
+		public GUIStyle Style { get; set; }
 
-        public readonly List<IView> children = new List<IView>();
+		public readonly List<IView> children = new List<IView>();
 
-        public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
+		public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
 
-        public ILayout Parent { get; set; }
+		public ILayout Parent { get; set; }
 
-        public Queue<Action> cmdQueue = new Queue<Action>();
+		public Queue<Action> cmdQueue = new Queue<Action>();
 
-        protected HashSet<EventRecord> eventRecords { get; } = new HashSet<EventRecord>();
+		protected HashSet<EventRecord> eventRecords { get; } = new HashSet<EventRecord>();
 
-        protected Layout(GUIStyle style = null)
-        {
-            Style = style;
-        }
+		protected Layout(GUIStyle style = null)
+		{
+			Style = style;
+		}
 
-        public void Show()
-        {
-            Visible = true;
-            OnShow();
-        }
+		public void Show()
+		{
+			Visible = true;
+			OnShow();
+		}
 
-        protected virtual void OnShow()
-        {
-        }
+		protected virtual void OnShow()
+		{
+		}
 
-        public void Hide()
-        {
-            Visible = false;
-            OnHide();
-        }
+		public void Hide()
+		{
+			Visible = false;
+			OnHide();
+		}
 
-        protected virtual void OnHide()
-        {
-        }
+		protected virtual void OnHide()
+		{
+		}
 
-        public void Refresh()
-        {
-            while (cmdQueue.Count > 0)
-            {
-                cmdQueue.Dequeue()?.Invoke();
-            }
-            
-            if (!Visible)
-            {
-                return;
-            }
+		public void Refresh()
+		{
+			while (cmdQueue.Count > 0)
+			{
+				cmdQueue.Dequeue()?.Invoke();
+			}
 
-            OnRefresh();
+			if (!Visible)
+			{
+				return;
+			}
 
-            for (int i = children.Count - 1; i >= 0; --i)
-            {
-                children[i].Refresh();
-            }
-        }
+			OnRefresh();
 
-        protected virtual void OnRefresh()
-        {
+			for (int i = children.Count - 1; i >= 0; --i)
+			{
+				children[i].Refresh();
+			}
+		}
 
-        }
+		protected virtual void OnRefresh()
+		{
+		}
 
-        public virtual void OnRemove()
-        {
+		public virtual void OnRemove()
+		{
+		}
 
-        }
+		public void Add(IView view)
+		{
+			view.Parent = this;
+			children.Add(view);
+		}
 
-        public void Add(IView view)
-        {
-            view.Parent = this;
-            children.Add(view);
-        }
+		public void Insert(int index, IView view)
+		{
+			view.Parent = this;
+			children.Insert(index, view);
+		}
 
-        public void Remove(IView view)
-        {
-            view.Parent = null;
-            children.Remove(view);
-            view.OnRemove();
-        }
+		public void Remove(IView view)
+		{
+			view.Parent = null;
+			children.Remove(view);
+			view.OnRemove();
+		}
 
-        public void ParentRemoveThis()
-        {
-            Parent.Remove(this);
-        }
+		public void ParentRemoveThis()
+		{
+			Parent.Remove(this);
+		}
 
-        public void EnqueueCmd(Action act)
-        {
-            cmdQueue.Enqueue(act);
-        }
+		public void EnqueueCmd(Action act)
+		{
+			cmdQueue.Enqueue(act);
+		}
 
-        public void Clear()
-        {
-            foreach (var child in children)
-            {
-                child.Parent = null;
-            }
+		public void Clear()
+		{
+			foreach (var child in children)
+			{
+				child.Parent = null;
+			}
 
-            children.Clear();
-        }
-
-
-        public void DrawGUI()
-        {
-            if (Visible)
-            {
-                OnGUIBegin();
-                OnGUI();
-                OnGUIEnd();
-            }
-        }
-
-        protected abstract void OnGUIBegin();
-
-        protected virtual void OnGUI()
-        {
-            using (var ptr = children.GetEnumerator())
-            {
-                while (ptr.MoveNext())
-                {
-                    ptr.Current?.DrawGUI();
-                }
-            }
-        }
-
-        protected abstract void OnGUIEnd();
-
-        public void Dispose()
-        {
-            UnRegisterAll();
-            OnDisposed();
-        }
-
-        protected virtual void OnDisposed()
-        {
-            if (Parent != null)
-            {
-                ParentRemoveThis();
-            }
-        }
+			children.Clear();
+		}
 
 
-        protected void RegisterEvent(int key, Action<object> onEvent) 
-        {
-            EventDispatcher.Register(key, onEvent);
+		public void DrawGUI()
+		{
+			if (Visible)
+			{
+				OnGUIBegin();
+				OnGUI();
+				OnGUIEnd();
+			}
+		}
 
-            eventRecords.Add(new EventRecord()
-            {
-                key = key,
-                onAction = onEvent
-            });
-        }
+		protected abstract void OnGUIBegin();
 
-        protected void UnRegisterAll()
-        {
-            foreach (var record in eventRecords)
-            {
-                EventDispatcher.Remove(record.key, record.onAction);
-            }
-        }
-    }
+		protected virtual void OnGUI()
+		{
+			using (var ptr = children.GetEnumerator())
+			{
+				while (ptr.MoveNext())
+				{
+					ptr.Current?.DrawGUI();
+				}
+			}
+		}
+
+		protected abstract void OnGUIEnd();
+
+		public void Dispose()
+		{
+			UnRegisterAll();
+			OnDisposed();
+		}
+
+		protected virtual void OnDisposed()
+		{
+			if (Parent != null)
+			{
+				ParentRemoveThis();
+			}
+		}
+
+
+		protected void RegisterEvent(int key, Action<object> onEvent)
+		{
+			EventDispatcher.Register(key, onEvent);
+
+			eventRecords.Add(new EventRecord()
+			{
+				key = key,
+				onAction = onEvent
+			});
+		}
+
+		protected void UnRegisterAll()
+		{
+			foreach (var record in eventRecords)
+			{
+				EventDispatcher.Remove(record.key, record.onAction);
+			}
+		}
+	}
 }

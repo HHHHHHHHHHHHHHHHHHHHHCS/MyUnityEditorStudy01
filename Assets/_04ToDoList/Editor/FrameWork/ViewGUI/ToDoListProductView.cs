@@ -65,28 +65,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		public void CreateAndInsert(Product product, ToDoProductVersion version)
 		{
-			//TODO: ADD inser in iview
-			if (productViews.Visible)
+			int index = -1;
+			foreach (var item in product.versions.OrderByDescending(x =>
+				x.version))
 			{
-				//RebuildProductViews();
-				foreach (var item in product.versions.OrderByDescending(x =>
-					x.version))
+				++index;
+				if (item == version)
 				{
-					if (item == version)
-					{
-						AddFoldoutToDetailView(item, clickCreateBtnViews);
-					}
-				}
-			}
-			else
-			{
-				foreach (var item in product.versions.OrderByDescending(x =>
-					x.version))
-				{
-					if (item == version)
-					{
-						AddFoldoutToDetailView(item, clickCreateBtnViews);
-					}
+					AddFoldoutToDetailView(item, clickCreateBtnViews, index);
 				}
 			}
 		}
@@ -156,12 +142,14 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		private void CreateDetailView(Product _product, VerticalLayout views, bool isNewPage)
 		{
+			var detailViews = new VerticalLayout("box");
+
 			if (isNewPage)
 			{
 				new LabelView(_product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(views);
 				new SpaceView(5).AddTo(views);
 				new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
-				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product, views); }, true).FontBold()
+				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product, detailViews); }, true).FontBold()
 					.FontSize(25).TextMiddleCenter().AddTo(views);
 				new SpaceView(5).AddTo(views);
 				new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
@@ -170,22 +158,33 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			else
 			{
 				//new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
-				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product, views); }, true).FontBold()
+				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product, detailViews); }, true).FontBold()
 					.FontSize(15).TextMiddleCenter().AddTo(views);
 			}
+			
+			detailViews.AddTo(views);
 
 
 			foreach (var item in _product.versions.OrderByDescending(x =>
 				x.version))
 			{
-				AddFoldoutToDetailView(item, views);
+				AddFoldoutToDetailView(item, detailViews);
 			}
 		}
 
-		public void AddFoldoutToDetailView(ToDoProductVersion version, VerticalLayout views)
+		public void AddFoldoutToDetailView(ToDoProductVersion version, VerticalLayout views, int insertIndex = -1)
 		{
 			var fold = new FoldoutView(false, version.name + "	" + version.version).FontBold().FontSize(15)
-				.TextMiddleLeft().AddTo(views);
+				.TextMiddleLeft();
+
+			if (insertIndex < 0)
+			{
+				fold.AddTo(views);
+			}
+			else
+			{
+				fold.InsertTo(insertIndex, views);
+			}
 
 			var input = new ToDoListInputView((cate, name) => AddFoldoutItem(fold, version, cate, name));
 			input.Show();
