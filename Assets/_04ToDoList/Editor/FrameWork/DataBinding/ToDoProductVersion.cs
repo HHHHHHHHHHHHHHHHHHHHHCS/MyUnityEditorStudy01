@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _04ToDoList.Editor.FrameWork.ViewGUI;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.DataBinding
@@ -41,6 +42,13 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			small = _small;
 		}
 
+		public void SetVersion(ToDoVersion _version)
+		{
+			major = _version.major;
+			middle = _version.middle;
+			small = _version.small;
+		}
+		
 		public int CompareTo(ToDoVersion other)
 		{
 			if (this.major > other.major)

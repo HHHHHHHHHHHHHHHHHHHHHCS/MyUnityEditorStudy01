@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
@@ -7,27 +7,29 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Window
 {
-	public class ToDoListVersionCreateSubWindow : SubWindow
+	public class ToDoListVersionDetailSubWindow : SubWindow
 	{
 		private ToDoListProductView productView;
 		private Product product;
-		private ToDoVersion productVersion;
+		private ToDoVersion todoVersion;
+		private ToDoProductVersion productVersion;
 		private string productName;
 
 		private LabelView majorView, middleView, smallView;
+		private TextFieldView versionNameView;
 
 
-		public static ToDoListVersionCreateSubWindow Open(ToDoListProductView productView, Product product,
-			string name = "Version Create")
+		public static ToDoListVersionDetailSubWindow Open(ToDoListProductView productView, Product product,
+			ToDoProductVersion version = null, string name = "Version Create")
 		{
-			var window = Open<ToDoListVersionCreateSubWindow>(name).Init(productView, product);
+			var window = Open<ToDoListVersionDetailSubWindow>(name).Init(productView, product, version);
 			return window;
 		}
 
 
 		private void Awake()
 		{
-			productVersion = new ToDoVersion(0, 0, 0);
+			todoVersion = new ToDoVersion(0, 0, 0);
 
 			var verticalLayout = new VerticalLayout("box").AddTo(this);
 
@@ -68,20 +70,31 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			var nameHor = new HorizontalLayout().AddTo(verticalLayout);
 
 			new LabelView("版本名:").FontBold().Width(80).FontSize(20).AddTo(nameHor);
-			new TextFieldView(productName, str => productName = str).FontSize(20).AddTo(nameHor);
+			versionNameView = new TextFieldView(productName, str => productName = str).FontSize(20).AddTo(nameHor);
 
 			new SpaceView().AddTo(verticalLayout);
 
 			new ButtonView("保存", SaveProduct, true).AddTo(verticalLayout);
 		}
 
-		private ToDoListVersionCreateSubWindow Init(ToDoListProductView _productView, Product _product)
+		private ToDoListVersionDetailSubWindow Init(ToDoListProductView _productView, Product _product,
+			ToDoProductVersion _version = null)
 		{
 			productView = _productView;
 			product = _product;
+			productVersion = _version;
 
-			productVersion.SetVersion(0, 0, 0);
-			productName = string.Empty;
+			if (_version != null)
+			{
+				todoVersion.SetVersion(_version.version);
+				versionNameView.Content.Val = _version.name;
+			}
+			else
+			{
+				todoVersion.SetVersion(0, 0, 0);
+				productName = string.Empty;
+			}
+
 
 			UpdateMajor();
 			UpdateMiddle();
@@ -96,15 +109,15 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			{
 				if (isAdd.Value)
 				{
-					++productVersion.Major;
+					++todoVersion.Major;
 				}
 				else
 				{
-					--productVersion.Major;
+					--todoVersion.Major;
 				}
 			}
 
-			majorView.SetText(productVersion.Major.ToString());
+			majorView.SetText(todoVersion.Major.ToString());
 		}
 
 		public void UpdateMiddle(bool? isAdd = null)
@@ -113,15 +126,15 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			{
 				if (isAdd.Value)
 				{
-					++productVersion.Middle;
+					++todoVersion.Middle;
 				}
 				else
 				{
-					--productVersion.Middle;
+					--todoVersion.Middle;
 				}
 			}
 
-			middleView.SetText(productVersion.Middle.ToString());
+			middleView.SetText(todoVersion.Middle.ToString());
 		}
 
 		public void UpdateSmall(bool? isAdd = null)
@@ -130,32 +143,39 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			{
 				if (isAdd.Value)
 				{
-					++productVersion.Small;
+					++todoVersion.Small;
 				}
 				else
 				{
-					--productVersion.Small;
+					--todoVersion.Small;
 				}
 			}
 
-			smallView.SetText(productVersion.Small.ToString());
+			smallView.SetText(todoVersion.Small.ToString());
 		}
 
 		public void SaveProduct()
 		{
-			var version = new ToDoProductVersion()
+			if (productVersion != null)
 			{
-				name = productName,
-				version = productVersion
-			};
-			product.versions.Add(version);
+				productVersion.name = productName;
+				productVersion.version.SetVersion(todoVersion);;
+				productView.CreateAndInsertProductVersion(product, productVersion);
+			}
+			else
+			{
+				var version = new ToDoProductVersion()
+				{
+					name = productName,
+					version = todoVersion
+				};
+				product.versions.Add(version);
+				productView.CreateAndInsertProductVersion(product, version);
+			}
 
 			ToDoDataManager.Save();
-
 			Close();
-
 			ToDoListMainWindow.instance.Focus();
-			productView.CreateAndInsert(product,version);
 		}
 	}
 }

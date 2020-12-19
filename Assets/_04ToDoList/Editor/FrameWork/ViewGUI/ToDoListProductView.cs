@@ -18,7 +18,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		private VerticalLayout clickCreateBtnViews;
 
 
-		private ToDoListVersionCreateSubWindow versionCreate;
+		private ToDoListVersionDetailSubWindow versionDetail;
 		private ToDoListEditorProductSubWindow productSubWindow;
 
 		private Product product;
@@ -63,7 +63,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			}
 		}
 
-		public void CreateAndInsert(Product product, ToDoProductVersion version)
+		public void CreateAndInsertProductVersion(Product product, ToDoProductVersion version)
 		{
 			int index = -1;
 			foreach (var item in product.versions.OrderByDescending(x =>
@@ -72,7 +72,21 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				++index;
 				if (item == version)
 				{
-					AddFoldoutToDetailView(item, clickCreateBtnViews, index);
+					AddFoldoutToDetailView(product, item, clickCreateBtnViews, index);
+				}
+			}
+		}
+		
+		public void UpdateProductVersion(Product product, ToDoProductVersion version)
+		{
+			int index = -1;
+			foreach (var item in product.versions.OrderByDescending(x =>
+				x.version))
+			{
+				++index;
+				if (item == version)
+				{
+					AddFoldoutToDetailView(product, item, clickCreateBtnViews, index);
 				}
 			}
 		}
@@ -149,7 +163,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				new LabelView(_product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(views);
 				new SpaceView(5).AddTo(views);
 				new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
-				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product, detailViews); }, true).FontBold()
+				new ButtonView("创建版本", () => { OpenVersionDetailWindow(_product, detailViews); }, true).FontBold()
 					.FontSize(25).TextMiddleCenter().AddTo(views);
 				new SpaceView(5).AddTo(views);
 				new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
@@ -158,23 +172,28 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			else
 			{
 				//new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
-				new ButtonView("创建版本", () => { OpenProductDetailWindow(_product, detailViews); }, true).FontBold()
+				new ButtonView("创建版本", () => { OpenVersionDetailWindow(_product, detailViews); }, true).FontBold()
 					.FontSize(15).TextMiddleCenter().AddTo(views);
 			}
-			
+
 			detailViews.AddTo(views);
 
 
 			foreach (var item in _product.versions.OrderByDescending(x =>
 				x.version))
 			{
-				AddFoldoutToDetailView(item, detailViews);
+				AddFoldoutToDetailView(product, item, detailViews);
 			}
 		}
 
-		public void AddFoldoutToDetailView(ToDoProductVersion version, VerticalLayout views, int insertIndex = -1)
+		public void AddFoldoutToDetailView(Product product, ToDoProductVersion version, VerticalLayout views,
+			int insertIndex = -1)
 		{
-			var fold = new FoldoutView(false, version.name + "	" + version.version).FontBold().FontSize(15)
+			var editorBtn = new ImageButtonView(ImageButtonIcon.editorIcon,
+					() => OpenVersionDetailWindow(product, detailViews, version))
+				.BackgroundColor(Color.black).Width(30).Height(20);
+
+			var fold = new FoldoutView(false, version.name + "	" + version.version, editorBtn).FontBold().FontSize(15)
 				.TextMiddleLeft();
 
 			if (insertIndex < 0)
@@ -197,13 +216,13 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		}
 
 
-		public void OpenProductDetailWindow(Product _product, VerticalLayout views)
+		public void OpenVersionDetailWindow(Product _product, VerticalLayout views, ToDoProductVersion version = null)
 		{
 			EnqueueCmd(() =>
 			{
 				clickCreateBtnViews = views;
-				versionCreate = ToDoListVersionCreateSubWindow.Open(this, _product);
-				versionCreate.Show();
+				versionDetail = ToDoListVersionDetailSubWindow.Open(this, _product, version);
+				versionDetail.Show();
 			});
 		}
 
@@ -230,10 +249,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		protected override void OnHide()
 		{
-			if (versionCreate != null)
+			if (versionDetail != null)
 			{
-				versionCreate.Close();
-				versionCreate = null;
+				versionDetail.Close();
+				versionDetail = null;
 			}
 
 			if (productSubWindow != null)
