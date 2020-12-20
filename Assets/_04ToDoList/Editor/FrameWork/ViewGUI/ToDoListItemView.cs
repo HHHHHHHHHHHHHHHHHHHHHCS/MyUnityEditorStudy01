@@ -44,7 +44,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			if (needFresh)
 			{
 				needFresh = false;
-				changeProperty(this);
+				changeProperty?.Invoke(this);
 				BuildItem();
 			}
 		}

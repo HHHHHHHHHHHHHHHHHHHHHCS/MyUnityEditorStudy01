@@ -11,18 +11,21 @@ namespace _04ToDoList.Editor.FrameWork.Window
 	{
 		private ToDoListProductView productView;
 		private Product product;
-		private ToDoVersion todoVersion;
+		private VerticalLayout detailLayoutView;
 		private ToDoProductVersion productVersion;
+
+		private ToDoVersion todoVersion;
 		private string productName;
 
 		private LabelView majorView, middleView, smallView;
 		private TextFieldView versionNameView;
 
-
 		public static ToDoListVersionDetailSubWindow Open(ToDoListProductView productView, Product product,
-			ToDoProductVersion version = null, string name = "Version Create")
+			VerticalLayout _detailLayoutView, ToDoProductVersion version = null, string name = null)
 		{
-			var window = Open<ToDoListVersionDetailSubWindow>(name).Init(productView, product, version);
+			string str = name ?? (version == null ? "Version Detail Create Window" : "Version Detail Editor Window");
+			var window = Open<ToDoListVersionDetailSubWindow>(str)
+				.Init(productView, product, _detailLayoutView, version);
 			return window;
 		}
 
@@ -77,11 +80,12 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			new ButtonView("保存", SaveProduct, true).AddTo(verticalLayout);
 		}
 
-		private ToDoListVersionDetailSubWindow Init(ToDoListProductView _productView, Product _product,
-			ToDoProductVersion _version = null)
+		private ToDoListVersionDetailSubWindow Init(ToDoListProductView _productView
+			, Product _product, VerticalLayout _detailLayoutView, ToDoProductVersion _version)
 		{
 			productView = _productView;
 			product = _product;
+			detailLayoutView = _detailLayoutView;
 			productVersion = _version;
 
 			if (_version != null)
@@ -159,8 +163,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			if (productVersion != null)
 			{
 				productVersion.name = productName;
-				productVersion.version.SetVersion(todoVersion);;
-				productView.CreateAndInsertProductVersion(product, productVersion);
+				productVersion.version.SetVersion(todoVersion);
+				productView.RefreshProductFoldoutDetailView(product, detailLayoutView);
 			}
 			else
 			{
