@@ -99,6 +99,13 @@ namespace _04ToDoList.Editor.FrameWork
 
 			return view;
 		}	
+		
+		public static T MarginLeft<T>(this T view,int val) where T : View
+		{			
+			view.guiStyle.margin.left= val;
+
+			return view;
+		}
 
 		public static ButtonView IsFill(this ButtonView button, bool isFill)
 		{

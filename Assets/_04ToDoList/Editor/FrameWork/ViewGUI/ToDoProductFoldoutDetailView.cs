@@ -29,7 +29,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				OpenVersionDetailWindow).BackgroundColor(Color.black).Width(30).Height(20);
 
 			foldoutView = new FoldoutView(false, productVersion.name + "	" + productVersion.version, editorBtn)
-				.FontBold().FontSize(15).TextMiddleLeft().AddTo(this);
+				.FontBold().FontSize(15).MarginLeft(30).TextMiddleLeft().AddTo(this);
 
 			if (insertIndex < 0)
 			{

@@ -108,7 +108,11 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 	{
 		public string name;
 
-		public List<ToDoNote> notes = new List<ToDoNote>();
+		public string description;
+
+		public List<Feature> childFeatures = new List<Feature>();
+
+		// public List<ToDoNote> notes = new List<ToDoNote>();
 	}
 
 

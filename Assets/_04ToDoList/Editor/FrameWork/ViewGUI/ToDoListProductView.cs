@@ -99,9 +99,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 				var title = new HorizontalLayout();
 
-				new LabelView("描述: " + product.description)
-					.FontSize(15).FontBold().PaddingLeft(80).Height(20).TextMiddleLeft().AddTo(title);
-
 				new FlexibleSpaceView().AddTo(title);
 
 				new ImageButtonView(ImageButtonIcon.openIcon, () => EnqueueCmd(() => RebuildDetailViews(product)))
@@ -144,26 +141,40 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		{
 			var detailLayout = new VerticalLayout("box");
 
-			detailLayout.Clear();
-
+			int createBtnFontSize = 15;
 			if (isNewPage)
 			{
 				new LabelView(_product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(views);
-				new SpaceView(5).AddTo(views);
-				new LabelView(_product.description).FontSize(20).TextMiddleCenter().AddTo(views);
-				new ButtonView("创建版本", () => { OpenVersionDetailWindow(_product, detailLayout); }, true).FontBold()
-					.FontSize(25).TextMiddleCenter().AddTo(views);
-				new SpaceView(5).AddTo(views);
+				new SpaceView(8).AddTo(views);
 				new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
 					.AddTo(views);
+				createBtnFontSize = 25;
 			}
-			else
+			
+			//TODO:NEW LABEL FOR 描述
+			//TODO:ADD feature 写成单独的view
+
+			var functionFoldout = new FoldoutView(false, "描述: "+_product.description+"	功能:").FontSize(25)
+				.FontBold().MarginLeft(15);
+			
+			functionFoldout.AddTo(views);
+
+			
+			
+			var createBtn = new ButtonView("创建版本", () => { OpenVersionDetailWindow(_product, detailLayout); }, true)
+				.FontBold().Width(120)
+				.FontSize(createBtnFontSize).TextMiddleCenter();
+			var versionFoldout = new FoldoutView(false, "版本: ", createBtn).FontSize(25)
+				.FontBold().MarginLeft(15);
+
+
+			versionFoldout.AddFoldoutView(detailLayout);
+			if (isNewPage)
 			{
-				new ButtonView("创建版本", () => { OpenVersionDetailWindow(_product, detailLayout); }, true).FontBold()
-					.FontSize(15).TextMiddleCenter().AddTo(views);
+				versionFoldout.Visible = true;
 			}
 
-			detailLayout.AddTo(views);
+			versionFoldout.AddTo(views);
 
 
 			foreach (var item in _product.versions.OrderByDescending(x =>
@@ -228,6 +239,5 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				productSubWindow = null;
 			}
 		}
-
 	}
 }
