@@ -18,7 +18,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         public static ToDoListCategorySubWindow categorySubWindow;
 
-        private ToDoListController toDoListController;
+        private ToDoListController todoListController;
 
 
         [MenuItem("ToDoList/MainWindow %#t")]
@@ -38,12 +38,12 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         protected override void OnInit()
         {
-            toDoListController = CreateViewController<ToDoListController>();
+            todoListController = CreateViewController<ToDoListController>();
         }
 
         protected override void Disable()
         {
-            toDoListController?.OnDisable();
+            todoListController?.OnDisable();
         }
 
         protected override void Dispose()
@@ -59,7 +59,7 @@ namespace _04ToDoList.Editor.FrameWork.Window
 
         protected override void OnGUI()
         {
-            toDoListController.Draw();
+            todoListController.Draw();
         }
     }
 }

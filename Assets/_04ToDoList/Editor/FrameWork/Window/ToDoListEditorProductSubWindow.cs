@@ -1,3 +1,4 @@
+using System;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
@@ -8,30 +9,33 @@ namespace _04ToDoList.Editor.FrameWork.Window
 {
 	public class ToDoListEditorProductSubWindow : SubWindow
 	{
-		private Product product;
+		public static ToDoListEditorProductSubWindow instance { get; private set; }
+		
+		private ToDoProduct todoProduct;
 
-		public static ToDoListEditorProductSubWindow Open(ToDoListProductView _productView, Product _product = null,
+		public static ToDoListEditorProductSubWindow Open(ToDoListProductView _productView, ToDoProduct todoProduct = null,
 			string name = "Product Editor")
 		{
-			var window = Open<ToDoListEditorProductSubWindow>(name).Init(_productView, _product);
-
+			var window = Open<ToDoListEditorProductSubWindow>(name).Init(_productView, todoProduct);
+			instance = window;
+			window.Show();
 			return window;
 		}
 
 		private ToDoListProductView productView;
 
 
-		private ToDoListEditorProductSubWindow Init(ToDoListProductView _productView, Product _product)
+		private ToDoListEditorProductSubWindow Init(ToDoListProductView _productView, ToDoProduct todoProduct)
 		{
 			productView = _productView;
-			product = _product;
+			this.todoProduct = todoProduct;
 
 			Clear();
 
 			var verticalLayout = new VerticalLayout("box").AddTo(this);
 
-			var productName = product == null ? string.Empty : product.name;
-			var productDescription = product == null ? string.Empty : product.description;
+			var productName = this.todoProduct == null ? string.Empty : this.todoProduct.name;
+			var productDescription = this.todoProduct == null ? string.Empty : this.todoProduct.description;
 
 			new LabelView("名称:").TextMiddleCenter().FontBold().FontSize(20).AddTo(verticalLayout);
 			new TextAreaView(productName, pName => productName = pName).Height(30)
@@ -45,21 +49,29 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			return this;
 		}
 
+		private void OnDisable()
+		{
+			instance = null;
+		}
+		
 		private void SaveProduct(string productName, string productDescription)
 		{
-			if (product == null)
+			if (todoProduct == null)
 			{
 				ToDoDataManager.AddProduct(productName, productDescription);
 			}
 			else
 			{
-				product.name = productName;
-				product.description = productDescription;
+				todoProduct.name = productName;
+				todoProduct.description = productDescription;
 				ToDoDataManager.Save();
 			}
 
 			productView.Rebuild();
 			Close();
 		}
+
+
+		
 	}
 }

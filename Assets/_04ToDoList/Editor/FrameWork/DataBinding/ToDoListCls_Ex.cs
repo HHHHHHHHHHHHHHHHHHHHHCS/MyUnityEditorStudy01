@@ -102,17 +102,17 @@ public static class ToDoListCls_Ex
 		return data;
 	}
 
-	public static Product AddProduct(this ToDoListCls cls, string name, string desc)
+	public static ToDoProduct AddProduct(this ToDoListCls cls, string name, string desc)
 	{
-		var val = new Product(name, desc);
+		var val = new ToDoProduct(name, desc);
 		cls.productList.Add(val);
 		cls.Save();
 		return val;
 	}
 	
-	public static void RemoveProduct(this ToDoListCls cls, Product product)
+	public static void RemoveProduct(this ToDoListCls cls, ToDoProduct todoProduct)
 	{
-		cls.productList.Remove(product);
+		cls.productList.Remove(todoProduct);
 		cls.Save();
 	}
 }

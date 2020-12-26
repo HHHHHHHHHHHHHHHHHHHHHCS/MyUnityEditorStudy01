@@ -6,24 +6,20 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-	public class ToDoProductFoldoutDetailView : VerticalLayout
+	public class ToDoListProductFoldoutDetailView : VerticalLayout
 	{
-		private ToDoListProductView todoListProductView;
-		private Product product;
+		private ToDoListProductDetailView productDetailView;
+		private ToDoProduct todoProduct;
 		private ToDoProductVersion productVersion;
-		private VerticalLayout productViews;
-		private ToDoListVersionDetailSubWindow versionDetailSubWindow;
 
 		private FoldoutView foldoutView;
 
-		public ToDoProductFoldoutDetailView(ToDoListProductView _todoListProductView,
-			Product _product, ToDoProductVersion _productVersion,
-			VerticalLayout _productViews, int insertIndex = -1) : base("box")
+		public ToDoListProductFoldoutDetailView(ToDoListProductDetailView _productDetailView
+			, ToDoProduct _todoProduct, ToDoProductVersion _productVersion) : base("box")
 		{
-			todoListProductView = _todoListProductView;
-			product = _product;
+			productDetailView = _productDetailView;
+			todoProduct = _todoProduct;
 			productVersion = _productVersion;
-			productViews = _productViews;
 
 			var editorBtn = new ImageButtonView(ImageButtonIcon.editorIcon,
 				OpenVersionDetailWindow).BackgroundColor(Color.black).Width(30).Height(20);
@@ -31,14 +27,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			foldoutView = new FoldoutView(false, productVersion.name + "	" + productVersion.version, editorBtn)
 				.FontBold().FontSize(15).MarginLeft(30).TextMiddleLeft().AddTo(this);
 
-			if (insertIndex < 0)
-			{
-				this.AddTo(_productViews);
-			}
-			else
-			{
-				this.InsertTo(insertIndex, _productViews);
-			}
 
 			var input = new ToDoListInputView(AddFoldoutItem);
 			input.Show();
@@ -52,11 +40,10 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		public void OpenVersionDetailWindow()
 		{
+			//防止同一帧数内 颜色污染
 			EnqueueCmd(() =>
 			{
-				versionDetailSubWindow =
-					ToDoListVersionDetailSubWindow.Open(todoListProductView, product, productViews, productVersion);
-				versionDetailSubWindow.Show();
+				ToDoListVersionDetailSubWindow.Open(productDetailView, todoProduct, productVersion);
 			});
 		}
 
@@ -70,7 +57,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				EnqueueCmd(() =>
 				{
 					productVersion.todos.Remove(todoItem);
-					ToDoDataManager.Data.Save();
+					ToDoDataManager.Save();
 					foldoutView.RemoveFoldoutView(itemToDoView);
 				});
 			};

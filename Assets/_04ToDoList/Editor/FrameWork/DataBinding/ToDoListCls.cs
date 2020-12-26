@@ -18,7 +18,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
 		public List<ToDoCategory> categoryList = new List<ToDoCategory>();
 		
-		public List<Product> productList = new List<Product>();
+		public List<ToDoProduct> productList = new List<ToDoProduct>();
 	}
 
 	public partial class ToDoListCls : ToDoListBaseCls

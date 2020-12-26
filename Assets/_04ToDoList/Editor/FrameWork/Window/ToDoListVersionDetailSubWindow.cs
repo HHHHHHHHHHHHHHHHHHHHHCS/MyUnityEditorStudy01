@@ -9,9 +9,10 @@ namespace _04ToDoList.Editor.FrameWork.Window
 {
 	public class ToDoListVersionDetailSubWindow : SubWindow
 	{
-		private ToDoListProductView productView;
-		private Product product;
-		private VerticalLayout detailLayoutView;
+		public static ToDoListVersionDetailSubWindow instance { get; private set; }
+
+		private ToDoListProductDetailView productView;
+		private ToDoProduct todoProduct;
 		private ToDoProductVersion productVersion;
 
 		private ToDoVersion todoVersion;
@@ -20,12 +21,14 @@ namespace _04ToDoList.Editor.FrameWork.Window
 		private LabelView majorView, middleView, smallView;
 		private TextFieldView versionNameView;
 
-		public static ToDoListVersionDetailSubWindow Open(ToDoListProductView productView, Product product,
-			VerticalLayout _detailLayoutView, ToDoProductVersion version = null, string name = null)
+		public static ToDoListVersionDetailSubWindow Open(ToDoListProductDetailView productDetailView,
+			ToDoProduct todoProduct, ToDoProductVersion version = null, string name = null)
 		{
 			string str = name ?? (version == null ? "Version Detail Create Window" : "Version Detail Editor Window");
 			var window = Open<ToDoListVersionDetailSubWindow>(str)
-				.Init(productView, product, _detailLayoutView, version);
+				.Init(productDetailView, todoProduct, version);
+			instance = window;
+			window.Show();
 			return window;
 		}
 
@@ -80,12 +83,11 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			new ButtonView("保存", SaveProduct, true).AddTo(verticalLayout);
 		}
 
-		private ToDoListVersionDetailSubWindow Init(ToDoListProductView _productView
-			, Product _product, VerticalLayout _detailLayoutView, ToDoProductVersion _version)
+		private ToDoListVersionDetailSubWindow Init(ToDoListProductDetailView _productDetailView
+			, ToDoProduct _todoProduct, ToDoProductVersion _version)
 		{
-			productView = _productView;
-			product = _product;
-			detailLayoutView = _detailLayoutView;
+			productView = _productDetailView;
+			todoProduct = _todoProduct;
 			productVersion = _version;
 
 			if (_version != null)
@@ -158,13 +160,18 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			smallView.SetText(todoVersion.Small.ToString());
 		}
 
+		private void OnDisable()
+		{
+			instance = null;
+		}
+
 		public void SaveProduct()
 		{
 			if (productVersion != null)
 			{
 				productVersion.name = productName;
 				productVersion.version.SetVersion(todoVersion);
-				productView.RefreshProductFoldoutDetailView(product, detailLayoutView);
+				productView.RefreshProductFoldoutDetailView();
 			}
 			else
 			{
@@ -173,8 +180,8 @@ namespace _04ToDoList.Editor.FrameWork.Window
 					name = productName,
 					version = todoVersion
 				};
-				product.versions.Add(version);
-				productView.CreateAndInsertProductVersion(product, version);
+				todoProduct.versions.Add(version);
+				productView.CreateAndInsertProductVersion(version);
 			}
 
 			ToDoDataManager.Save();

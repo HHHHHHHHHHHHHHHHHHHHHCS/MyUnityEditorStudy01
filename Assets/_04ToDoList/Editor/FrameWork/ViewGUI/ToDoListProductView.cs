@@ -15,22 +15,20 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		private VerticalLayout productViews;
 		private VerticalLayout detailViews;
-		private VerticalLayout clickCreateBtnViews;
+		private ToDoListProductDetailView clickView;
 
 
-		private ToDoListVersionDetailSubWindow versionDetail;
-		private ToDoListEditorProductSubWindow productSubWindow;
-
-		private Product product;
+		private ToDoProduct todoProduct;
 
 
 		public ToDoListProductView(AbsViewController _ctrl) : base(_ctrl, "box")
 		{
-			productViews = new VerticalLayout("box").AddTo(this);
-			detailViews = new VerticalLayout("box").AddTo(this);
+			var scrollLayout  = new ScrollLayout().AddTo(this);
 
+			productViews = new VerticalLayout("box").AddTo(scrollLayout);
+			detailViews = new VerticalLayout("box").AddTo(scrollLayout);
 
-			Rebuild();
+			// Rebuild();
 		}
 
 		protected override void OnRefresh()
@@ -53,40 +51,26 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		public void Rebuild()
 		{
+			//防止删除的时候  editorwindow 还开着可以编辑
+			CloseAllEditorWindow();
+			
 			if (productViews.Visible)
 			{
 				RebuildProductViews();
 			}
 			else
 			{
-				RebuildDetailViews(product);
+				RebuildDetailViews(todoProduct);
 			}
 		}
 
-		public void CreateAndInsertProductVersion(Product _product, ToDoProductVersion version)
-		{
-			int index = -1;
-			foreach (var item in _product.versions.OrderByDescending(x =>
-				x.version))
-			{
-				++index;
-				if (item == version)
-				{
-					new ToDoProductFoldoutDetailView(this, _product, item, clickCreateBtnViews, index);
-				}
-			}
-		}
 
 		public void RebuildProductViews()
 		{
 			productViews.Clear();
 
-			productViews.Show();
 			detailViews.Hide();
-			product = null;
-
-
-			//new LabelView("这个是产品页面").AddTo(productViews).TextMiddleCenter().FontBold().FontSize(30);
+			todoProduct = null;
 
 			new ButtonView("创建产品", () => OpenProductEditorWindow(null), true).Height(40).AddTo(productViews);
 
@@ -110,113 +94,50 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				new ImageButtonView(ImageButtonIcon.deleteIcon, () => RemoveProduct(product)).Width(25).Height(25)
 					.BackgroundColor(Color.red).AddTo(title);
 
-
 				var foldout = new FoldoutView(false, product.name, title).FontSize(25)
 					.FontBold().AddTo(productViews);
 
 				new SpaceView(10f).AddTo(productViews);
 
-				var ver = new VerticalLayout("box");
-				CreateDetailView(product, ver, false);
-				foldout.AddFoldoutView(ver);
+				foldout.AddFoldoutView(CreateDetailView(product, false).AddTo(detailViews));
 
-				foldout.AddFoldoutView(new SpaceView(20f));
+				foldout.AddFoldoutView(new SpaceView(15f));
 			}
+
+			productViews.Show();
 		}
 
 
-		public void RebuildDetailViews(Product _product)
+		public void RebuildDetailViews(ToDoProduct todoProduct)
 		{
-			product = _product;
+			this.todoProduct = todoProduct;
 
 			detailViews.Clear();
 
 			productViews.Hide();
+
+			CreateDetailView(todoProduct, true).AddTo(detailViews);
 			detailViews.Show();
-
-			CreateDetailView(_product, detailViews, true);
 		}
 
-		private void CreateDetailView(Product _product, VerticalLayout views, bool isNewPage)
+		private ToDoListProductDetailView CreateDetailView(ToDoProduct todoProduct, bool isNewPage)
 		{
-			var detailLayout = new VerticalLayout("box");
-
-			int createBtnFontSize = 15;
-			if (isNewPage)
-			{
-				new LabelView(_product.name).FontBold().FontSize(30).TextMiddleCenter().AddTo(views);
-				new SpaceView(8).AddTo(views);
-				new ButtonView("返回", () => EnqueueCmd(RebuildProductViews), true).FontSize(20).TextMiddleCenter()
-					.AddTo(views);
-				createBtnFontSize = 25;
-			}
-			
-			//TODO:NEW LABEL FOR 描述
-			//TODO:ADD feature 写成单独的view
-
-			var functionFoldout = new FoldoutView(false, "描述: "+_product.description+"	功能:").FontSize(25)
-				.FontBold().MarginLeft(15);
-			
-			functionFoldout.AddTo(views);
-
-			
-			
-			var createBtn = new ButtonView("创建版本", () => { OpenVersionDetailWindow(_product, detailLayout); }, true)
-				.FontBold().Width(120)
-				.FontSize(createBtnFontSize).TextMiddleCenter();
-			var versionFoldout = new FoldoutView(false, "版本: ", createBtn).FontSize(25)
-				.FontBold().MarginLeft(15);
-
-
-			versionFoldout.AddFoldoutView(detailLayout);
-			if (isNewPage)
-			{
-				versionFoldout.Visible = true;
-			}
-
-			versionFoldout.AddTo(views);
-
-
-			foreach (var item in _product.versions.OrderByDescending(x =>
-				x.version))
-			{
-				new ToDoProductFoldoutDetailView(this, _product, item, detailLayout);
-			}
+			return new ToDoListProductDetailView(this, todoProduct, isNewPage, RebuildProductViews);
 		}
 
-		public void RefreshProductFoldoutDetailView(Product _product, VerticalLayout _detailLayout)
-		{
-			_detailLayout.Clear();
 
-			foreach (var item in _product.versions.OrderByDescending(x =>
-				x.version))
-			{
-				new ToDoProductFoldoutDetailView(this, _product, item, _detailLayout);
-			}
-		}
-
-		public void OpenVersionDetailWindow(Product _product, VerticalLayout _views)
+		public void OpenProductEditorWindow(ToDoProduct todoProduct = null)
 		{
+			//防止同一帧数内 颜色污染
 			EnqueueCmd(() =>
 			{
-				clickCreateBtnViews = _views;
-				versionDetail = ToDoListVersionDetailSubWindow.Open(this, _product, _views);
-				versionDetail.Show();
+				ToDoListEditorProductSubWindow.Open(this, todoProduct);
 			});
 		}
 
-		public void OpenProductEditorWindow(Product _product = null)
+		public void RemoveProduct(ToDoProduct todoProduct)
 		{
-			EnqueueCmd(() =>
-			{
-				productSubWindow = ToDoListEditorProductSubWindow.Open(this, _product);
-				productSubWindow.Show();
-			});
-		}
-
-		public void RemoveProduct(Product _product)
-		{
-			ToDoDataManager.Data.RemoveProduct(_product);
+			ToDoDataManager.Data.RemoveProduct(todoProduct);
 			EnqueueCmd(Rebuild);
 		}
 
@@ -227,16 +148,19 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		protected override void OnHide()
 		{
-			if (versionDetail != null)
-			{
-				versionDetail.Close();
-				versionDetail = null;
-			}
+			CloseAllEditorWindow();
+		}
 
-			if (productSubWindow != null)
+		public void CloseAllEditorWindow()
+		{
+			if (ToDoListEditorProductSubWindow.instance)
 			{
-				productSubWindow.Close();
-				productSubWindow = null;
+				ToDoListEditorProductSubWindow.instance.Close();
+			}
+			
+			if (ToDoListVersionDetailSubWindow.instance)
+			{
+				ToDoListVersionDetailSubWindow.instance.Close();
 			}
 		}
 	}

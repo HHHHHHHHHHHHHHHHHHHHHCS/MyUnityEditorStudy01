@@ -6,7 +6,7 @@ using UnityEngine;
 namespace _04ToDoList.Editor.FrameWork.DataBinding
 {
 	[Serializable]
-	public class ToDoVersion: IComparable<ToDoVersion>
+	public class ToDoVersion : IComparable<ToDoVersion>
 	{
 		public int Major
 		{
@@ -48,7 +48,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			middle = _version.middle;
 			small = _version.small;
 		}
-		
+
 		public int CompareTo(ToDoVersion other)
 		{
 			if (this.major > other.major)
@@ -59,7 +59,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			{
 				return -1;
 			}
-			
+
 			if (this.middle > other.middle)
 			{
 				return 1;
@@ -68,8 +68,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			{
 				return -1;
 			}
-			
-						
+
+
 			if (this.small > other.small)
 			{
 				return 1;
@@ -78,7 +78,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			{
 				return -1;
 			}
-			
+
 			return 0;
 		}
 
@@ -86,7 +86,6 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 		{
 			return $"v{major}.{middle}.{small}";
 		}
-
 	}
 
 	[Serializable]
@@ -104,30 +103,40 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 	}
 
 	[Serializable]
-	public class Feature
+	public class ToDoFeature
 	{
 		public string name;
 
 		public string description;
 
-		public List<Feature> childFeatures = new List<Feature>();
+		public List<ToDoFeature> childFeatures = new List<ToDoFeature>();
 
 		// public List<ToDoNote> notes = new List<ToDoNote>();
+
+		public ToDoFeature()
+		{
+		}
+
+		public ToDoFeature(string _name, string _description)
+		{
+			this.name = _name;
+			this.description = _description;
+		}
 	}
 
 
 	[Serializable]
-	public class Product
+	public class ToDoProduct
 	{
 		public string name;
 
 		public string description;
 
-		public List<Feature> features = new List<Feature>();
+		public List<ToDoFeature> features = new List<ToDoFeature>();
 
 		public List<ToDoProductVersion> versions = new List<ToDoProductVersion>();
 
-		public Product(string _name, string _description)
+		public ToDoProduct(string _name, string _description)
 		{
 			this.name = _name;
 			this.description = _description;
