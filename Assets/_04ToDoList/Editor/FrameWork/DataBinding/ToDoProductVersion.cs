@@ -124,7 +124,6 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 		}
 	}
 
-
 	[Serializable]
 	public class ToDoProduct
 	{

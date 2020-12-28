@@ -10,7 +10,6 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
 	public class ToDoListProductDetailView : VerticalLayout
 	{
-		public readonly VerticalLayout featureDetailView;
 		public readonly VerticalLayout versionDetailView;
 
 		private ToDoListProductView productView;
@@ -40,28 +39,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 			new SpaceView(8).AddTo(this);
 
-			 featureDetailView = new VerticalLayout("box");
-			
-			var createFeatureBtn = new ButtonView("添加功能", () =>
-				{
-					var newFeature = new ToDoFeature("AA", "BB");
-					todoProduct.features.Add(newFeature);
-					ToDoDataManager.Save();
-					new ToDoListFeatureView(newFeature).AddTo(featureDetailView);
-				}, true)
-				.Height(20).Width(100).FontSize(15).TextMiddleCenter();
-			
-			var featureFoldout = new FoldoutView(false, "功能:", createFeatureBtn)
-				.FontSize(25)
-				.FontBold().MarginLeft(15).AddTo(this);
-			
-			featureFoldout.AddFoldoutView(featureDetailView); 
-
-			foreach (var feature in todoProduct.features)
-			{
-				new ToDoListFeatureView(feature).AddTo(featureDetailView);
-			}
-
+			new ToDoListFeatureView(todoProduct).AddTo(this);
 
 			//Version Detail-----------
 			new SpaceView(8).AddTo(this);
@@ -82,10 +60,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		public void OpenVersionDetailWindow()
 		{
 			//防止同一帧数内 颜色污染
-			EnqueueCmd(() =>
-			{
-				ToDoListVersionDetailSubWindow.Open(this, todoProduct);
-			});
+			EnqueueCmd(() => { ToDoListVersionDetailSubWindow.Open(this, todoProduct); });
 		}
 
 
