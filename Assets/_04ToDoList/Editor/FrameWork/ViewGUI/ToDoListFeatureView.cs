@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
+using _04ToDoList.Editor.FrameWork.Window;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
@@ -68,18 +69,23 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		private void AddFeature()
 		{
-			var newFeature = new ToDoFeature("AA", "BB");
-			if (isHeader)
+			EnqueueCmd(() =>
 			{
-				product.features.Add(newFeature);
-			}
-			else
-			{
-				currentFeature.childFeatures.Add(newFeature);
-			}
+				ToDoListFeaturesSubWindow.Open(currentFeature, true);
+			});
 
-			ToDoDataManager.Save();
-			EnqueueCmd(() => new ToDoListFeatureView(newFeature, this).AddTo(featureDetailView));
+			// var newFeature = new ToDoFeature("AA", "BB");
+			// if (isHeader)
+			// {
+			// 	product.features.Add(newFeature);
+			// }
+			// else
+			// {
+			// 	currentFeature.childFeatures.Add(newFeature);
+			// }
+			//
+			// ToDoDataManager.Save();
+			// EnqueueCmd(() => new ToDoListFeatureView(newFeature, this).AddTo(featureDetailView));
 		}
 
 		private void DeleteFeature()

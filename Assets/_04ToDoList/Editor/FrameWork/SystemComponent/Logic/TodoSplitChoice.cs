@@ -18,7 +18,7 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Logic
 				.NewBtn("保存", () =>
 				{
 					ToDoDataManager.AddToDoItem(first);
-					EditorGUI.FocusTextInControl(string.Empty);
+					EditorGUI.FocusTextInControl(null);
 				})
 				.EndQuestion()
 				//=================
@@ -29,13 +29,13 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Logic
 				.RepeatSelfMenu("接着", () =>
 				{
 					ToDoDataManager.AddToDoItem(second);
-					EditorGUI.FocusTextInControl(string.Empty);
+					EditorGUI.FocusTextInControl(null);
 					//processSystem.RepeatThen();
 				})
 				.NewBtn("保存并结束", () =>
 				{
 					ToDoDataManager.AddToDoItem(second);
-					EditorGUI.FocusTextInControl(string.Empty);
+					EditorGUI.FocusTextInControl(null);
 				})
 				.EndQuestion()
 				.EndChoice();
@@ -53,12 +53,12 @@ namespace _04ToDoList.Editor.FrameWork.SystemComponent.Logic
 		// 		.NewBtn("保存", () =>
 		// 		{
 		// 			ToDoDataManager.AddToDoItem(context);
-		// 			EditorGUI.FocusTextInControl(string.Empty);
+		// 			EditorGUI.FocusTextInControl(null);
 		// 		})
 		// 		.NewBtn("保存并结束", () =>
 		// 		{
 		// 			ToDoDataManager.AddToDoItem(context);
-		// 			EditorGUI.FocusTextInControl(string.Empty);
+		// 			EditorGUI.FocusTextInControl(null);
 		// 		})
 		// 		.EndQuestion()
 		// 		.EndChoice();
