@@ -17,6 +17,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		public ToDoListFeatureView parentView;
 		public VerticalLayout featureDetailView;
 
+		private FoldoutView featureFoldout;
+
 		public ToDoListFeatureView(ToDoProduct todoProduct)
 		{
 			product = todoProduct;
@@ -41,20 +43,25 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 			var hor = new HorizontalLayout();
 
-			string foldoutName = isHeader ? "功能:" : currentFeature.name + "	" + currentFeature.description;
+			//string foldoutName = isHeader ? "功能:" : currentFeature.name + "	" + currentFeature.description;
 
-			var featureFoldout =
-				new FoldoutView(false, foldoutName, hor)
+			featureFoldout =
+				new FoldoutView(false, string.Empty, hor)
 					.FontSize(25)
 					.FontBold().MarginLeft(15 + depth * 5).AddTo(this);
 
+			RefreshFoldoutViewContent();
+
 			new FlexibleSpaceView().AddTo(hor);
 
-			new ImageButtonView(ImageButtonIcon.addIcon, AddFeature)
+			new ImageButtonView(ImageButtonIcon.addIcon, OpenFeatureCreateSubWindow)
 				.Height(25).Width(25).BackgroundColor(Color.yellow).AddTo(hor);
 
 			if (!isHeader)
 			{
+				new ImageButtonView(ImageButtonIcon.editorIcon, OpenFeatureEditorSubWindow)
+					.Height(25).Width(25).BackgroundColor(Color.red).AddTo(hor);
+				
 				new ImageButtonView(ImageButtonIcon.deleteIcon, DeleteFeature)
 					.Height(25).Width(25).BackgroundColor(Color.red).AddTo(hor);
 			}
@@ -67,25 +74,39 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			}
 		}
 
-		private void AddFeature()
+		private void OpenFeatureCreateSubWindow()
 		{
 			EnqueueCmd(() =>
 			{
-				ToDoListFeaturesSubWindow.Open(currentFeature, true);
+				if (isHeader)
+				{
+					ToDoListFeaturesSubWindow.Open(this, product);
+				}
+				else
+				{
+					ToDoListFeaturesSubWindow.Open(this, currentFeature, true);
+				}
 			});
+		}
+		
+		private void OpenFeatureEditorSubWindow()
+		{
+			EnqueueCmd(() =>
+			{
+				ToDoListFeaturesSubWindow.Open(this, currentFeature, false);
+			});
+		}
 
-			// var newFeature = new ToDoFeature("AA", "BB");
-			// if (isHeader)
-			// {
-			// 	product.features.Add(newFeature);
-			// }
-			// else
-			// {
-			// 	currentFeature.childFeatures.Add(newFeature);
-			// }
-			//
-			// ToDoDataManager.Save();
-			// EnqueueCmd(() => new ToDoListFeatureView(newFeature, this).AddTo(featureDetailView));
+		public void AddNewToView(ToDoFeature newFeature)
+		{
+			new ToDoListFeatureView(newFeature, this).AddTo(featureDetailView);
+		}
+
+		public void RefreshFoldoutViewContent()
+		{
+			string foldoutName = isHeader ? "功能:" : currentFeature.name + "	" + currentFeature.description;
+
+			featureFoldout.Content = foldoutName;
 		}
 
 		private void DeleteFeature()

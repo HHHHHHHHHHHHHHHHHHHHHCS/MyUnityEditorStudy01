@@ -100,6 +100,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 		public List<ToDoNote> notes = new List<ToDoNote>();
 
 		public List<ToDoData> todos = new List<ToDoData>();
+
+		public ToDoData.ToDoState state = ToDoData.ToDoState.NoStart;
 	}
 
 	[Serializable]

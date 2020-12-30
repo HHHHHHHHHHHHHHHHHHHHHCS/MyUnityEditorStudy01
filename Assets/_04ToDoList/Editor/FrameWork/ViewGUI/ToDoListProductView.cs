@@ -162,6 +162,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			{
 				ToDoListVersionDetailSubWindow.instance.Close();
 			}
+
+			if (ToDoListFeaturesSubWindow.instance)
+			{
+				ToDoListFeaturesSubWindow.instance.Close();
+			}
+			
 		}
 	}
 }

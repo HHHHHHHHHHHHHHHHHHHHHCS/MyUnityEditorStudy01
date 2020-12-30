@@ -21,6 +21,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			todoProduct = _todoProduct;
 			productVersion = _productVersion;
 
+			//支持删除  遍历全部的item  添加label 决定是否完成
 			var editorBtn = new ImageButtonView(ImageButtonIcon.editorIcon,
 				OpenVersionDetailWindow).BackgroundColor(Color.black).Width(30).Height(20);
 
