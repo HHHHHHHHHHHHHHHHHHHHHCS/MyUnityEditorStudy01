@@ -4,17 +4,17 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 {
 	public class BoxView : View
 	{
-		public string Text { get; set; }
+		public string Context { get; set; }
 
-		public BoxView(string text)
+		public BoxView(string context)
 		{
-			Text = text;
+			Context = context;
 			guiStyle = new GUIStyle(GUI.skin.box);
 		}
 
 		protected override void OnGUI()
 		{
-			GUILayout.Box(Text, guiStyle);
+			GUILayout.Box(Context, guiStyle,guiLayoutOptions);
 		}
 	}
 }

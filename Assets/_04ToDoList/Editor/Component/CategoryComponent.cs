@@ -6,25 +6,25 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.Component
 {
-    public class CategoryComponent : View
-    {
-        private BoxView boxView { get; }
+	public class CategoryComponent : View
+	{
+		private BoxView boxView { get; }
 
-        public CategoryComponent(ToDoCategory category)
-        {
-            if (category != null)
-            {
-                boxView = new BoxView(category.name).BackgroundColor(category.color.ToColor());
-            }
-            else
-            {
-                boxView = new BoxView("NULL").BackgroundColor(Color.gray);
-            }
-        }
+		public CategoryComponent(ToDoCategory category)
+		{
+			if (category != null)
+			{
+				boxView = new BoxView(category.name).MulBackgroundColor(category.color.ToColor(), 2);
+			}
+			else
+			{
+				boxView = new BoxView("NULL").MulBackgroundColor(Color.gray, 2);
+			}
+		}
 
-        protected override void OnGUI()
-        {
-            boxView.DrawGUI();
-        }
-    }
+		protected override void OnGUI()
+		{
+			boxView.DrawGUI();
+		}
+	}
 }

@@ -85,7 +85,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
         private void RemoveFromParent(ToDoListItemView item)
         {
-            isDirty = true;
+            UpdateToDoItems();
         }
     }
 }

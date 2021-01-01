@@ -8,25 +8,25 @@ namespace _04ToDoList.Editor.FrameWork
 	{
 		public static T Width<T>(this T view, float width) where T : IView
 		{
-			view.guiLayouts.Add(GUILayout.Width(width));
+			view.AddGUILayouts(GUILayout.Width(width));
 			return view;
 		}
 
 		public static T Height<T>(this T view, float height) where T : IView
 		{
-			view.guiLayouts.Add(GUILayout.Height(height));
+			view.AddGUILayouts(GUILayout.Height(height));
 			return view;
 		}
 
 		public static T MaxHeight<T>(this T view, float maxHeight) where T : IView
 		{
-			view.guiLayouts.Add(GUILayout.MaxHeight(maxHeight));
+			view.AddGUILayouts(GUILayout.MaxHeight(maxHeight));
 			return view;
 		}
 
 		public static T ExpandHeight<T>(this T view, bool expandHeight) where T : IView
 		{
-			view.guiLayouts.Add(GUILayout.ExpandHeight(expandHeight));
+			view.AddGUILayouts(GUILayout.ExpandHeight(expandHeight));
 			return view;
 		}
 
@@ -74,6 +74,13 @@ namespace _04ToDoList.Editor.FrameWork
 			return view;
 		}
 
+		//用于boxview 等过暗的情况
+		public static T MulBackgroundColor<T>(this T view, Color color, float v) where T : View
+		{
+			view.backgroundColor = color * v;
+			return view;
+		}
+
 		public static T FontColor<T>(this T view, Color color) where T : View
 		{
 			view.guiStyle.normal.textColor = color;
@@ -92,17 +99,17 @@ namespace _04ToDoList.Editor.FrameWork
 		{
 			return TheFontStyle(view, FontStyle.Bold);
 		}
-		
-		public static T PaddingLeft<T>(this T view,int val) where T : View
-		{			
+
+		public static T PaddingLeft<T>(this T view, int val) where T : View
+		{
 			view.guiStyle.padding.left = val;
 
 			return view;
-		}	
-		
-		public static T MarginLeft<T>(this T view,int val) where T : View
-		{			
-			view.guiStyle.margin.left= val;
+		}
+
+		public static T MarginLeft<T>(this T view, int val) where T : View
+		{
+			view.guiStyle.margin.left = val;
 
 			return view;
 		}

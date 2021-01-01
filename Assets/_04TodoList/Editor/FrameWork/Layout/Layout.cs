@@ -15,8 +15,6 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 
 		public readonly List<IView> children = new List<IView>();
 
-		public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
-
 		public ILayout Parent { get; set; }
 
 		public Queue<Action> cmdQueue = new Queue<Action>();
@@ -115,6 +113,9 @@ namespace _04ToDoList.Editor.FrameWork.Layout
 			children.Clear();
 		}
 
+		void IView.AddGUILayouts(GUILayoutOption option)
+		{
+		}
 
 		public void DrawGUI()
 		{

@@ -1,4 +1,6 @@
-﻿using _04ToDoList.Editor.FrameWork.DataBinding;
+﻿using System;
+using System.Linq;
+using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.Window;
@@ -13,6 +15,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		private ToDoProductVersion productVersion;
 
 		private FoldoutView foldoutView;
+		private BoxView stateBoxView;
 
 		public ToDoListProductFoldoutDetailView(ToDoListProductDetailView _productDetailView
 			, ToDoProduct _todoProduct, ToDoProductVersion _productVersion) : base("box")
@@ -21,11 +24,19 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			todoProduct = _todoProduct;
 			productVersion = _productVersion;
 
-			//支持删除  遍历全部的item  添加label 决定是否完成
-			var editorBtn = new ImageButtonView(ImageButtonIcon.editorIcon,
-				OpenVersionDetailWindow).BackgroundColor(Color.black).Width(30).Height(20);
+			HorizontalLayout horView = new HorizontalLayout();
 
-			foldoutView = new FoldoutView(false, productVersion.name + "	" + productVersion.version, editorBtn)
+			new FlexibleSpaceView().AddTo(horView);
+
+			stateBoxView = new BoxView(String.Empty).Height(20).AddTo(horView);
+
+			new ImageButtonView(ImageButtonIcon.editorIcon,
+				OpenVersionDetailWindow).BackgroundColor(Color.black).Width(30).Height(20).AddTo(horView);
+
+			new ImageButtonView(ImageButtonIcon.deleteIcon,
+				DeleteItem).BackgroundColor(Color.red).Width(30).Height(20).AddTo(horView);
+
+			foldoutView = new FoldoutView(false, productVersion.name + "	" + productVersion.version, horView)
 				.FontBold().FontSize(15).MarginLeft(30).TextMiddleLeft().AddTo(this);
 
 
@@ -33,25 +44,64 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			input.Show();
 
 			foldoutView.AddFoldoutView(input);
+
+			RefreshStateWithView();
+
 			foreach (var todoItem in productVersion.todos)
 			{
 				AddToDoToFoldoutView(todoItem);
 			}
 		}
 
+		public void RefreshStateWithView()
+		{
+			productVersion.todos = productVersion.todos.OrderBy(x => x.state.Val).ToList();
+
+			string stateText = string.Empty;
+			Color stateColor = Color.black;
+			switch (productVersion.GetStates())
+			{
+				case ToDoData.ToDoState.NoStart:
+					stateText = "暂无任务";
+					stateColor = Color.yellow;
+					break;
+				case ToDoData.ToDoState.Started:
+					stateText = "正在进行";
+					stateColor = Color.red;
+					break;
+				case ToDoData.ToDoState.Done:
+					stateText = "全部完成";
+					stateColor = Color.green;
+					break;
+			}
+
+			stateBoxView.Context = stateText;
+			stateBoxView.MulBackgroundColor(stateColor, 2);
+
+			// foldoutView.ClearFoldoutView();
+			// foreach (var todoItem in productVersion.todos)
+			// {
+			// 	AddToDoToFoldoutView(todoItem);
+			// }
+		}
+
 		public void OpenVersionDetailWindow()
 		{
 			//防止同一帧数内 颜色污染
-			EnqueueCmd(() =>
-			{
-				ToDoListVersionDetailSubWindow.Open(productDetailView, todoProduct, productVersion);
-			});
+			EnqueueCmd(() => { ToDoListVersionDetailSubWindow.Open(productDetailView, todoProduct, productVersion); });
 		}
 
+		public void DeleteItem()
+		{
+			todoProduct.versions.Remove(productVersion);
+
+			//防止同一帧数内 颜色污染
+			EnqueueCmd(() => { productDetailView.versionDetailView.Remove(this); });
+		}
 
 		private void AddToDoToFoldoutView(ToDoData todoItem)
 		{
-			var itemToDoView = new ToDoListItemView(todoItem, null);
+			var itemToDoView = new ToDoListItemView(todoItem, (_) => RefreshStateWithView());
 
 			itemToDoView.deleteAct = (_) =>
 			{
@@ -75,6 +125,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				ToDoDataManager.Data.Save();
 
 				AddToDoToFoldoutView(item);
+				RefreshStateWithView();
 			});
 		}
 	}

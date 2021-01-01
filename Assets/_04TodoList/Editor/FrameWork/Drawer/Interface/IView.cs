@@ -5,20 +5,20 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Drawer.Interface
 {
-    public interface IView : IDisposable
-    {
-        ILayout Parent { get; set; }
+	public interface IView : IDisposable
+	{
+		ILayout Parent { get; set; }
 
-        List<GUILayoutOption> guiLayouts { get; }
+		void Show();
 
-        void Show();
+		void Hide();
 
-        void Hide();
+		void OnRemove();
 
-        void OnRemove();
+		void Refresh();
 
-        void Refresh();
+		void AddGUILayouts(GUILayoutOption option);
 
-        void DrawGUI();
-    }
+		void DrawGUI();
+	}
 }

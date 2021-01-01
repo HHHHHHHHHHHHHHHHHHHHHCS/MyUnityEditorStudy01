@@ -11,7 +11,6 @@ namespace _04ToDoList.Editor.FrameWork.Window
 	{
 		//显示屏蔽接口 不能被外部无法访问
 		ILayout IView.Parent { get; set; }
-		public List<GUILayoutOption> guiLayouts { get; }
 
 		public readonly List<IView> children = new List<IView>();
 
@@ -57,6 +56,10 @@ namespace _04ToDoList.Editor.FrameWork.Window
 			{
 				children[i].Refresh();
 			}
+		}
+		
+		void IView.AddGUILayouts(GUILayoutOption option)
+		{
 		}
 
 		protected void OnGUI()

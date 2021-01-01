@@ -101,7 +101,23 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
 		public List<ToDoData> todos = new List<ToDoData>();
 
-		public ToDoData.ToDoState state = ToDoData.ToDoState.NoStart;
+		public ToDoData.ToDoState GetStates()
+		{
+			if (todos.Count == 0)
+			{
+				return ToDoData.ToDoState.NoStart;
+			}
+
+			foreach (var item in todos)
+			{
+				if (item.state.Val == ToDoData.ToDoState.Started || item.state.Val == ToDoData.ToDoState.NoStart)
+				{
+					return ToDoData.ToDoState.Started;
+				}
+			}
+
+			return ToDoData.ToDoState.Done;
+		}
 	}
 
 	[Serializable]

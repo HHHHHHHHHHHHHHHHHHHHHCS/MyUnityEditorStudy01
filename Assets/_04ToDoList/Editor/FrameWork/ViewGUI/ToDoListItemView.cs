@@ -107,27 +107,27 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			switch (priorityVal)
 			{
 				case ToDoData.ToDoPriority.A:
-					boxView.Text = "A";
+					boxView.Context = "A";
 					priorityColor = Color.red;
 					boxView.BackgroundColor(Color.red);
 					break;
 				case ToDoData.ToDoPriority.B:
-					boxView.Text = "B";
+					boxView.Context = "B";
 					priorityColor = Color.yellow;
 					boxView.BackgroundColor(Color.yellow);
 					break;
 				case ToDoData.ToDoPriority.C:
-					boxView.Text = "C";
+					boxView.Context = "C";
 					priorityColor = Color.cyan;
 					boxView.BackgroundColor(Color.cyan);
 					break;
 				case ToDoData.ToDoPriority.D:
-					boxView.Text = "D";
+					boxView.Context = "D";
 					priorityColor = Color.blue;
 					boxView.BackgroundColor(Color.blue);
 					break;
 				case ToDoData.ToDoPriority.None:
-					boxView.Text = "无";
+					boxView.Context = "无";
 					priorityColor = Color.gray;
 					boxView.BackgroundColor(Color.gray);
 					break;
@@ -144,27 +144,27 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 				switch (val)
 				{
 					case ToDoData.ToDoPriority.A:
-						boxView.Text = "A";
+						boxView.Context = "A";
 						priority.BackgroundColor(Color.red);
 						boxView.BackgroundColor(Color.red);
 						break;
 					case ToDoData.ToDoPriority.B:
-						boxView.Text = "B";
+						boxView.Context = "B";
 						priority.BackgroundColor(Color.yellow);
 						boxView.BackgroundColor(Color.yellow);
 						break;
 					case ToDoData.ToDoPriority.C:
-						boxView.Text = "C";
+						boxView.Context = "C";
 						priority.BackgroundColor(Color.cyan);
 						boxView.BackgroundColor(Color.cyan);
 						break;
 					case ToDoData.ToDoPriority.D:
-						boxView.Text = "D";
+						boxView.Context = "D";
 						priority.BackgroundColor(Color.blue);
 						boxView.BackgroundColor(Color.blue);
 						break;
 					case ToDoData.ToDoPriority.None:
-						boxView.Text = "无";
+						boxView.Context = "无";
 						priority.BackgroundColor(Color.gray);
 						boxView.BackgroundColor(Color.gray);
 						break;

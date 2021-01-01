@@ -6,6 +6,7 @@ using _04ToDoList.Editor.FrameWork.ViewController;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
+	//TODO:写一个 二级菜单  里面有清单 已隐藏  已完成
 	public class ToDoListView : ToDoListPage
 	{
 		private bool isDirty;
@@ -49,10 +50,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			todoListItemsLayout.Clear();
 
 			var dataList = ToDoDataManager.Data.todoList
-				.Where(item => ((item.state.Val == ToDoData.ToDoState.Done) == false)
+				.Where(item => item.state.Val != ToDoData.ToDoState.Done
 				               && item.isHide == false)
 				.OrderByDescending(item => item.state.Val)
-				.ThenBy(item => item.priority.Val);
+				.ThenBy(item => item.priority.Val)
+				.ThenByDescending(item => item.createTime);
 
 			foreach (var item in dataList)
 			{

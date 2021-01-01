@@ -7,124 +7,135 @@ using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.Drawer
 {
-    public abstract class View : IView
-    {
-        public bool Visible { get; set; } = true;
+	public abstract class View : IView
+	{
+		public bool Visible { get; set; } = true;
 
-        public ILayout Parent { get; set; }
+		public ILayout Parent { get; set; }
 
-        public List<GUILayoutOption> guiLayouts { get; } = new List<GUILayoutOption>();
+		protected List<GUILayoutOption> guiLayouts = new List<GUILayoutOption>();
 
-        public GUIStyle guiStyle { get; protected set; } //= new GUIStyle();
-        public Color backgroundColor { get; set; } = GUI.backgroundColor;
+		public GUIStyle guiStyle { get; protected set; } //= new GUIStyle();
+		public Color backgroundColor { get; set; } = GUI.backgroundColor;
+
+		protected bool optionDirty;
+		protected bool beforeDrawCalled = false;
+		protected GUILayoutOption[] guiLayoutOptions;
+
+		protected HashSet<EventRecord> eventRecords { get; } = new HashSet<EventRecord>();
+
+		public void Show()
+		{
+			Visible = true;
+			OnShow();
+		}
+
+		protected virtual void OnShow()
+		{
+		}
+
+		public void Hide()
+		{
+			Visible = false;
+			OnHide();
+		}
 
 
-        protected bool beforeDrawCalled = false;
-        protected GUILayoutOption[] guiLayoutOptions;
+		protected virtual void OnHide()
+		{
+		}
 
-        protected HashSet<EventRecord> eventRecords { get; } = new HashSet<EventRecord>();
+		public void Refresh()
+		{
+			OnRefresh();
+		}
 
-        public void Show()
-        {
-            Visible = true;
-            OnShow();
-        }
+		protected virtual void OnRefresh()
+		{
+		}
 
-        protected virtual void OnShow()
-        {
-        }
+		public virtual void OnRemove()
+		{
+		}
 
-        public void Hide()
-        {
-            Visible = false;
-            OnHide();
-        }
+		public void OnBeforeDraw()
+		{
+			if (beforeDrawCalled)
+			{
+				return;
+			}
 
+			beforeDrawCalled = true;
+			if (optionDirty)
+			{
+				guiLayoutOptions = guiLayouts.ToArray();
+				optionDirty = false;
+			}
+		}
 
-        protected virtual void OnHide()
-        {
-        }
+		public void DrawGUI()
+		{
+			if (Visible)
+			{
+				var lastBgColor = GUI.backgroundColor;
+				GUI.backgroundColor = backgroundColor;
+				OnBeforeDraw();
+				OnGUI();
+				GUI.backgroundColor = lastBgColor;
+			}
+		}
 
-        public void Refresh()
-        {
-            OnRefresh();
-        }
+		public void ParentRemoveThis()
+		{
+			Parent.Remove(this);
+		}
 
-        protected virtual void OnRefresh()
-        {
-        }
+		public T AddTo<T>(ILayout parent) where T : View
+		{
+			parent.Add(this);
+			return this as T;
+		}
 
-        public virtual void OnRemove()
-        {
-        }
+		public void Dispose()
+		{
+			UnRegisterAll();
+			OnDisposed();
+		}
 
-        public void OnBeforeDraw()
-        {
-            if (beforeDrawCalled)
-            {
-                return;
-            }
+		protected virtual void OnDisposed()
+		{
+			if (Parent != null)
+			{
+				ParentRemoveThis();
+			}
+		}
 
-            beforeDrawCalled = true;
-            guiLayoutOptions = guiLayouts.ToArray();
-        }
+		public void AddGUILayouts(GUILayoutOption option)
+		{
+			guiLayouts.Add(option);
+			optionDirty = true;
+		}
+		
+		protected abstract void OnGUI();
+		
 
-        public void DrawGUI()
-        {
-            if (Visible)
-            {
-                var lastBgColor = GUI.backgroundColor;
-                GUI.backgroundColor = backgroundColor;
-                OnBeforeDraw();
-                OnGUI();
-                GUI.backgroundColor = lastBgColor;
-            }
-        }
+		protected void RegisterEvent(int key, Action<object> onEvent)
+		{
+			EventDispatcher.Register(key, onEvent);
 
-        public void ParentRemoveThis()
-        {
-            Parent.Remove(this);
-        }
+			eventRecords.Add(new EventRecord()
+			{
+				key = key,
+				onAction = onEvent
+			});
+		}
 
-        public T AddTo<T>(ILayout parent) where T : View
-        {
-            parent.Add(this);
-            return this as T;
-        }
-
-        public void Dispose()
-        {
-            UnRegisterAll();
-            OnDisposed();
-        }
-
-        protected virtual void OnDisposed()
-        {
-            if (Parent != null)
-            {
-                ParentRemoveThis();
-            }
-        }
-
-        protected abstract void OnGUI();
-
-        protected void RegisterEvent(int key, Action<object> onEvent)
-        {
-            EventDispatcher.Register(key, onEvent);
-
-            eventRecords.Add(new EventRecord()
-            {
-                key = key,
-                onAction = onEvent
-            });
-        }
-
-        protected void UnRegisterAll()
-        {
-            foreach (var record in eventRecords)
-            {
-                EventDispatcher.Remove(record.key, record.onAction);
-            }
-        }
-    }
+		protected void UnRegisterAll()
+		{
+			foreach (var record in eventRecords)
+			{
+				EventDispatcher.Remove(record.key, record.onAction);
+			}
+		}
+	}
 }

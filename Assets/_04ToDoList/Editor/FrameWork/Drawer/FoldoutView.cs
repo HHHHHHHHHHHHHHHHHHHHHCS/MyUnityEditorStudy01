@@ -95,16 +95,28 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 			visibleViews.Remove(view);
 			return this;
 		}
+		
+		public FoldoutView ClearVisibleView()
+		{
+			visibleViews.Clear();
+			return this;
+		}
 
 		public FoldoutView AddFoldoutView(IView view)
 		{
 			foldoutViews.Add(view);
 			return this;
 		}
-
+		
 		public FoldoutView RemoveFoldoutView(IView view)
 		{
 			foldoutViews.Remove(view);
+			return this;
+		}
+		
+		public FoldoutView ClearFoldoutView()
+		{
+			foldoutViews.Clear();
 			return this;
 		}
 	}
