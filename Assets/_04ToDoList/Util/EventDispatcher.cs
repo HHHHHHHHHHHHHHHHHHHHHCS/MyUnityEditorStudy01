@@ -17,17 +17,16 @@ namespace _04ToDoList.Util
             registeredEvents = new Dictionary<int, Action<object>>();
 
         public static void Register(int key, Action<object> _onEvent)
-        {
+        { 
             //delegate 只能这样写  因为可能是值类型
-            int intKey = key;
-            if (!registeredEvents.ContainsKey(intKey))
+            if (!registeredEvents.ContainsKey(key))
             {
                 Action<object> act = _onEvent; //拷贝一份
-                registeredEvents.Add(intKey, act);
+                registeredEvents.Add(key, act);
             }
             else
             {
-                registeredEvents[intKey] += _onEvent;
+                registeredEvents[key] += _onEvent;
             }
         }
 
@@ -42,17 +41,16 @@ namespace _04ToDoList.Util
             }
         }
 
-        public static void RemoveAll<T>(T key) where T : IConvertible
+        public static void RemoveAll(int key) 
         {
-            int intKey = key.ToInt32(null);
-            if (registeredEvents.TryGetValue(intKey, out var acts))
-            {
-                //也可以这样获取全部的方法
-                //registeredEvents[intKey].GetInvocationList()
-                registeredEvents[intKey] -= acts;
-            }
+            registeredEvents.Remove(key);
         }
 
+        public static void Clear()
+        {
+            registeredEvents.Clear();
+        }
+        
         public static void Send(int key, object obj = null)
         {
             if (registeredEvents.TryGetValue(key, out var acts))

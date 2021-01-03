@@ -3,28 +3,33 @@ using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.ViewController;
+using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-	public class ToDoListHideView : ToDoListPage
+	public class ToDoListToDoView : ToDoListPage
 	{
 		private bool isDirty;
 
+		private ToDoListInputView todoListInputView;
 		private VerticalLayout todoListItemsLayout;
 
-		public ToDoListHideView(int _eventKey) : base(_eventKey)
+		public ToDoListToDoView(int _eventKey) : base(_eventKey)
 		{
 			Init();
 		}
 		
-		// public ToDoListHideView(AbsViewController ctrl) : base(ctrl)
+		// public ToDoListToDoView(AbsViewController ctrl) : base(ctrl)
 		// {
 		// 	Init();
 		// }
-
-		private void Init()
+		
+		public void Init()
 		{
+			todoListInputView = new ToDoListInputView(AddAction);
 			todoListItemsLayout = new VerticalLayout();
+			new SpaceView(4).AddTo(this);
+			todoListInputView.AddTo(this);
 			new SpaceView(4).AddTo(this);
 			todoListItemsLayout.AddTo(new ScrollLayout().AddTo(this));
 		}
@@ -46,6 +51,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		protected override void OnShow()
 		{
 			base.OnShow();
+			todoListInputView.Show();
 			ReBuildToDoItems();
 		}
 
@@ -54,10 +60,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			todoListItemsLayout.Clear();
 
 			var dataList = ToDoDataManager.Data.todoList
-				.Where(item => (item.state.Val == ToDoData.ToDoState.Done) == false
-				               && item.isHide == true)
+				.Where(item => item.state.Val != ToDoData.ToDoState.Done
+				               && item.isHide == false)
 				.OrderByDescending(item => item.state.Val)
-				.ThenBy(item => item.priority.Val);
+				.ThenBy(item => item.priority.Val)
+				.ThenByDescending(item => item.createTime);
 
 			foreach (var item in dataList)
 			{
@@ -70,20 +77,19 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		private void RefreshVisible()
 		{
-			if (todoListItemsLayout.children.Count > 0)
-			{
-				todoListItemsLayout.Style = "box";
-			}
-			else
-			{
-				todoListItemsLayout.Style = null;
-			}
+			todoListItemsLayout.Style = todoListItemsLayout.children.Count > 0 ? "box" : null;
 		}
 
+		private void AddAction(ToDoCategory category, string _todoName)
+		{
+			ToDoDataManager.AddToDoItem(_todoName, false, category);
+			UpdateToDoItems();
+		}
 
 		private void ChangeProperty(ToDoListItemView item)
 		{
-			isDirty = true;
+			//isDirty = true;
+			ReBuildToDoItems();
 		}
 	}
 }

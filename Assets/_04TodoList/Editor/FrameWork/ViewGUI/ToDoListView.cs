@@ -3,83 +3,64 @@ using _04ToDoList.Editor.FrameWork.DataBinding;
 using _04ToDoList.Editor.FrameWork.Drawer;
 using _04ToDoList.Editor.FrameWork.Layout;
 using _04ToDoList.Editor.FrameWork.ViewController;
+using _04ToDoList.Util;
+using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-	//TODO:写一个 二级菜单  里面有清单 已隐藏  已完成
 	public class ToDoListView : ToDoListPage
 	{
-		private bool isDirty;
+		private ToolBarView todoListToolBarView;
 
-		private ToDoListInputView todoListInputView;
-		private VerticalLayout todoListItemsLayout;
+
+		private ToDoListToDoView todoListToDoView;
+		private ToDoListHideView todoListHideView;
+		private ToDoListFinishedView todoListFinishedView;
 
 		public ToDoListView(AbsViewController ctrl) : base(ctrl)
 		{
-			todoListInputView = new ToDoListInputView(AddAction);
-			todoListItemsLayout = new VerticalLayout();
-			new SpaceView(4).AddTo(this);
-			todoListInputView.AddTo(this);
-			new SpaceView(4).AddTo(this);
-			todoListItemsLayout.AddTo(new ScrollLayout().AddTo(this));
+			todoListToDoView = new ToDoListToDoView(eventKey);
+			todoListHideView = new ToDoListHideView(eventKey);
+			todoListFinishedView = new ToDoListFinishedView(eventKey);
+
+
+			todoListToolBarView = new ToolBarView {style = "box"}.FontSize(15).Height(40).AddTo(this);
+
+
+			AddMenu(todoListToolBarView,
+				("进行", todoListToDoView),
+				("隐藏", todoListHideView),
+				("完成", todoListFinishedView));
 		}
 
-		public void UpdateToDoItems()
-		{
-			isDirty = true;
-		}
-
-		protected override void OnRefresh()
-		{
-			if (isDirty)
-			{
-				isDirty = false;
-				ReBuildToDoItems();
-			}
-		}
 
 		protected override void OnShow()
 		{
 			base.OnShow();
-			todoListInputView.Show();
-			ReBuildToDoItems();
+			todoListToolBarView.ForceClick(0);
 		}
 
-		public void ReBuildToDoItems()
+		public void ChangeMenuPage(int clickPage)
 		{
-			todoListItemsLayout.Clear();
-
-			var dataList = ToDoDataManager.Data.todoList
-				.Where(item => item.state.Val != ToDoData.ToDoState.Done
-				               && item.isHide == false)
-				.OrderByDescending(item => item.state.Val)
-				.ThenBy(item => item.priority.Val)
-				.ThenByDescending(item => item.createTime);
-
-			foreach (var item in dataList)
+			EventDispatcher.Send(eventKey, clickPage);
+		}
+		
+		public void AddMenu(ToolBarView bar, params (string title, ToDoListPage page)[] tilePages)
+		{
+			foreach (var kv in tilePages)
 			{
-				new ToDoListItemView(item, ChangeProperty).AddTo(todoListItemsLayout);
-				new SpaceView(4).AddTo(todoListItemsLayout);
+				bar.AddMenu(kv.title, () => ChangeMenuPage(kv.page.eventKey));
+				kv.page.AddTo(this);
 			}
-
-			RefreshVisible();
 		}
 
-		private void RefreshVisible()
+		protected override void OnDisposed()
 		{
-			todoListItemsLayout.Style = todoListItemsLayout.children.Count > 0 ? "box" : null;
-		}
-
-		private void AddAction(ToDoCategory category, string _todoName)
-		{
-			ToDoDataManager.AddToDoItem(_todoName, false, category);
-			UpdateToDoItems();
-		}
-
-		private void ChangeProperty(ToDoListItemView item)
-		{
-			//isDirty = true;
-			ReBuildToDoItems();
+			base.OnDisposed();
+			todoListToDoView.Dispose();
+			todoListHideView.Dispose();
+			todoListFinishedView.Dispose();
+			EventDispatcher.RemoveAll(eventKey);
 		}
 	}
 }

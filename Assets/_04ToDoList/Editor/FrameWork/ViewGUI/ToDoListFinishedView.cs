@@ -7,85 +7,95 @@ using _04ToDoList.Editor.FrameWork.ViewController;
 
 namespace _04ToDoList.Editor.FrameWork.ViewGUI
 {
-    public class ToDoListFinishedView : ToDoListPage
-    {
-        private bool isDirty;
+	public class ToDoListFinishedView : ToDoListPage
+	{
+		private bool isDirty;
 
-        private VerticalLayout todosParent;
+		private VerticalLayout todosParent;
 
-        public ToDoListFinishedView(AbsViewController ctrl) : base(ctrl)
-        {
-            Add(new SpaceView());
-            var scrollLayout = new ScrollLayout();
-            todosParent = new VerticalLayout();
-            scrollLayout.Add(todosParent);
-            Add(scrollLayout);
-        }
+		public ToDoListFinishedView(int _eventKey) : base(_eventKey)
+		{
+			Init();
+		}
+		
+		// public ToDoListFinishedView(AbsViewController ctrl) : base(ctrl)
+		// {
+		// 	Init();
+		// }
 
-        public void UpdateToDoItems()
-        {
-            isDirty = true;
-        }
+		private void Init()
+		{
+			Add(new SpaceView());
+			var scrollLayout = new ScrollLayout();
+			todosParent = new VerticalLayout();
+			scrollLayout.Add(todosParent);
+			Add(scrollLayout);
+		}
 
-        protected override void OnRefresh()
-        {
-            if (isDirty)
-            {
-                isDirty = false;
-                ReBuildToDoItems();
-            }
-        }
+		public void UpdateToDoItems()
+		{
+			isDirty = true;
+		}
 
-        protected override void OnShow()
-        {
-            base.OnShow();
-            ReBuildToDoItems();
-        }
+		protected override void OnRefresh()
+		{
+			if (isDirty)
+			{
+				isDirty = false;
+				ReBuildToDoItems();
+			}
+		}
 
-        public void ReBuildToDoItems()
-        {
-            var dataList = ToDoDataManager.Data.todoList;
+		protected override void OnShow()
+		{
+			base.OnShow();
+			ReBuildToDoItems();
+		}
 
-            todosParent.children.Clear();
+		public void ReBuildToDoItems()
+		{
+			var dataList = ToDoDataManager.Data.todoList;
 
-            var groupsByDay = dataList.Where(item => item.state.Val == ToDoData.ToDoState.Done)
-                .GroupBy(item => item.finishTime.Date)
-                .OrderByDescending(item => item.Key);
+			todosParent.children.Clear();
 
-            foreach (var group in groupsByDay)
-            {
-                TimeSpan totalTime = TimeSpan.Zero;
-                foreach (var item in group)
-                {
-                    totalTime += item.UsedTime;
-                }
+			var groupsByDay = dataList.Where(item => item.state.Val == ToDoData.ToDoState.Done)
+				.GroupBy(item => item.finishTime.Date)
+				.OrderByDescending(item => item.Key);
 
-                todosParent.Add(
-                    new LabelView(group.Key.ToString("yyyy年MM月dd日 (共" + ToDoData.UsedTimeToString(totalTime) + ")"))
-                        .FontSize(20).TextLowCenter());
+			foreach (var group in groupsByDay)
+			{
+				TimeSpan totalTime = TimeSpan.Zero;
+				foreach (var item in group)
+				{
+					totalTime += item.UsedTime;
+				}
 
-                todosParent.Add(new SpaceView(4));
+				todosParent.Add(
+					new LabelView(group.Key.ToString("yyyy年MM月dd日 (共" + ToDoData.UsedTimeToString(totalTime) + ")"))
+						.FontSize(20).TextLowCenter());
 
-
-                foreach (var item in group.OrderByDescending(val => val.finishTime))
-                {
-                    todosParent.Add(new ToDoListItemView(item, RemoveFromParent, true));
-                    todosParent.Add(new SpaceView(4));
-                }
-            }
+				todosParent.Add(new SpaceView(4));
 
 
-            RefreshVisible();
-        }
+				foreach (var item in group.OrderByDescending(val => val.finishTime))
+				{
+					todosParent.Add(new ToDoListItemView(item, RemoveFromParent, true));
+					todosParent.Add(new SpaceView(4));
+				}
+			}
 
-        private void RefreshVisible()
-        {
-            todosParent.Style = todosParent.children.Count > 0 ? "box" : null;
-        }
 
-        private void RemoveFromParent(ToDoListItemView item)
-        {
-            UpdateToDoItems();
-        }
-    }
+			RefreshVisible();
+		}
+
+		private void RefreshVisible()
+		{
+			todosParent.Style = todosParent.children.Count > 0 ? "box" : null;
+		}
+
+		private void RemoveFromParent(ToDoListItemView item)
+		{
+			UpdateToDoItems();
+		}
+	}
 }

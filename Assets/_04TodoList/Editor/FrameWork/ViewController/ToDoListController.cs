@@ -16,9 +16,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
 		private ToDoListNoteView todoListNoteView;
 		private ToDoListView todoListView;
-		private ToDoListHideView todoListHideView;
 		private ToDoListCategoryListView todoListCategoryListView;
-		private ToDoListFinishedView todoListFinishedView;
 		private ToDoListProductView todoListProductView;
 
 
@@ -28,14 +26,12 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
 			todoListNoteView = new ToDoListNoteView(this);
 			todoListView = new ToDoListView(this);
-			todoListHideView = new ToDoListHideView(this);
 			todoListCategoryListView = new ToDoListCategoryListView(this);
-			todoListFinishedView = new ToDoListFinishedView(this);
 			todoListProductView = new ToDoListProductView(this);
 
 			todoListToolBarView = new ToolBarView {style = "box"}.FontSize(15).Height(40);
-			
-			// AddView(todoListToolBarView);
+			AddView(todoListToolBarView);
+
 			// todoListToolBarView
 			// 	.AddMenu("笔记", () => ChangePage(todoListNoteView.eventKey))
 			// 	.AddMenu("清单", () => ChangePage(todoListView.eventKey))
@@ -49,13 +45,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 			// views.Add(todoListCategoryListView);
 			// views.Add(todoListFinishedView);
 			// views.Add(todoListProductView);
-			
+
 			AddMenu(todoListToolBarView,
 				("笔记", todoListNoteView),
 				("清单", todoListView),
-				("隐藏", todoListHideView),
 				("分类管理", todoListCategoryListView),
-				("已完成", todoListFinishedView),
 				("产品", todoListProductView)
 			);
 
@@ -63,17 +57,16 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 			todoListToolBarView.ForceClick(1);
 		}
 
-		public void ChangePage(int clickPage)
+		public void ChangeMenuPage(int clickPage)
 		{
 			EventDispatcher.Send(eventKey, clickPage);
 		}
 
 		public void AddMenu(ToolBarView bar, params (string title, ToDoListPage page)[] tilePages)
 		{
-			AddView(bar);
 			foreach (var kv in tilePages)
 			{
-				bar.AddMenu(kv.title, () => ChangePage(kv.page.eventKey));
+				bar.AddMenu(kv.title, () => ChangeMenuPage(kv.page.eventKey));
 				AddView(kv.page);
 			}
 		}
@@ -84,6 +77,11 @@ namespace _04ToDoList.Editor.FrameWork.ViewController
 
 		public void OnDisable()
 		{
+			todoListNoteView.Dispose();
+			todoListView.Dispose();
+			todoListCategoryListView.Dispose();
+			todoListProductView.Dispose();
+			EventDispatcher.RemoveAll(eventKey);
 			ToDoDataManager.Save();
 		}
 	}
