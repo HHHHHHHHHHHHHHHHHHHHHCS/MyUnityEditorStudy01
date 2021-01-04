@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using _04ToDoList.Editor.FrameWork.ViewGUI;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace _04ToDoList.Editor.FrameWork.DataBinding
@@ -99,7 +101,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
 		public List<ToDoNote> notes = new List<ToDoNote>();
 
-		public List<ToDoData> todos = new List<ToDoData>();
+		public List<string> todoIDs = new List<string>();
+
 
 		public ToDoData.ToDoState GetStates()
 		{
@@ -117,6 +120,31 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			}
 
 			return ToDoData.ToDoState.Done;
+		}
+
+		[System.NonSerialized, JsonIgnore] private List<ToDoData> _todos;
+
+		[JsonIgnore]
+		public List<ToDoData> todos
+		{
+			get
+			{
+				if (_todos == null)
+				{
+					_todos = new List<ToDoData>(todoIDs.Count);
+					foreach (var id in todoIDs)
+					{
+						_todos.Add(ToDoDataManager.GetToDoItemByID(id));
+					}
+				}
+
+				return _todos;
+			}
+		}
+
+		public void ToDoOrderBy<T>(Func<ToDoData, T> compare)
+		{
+			_todos = todos.OrderBy(compare).ToList();
 		}
 	}
 

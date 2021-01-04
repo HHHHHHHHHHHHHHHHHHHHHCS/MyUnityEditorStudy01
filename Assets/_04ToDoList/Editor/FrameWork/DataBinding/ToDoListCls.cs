@@ -19,6 +19,8 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 		public List<ToDoCategory> categoryList = new List<ToDoCategory>();
 		
 		public List<ToDoProduct> productList = new List<ToDoProduct>();
+		
+		public string[] GetToDoIDs => todoList.Select(x => x.id).ToArray();
 	}
 
 	public partial class ToDoListCls : ToDoListBaseCls
@@ -126,7 +128,12 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			EditorPrefs.SetInt(todosVersionKey, version);
 			EditorPrefs.SetString(todosKey, JsonConvert.SerializeObject(cls));
 		}
-
+		
+		public static void Reset()
+		{
+			EditorPrefs.SetInt(todosVersionKey, version);
+			EditorPrefs.SetString(todosKey, string.Empty);
+		}
 
 		public ToDoData this[int index]
 		{

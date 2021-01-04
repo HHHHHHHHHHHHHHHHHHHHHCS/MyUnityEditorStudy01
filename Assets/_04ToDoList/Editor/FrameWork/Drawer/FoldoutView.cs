@@ -108,6 +108,12 @@ namespace _04ToDoList.Editor.FrameWork.Drawer
 			return this;
 		}
 		
+		public FoldoutView InsertFoldoutView(IView view)
+		{
+			foldoutViews.Add(view);
+			return this;
+		}
+		
 		public FoldoutView RemoveFoldoutView(IView view)
 		{
 			foldoutViews.Remove(view);

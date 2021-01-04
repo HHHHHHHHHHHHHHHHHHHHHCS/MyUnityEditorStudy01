@@ -41,6 +41,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 
 		public bool isHide;
 
+		public string productVersionID;
 
 		public TimeSpan UsedTime => finishTime - startTime;
 
@@ -52,7 +53,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			, DateTime? createTime = null, DateTime? finishTime = null, DateTime? startTime = null
 			, Property<ToDoState> state = null, Action<ToDoState> stateChangeAct = null
 			, Property<ToDoPriority> priority = null, ToDoCategory category = null
-			, bool? isHide = null)
+			, bool? isHide = null, string productVersionID = null)
 		{
 			//this.id = Guid.NewGuid().ToString();
 			this.content = content ?? string.Empty;
@@ -69,6 +70,7 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			this.priority = priority ?? new Property<ToDoPriority>(ToDoPriority.None);
 			this.category = category; //?? new TodoCategory();
 			this.isHide = isHide ?? false;
+			this.productVersionID = productVersionID;
 
 			if (stateChangeAct != null)
 			{
@@ -103,9 +105,11 @@ namespace _04ToDoList.Editor.FrameWork.DataBinding
 			Init(content: _content, saveAct: _saveAct, finished: new Property<bool>(_finished));
 		}
 
-		public ToDoData(string _content, bool _finished, Action _saveAct, ToDoCategory _category)
+		public ToDoData(string _content, bool _finished, Action _saveAct, ToDoCategory _category,
+			string _productVersionID)
 		{
-			Init(content: _content, saveAct: _saveAct, finished: new Property<bool>(_finished), category: _category);
+			Init(content: _content, saveAct: _saveAct, finished: new Property<bool>(_finished), category: _category,
+				productVersionID: _productVersionID);
 		}
 
 		public override string ToString()

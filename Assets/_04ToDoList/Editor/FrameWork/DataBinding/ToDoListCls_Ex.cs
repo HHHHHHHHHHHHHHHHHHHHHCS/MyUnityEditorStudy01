@@ -10,10 +10,15 @@ public static class ToDoListCls_Ex
 		ToDoListCls.Save(cls);
 	}
 
-
-	public static ToDoData AddToDoItem(this ToDoListCls cls, string content, bool finished, ToDoCategory category)
+	public static ToDoData CreateToDoItem(this ToDoListCls cls, string content, bool finished, ToDoCategory category,string productVersionID )
 	{
-		var data = new ToDoData(content, finished, cls.Save, category);
+		var data = new ToDoData(content, finished, cls.Save, category,productVersionID);
+		return data;
+	}
+
+	public static ToDoData AddToDoItem(this ToDoListCls cls, string content, bool finished, ToDoCategory category,string productVersionID )
+	{
+		var data = cls.CreateToDoItem(content, finished, category,productVersionID);
 		cls.AddToDoItem(data);
 		return data;
 	}
@@ -109,10 +114,26 @@ public static class ToDoListCls_Ex
 		cls.Save();
 		return val;
 	}
-	
+
 	public static void RemoveProduct(this ToDoListCls cls, ToDoProduct todoProduct)
 	{
 		cls.productList.Remove(todoProduct);
+		cls.Save();
+	}
+
+	public static void AddProductToDoItem(this ToDoListCls cls, ToDoProductVersion productVersion, ToDoData data)
+	{
+		productVersion.todoIDs.Add(data.id);
+		productVersion.todos.Add(data);
+		cls.todoList.Add(data);
+		cls.Save();
+	}
+	
+	public  static void RemoveProductToDoItem(this ToDoListCls cls, ToDoProductVersion productVersion, ToDoData data)
+	{
+		productVersion.todoIDs.Remove(data.id);
+		productVersion.todos.Remove(data);
+		cls.todoList.Remove(data);
 		cls.Save();
 	}
 }

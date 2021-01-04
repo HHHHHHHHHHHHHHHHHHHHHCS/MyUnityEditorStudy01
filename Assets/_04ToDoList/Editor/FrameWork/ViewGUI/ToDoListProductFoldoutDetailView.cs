@@ -55,7 +55,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 
 		public void RefreshStateWithView()
 		{
-			productVersion.todos = productVersion.todos.OrderBy(x => x.state.Val).ToList();
+			productVersion.ToDoOrderBy(x => x.state.Val);
 
 			string stateText = string.Empty;
 			Color stateColor = Color.black;
@@ -107,8 +107,7 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 			{
 				EnqueueCmd(() =>
 				{
-					productVersion.todos.Remove(todoItem);
-					ToDoDataManager.Save();
+					ToDoDataManager.RemoveProductToDoItem(productVersion, todoItem);
 					foldoutView.RemoveFoldoutView(itemToDoView);
 				});
 			};
@@ -120,9 +119,8 @@ namespace _04ToDoList.Editor.FrameWork.ViewGUI
 		{
 			EnqueueCmd(() =>
 			{
-				var item = ToDoDataManager.AddToDoItem(todoName, false, category);
-				productVersion.todos.Add(item);
-				ToDoDataManager.Data.Save();
+				var item = ToDoDataManager.CreateToDoItem(todoName, false, category, productVersion.id);
+				ToDoDataManager.AddProductToDoItem(productVersion, item);
 
 				AddToDoToFoldoutView(item);
 				RefreshStateWithView();
